@@ -193,16 +193,15 @@ exit /b 0
 :run_task
 set N=%~1
 set NAME=%~2
-if "%N%"=="" goto :eof
-if exist "%DONE_DIR%\%N%.done" (
-    echo   [SKIP] Task %N% - %NAME% - already done
-    goto :eof
-)
+if "%N%"=="" exit /b
+if not exist "%DONE_DIR%\%N%.done" goto :do_run_task
+echo   [SKIP] Task %N% - %NAME% - already done
+exit /b
+
+:do_run_task
 echo.
 echo [RUN] Task %N%: %NAME%
-if not exist "%PROMPTS_DIR%\task-%N%.txt" (
-    call :gen_prompt %N% %NAME%
-)
+if not exist "%PROMPTS_DIR%\task-%N%.txt" call :gen_prompt %N% %NAME%
 REM Pipe prompt via stdin. Use --print for non-interactive mode.
 type "%PROMPTS_DIR%\task-%N%.txt" | claude --print --dangerously-skip-permissions --add-dir "%ROOT%" > "%LOGS_DIR%\task-%N%.log" 2>&1
 if !ERRORLEVEL! == 0 (
@@ -212,7 +211,7 @@ if !ERRORLEVEL! == 0 (
     echo   [FAIL] Task %N% - see %LOGS_DIR%\task-%N%.log
     echo   Continuing with remaining tasks...
 )
-goto :eof
+exit /b
 
 :run_parallel
 REM Usage: call :run_parallel 11 "name1" 12 "name2" ...
@@ -225,14 +224,13 @@ goto :collect_args
 :do_parallel
 echo   Parallel start: !GROUP_TASKS!
 for %%T in (!GROUP_TASKS!) do (
-    if exist "%DONE_DIR%\%%T.done" (
-        echo   [SKIP] Task %%T - already done
-    ) else (
-        if not exist "%PROMPTS_DIR%\task-%%T.txt" (
-            call :gen_prompt %%T "Task %%T"
-        )
-        start /b "" cmd /c "type ""%PROMPTS_DIR%\task-%%T.txt"" | claude --print --dangerously-skip-permissions --add-dir ""%ROOT%"" > ""%LOGS_DIR%\task-%%T.log"" 2>&1 && echo done > ""%DONE_DIR%\%%T.done"" || echo [FAIL] Task %%T"
-    )
+    if not exist "%DONE_DIR%\%%T.done" goto :do_parallel_task
+    echo   [SKIP] Task %%T - already done
+    goto :parallel_next
+    :do_parallel_task
+    if not exist "%PROMPTS_DIR%\task-%%T.txt" call :gen_prompt %%T "Task %%T"
+    start /b "" cmd /c "type ""%PROMPTS_DIR%\task-%%T.txt"" | claude --print --dangerously-skip-permissions --add-dir ""%ROOT%"" > ""%LOGS_DIR%\task-%%T.log"" 2>&1 && echo done > ""%DONE_DIR%\%%T.done"" || echo [FAIL] Task %%T"
+    :parallel_next
 )
 REM Wait for all parallel tasks to complete
 :wait_parallel
