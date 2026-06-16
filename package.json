@@ -1,0 +1,18 @@
+{
+  "name": "shiyun",
+  "version": "1.0.0",
+  "description": "诗云 - 家庭古诗词学习系统",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "python scripts/build_learning.py"
+  },
+  "devDependencies": {
+    "vitest": "^1.6.0",
+    "jsdom": "^24.0.0"
+  },
+  "dependencies": {
+    "pinyin-pro": "^3.18.0"
+  }
+}
