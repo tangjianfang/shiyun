@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.superpowers/
+.tasks/
+.done/
+*.log
+.env
+.DS_Store
+诗云-学习版.html
+诗云-生成器.html
