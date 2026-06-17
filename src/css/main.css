@@ -371,3 +371,25 @@ button { font-family: inherit; cursor: pointer; }
   .stats-cards { grid-template-columns: repeat(2, 1fr); }
   .achievements-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
 }
+
+/* ===== 打印页 ===== */
+.print-page { padding: 16px; max-width: 1000px; margin: 0 auto; }
+.print-page h2 { margin-bottom: 16px; }
+.print-page .card { padding: 16px; margin-bottom: 16px; }
+.filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.filter-group label { font-weight: 600; color: var(--text); font-size: 13px; display: block; margin-bottom: 6px; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip-group.scrollable { max-height: 100px; overflow-y: auto; padding: 4px; background: var(--bg); border-radius: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; background: white; border: 1px solid var(--border); border-radius: 16px; font-size: 13px; cursor: pointer; }
+.chip input { margin: 0; }
+.format-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.format-card { display: block; padding: 16px; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: all 0.2s; }
+.format-card:hover { border-color: var(--primary); }
+.format-card:has(input:checked) { border-color: var(--primary); background: #e8f1fb; }
+.format-name { font-weight: 600; margin-bottom: 4px; }
+.format-desc { font-size: 13px; color: var(--text-light); line-height: 1.4; }
+.format-meta { font-size: 12px; color: var(--primary); margin-top: 8px; }
+.print-actions { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
+.summary { color: var(--text); }
+.empty-tip { text-align: center; color: var(--text-light); padding: 32px; }
+.print-preview { background: var(--bg); padding: 16px; }
