@@ -10,19 +10,31 @@ import { loadPoemMeta } from './data.js';
 import { renderHome } from './ui/home.js';
 import { getUser, getCurrentUserId } from './storage.js';
 import { renderLearnPlaceholder } from './ui/learn.js';
-import { renderReviewPlaceholder } from './ui/review.js';
-import { renderQuizPlaceholder } from './ui/quiz.js';
+import { renderReviewPage } from './ui/review.js';
+import { startQuiz } from './ui/quiz.js';
 import { renderProgressPlaceholder } from './ui/progress.js';
 import { renderPoemDetail } from './ui/learn.js';
 
 const routes = {
   '#/': renderHome,
   '#/learn': renderLearnPlaceholder,
-  '#/review': renderReviewPlaceholder,
-  '#/quiz': renderQuizPlaceholder,
+  '#/review': renderReviewPage,
+  '#/quiz': (params) => {
+    const poemId = new URLSearchParams(location.hash.split('?')[1] || '').get('poemId');
+    if (poemId) {
+      const { getPoem } = window.__shiyun || {};
+    }
+    const main = document.getElementById('app-main');
+    setContent('<div class="placeholder">请从诗词详情页进入考核</div>');
+  },
   '#/progress': renderProgressPlaceholder,
   '#/poem/:id': renderPoemDetail,
 };
+
+function setContent(html) {
+  const main = document.getElementById('app-main');
+  if (main) main.innerHTML = html;
+}
 
 export function initApp() {
   // 1. 加载元数据

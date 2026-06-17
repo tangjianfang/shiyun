@@ -285,3 +285,45 @@ button { font-family: inherit; cursor: pointer; }
 .listen-player__btn:hover { transform: scale(1.05); }
 .listen-player__btn:active { transform: scale(0.95); }
 .listen-player__hint { margin-top: 12px; color: var(--text-light); font-size: 13px; }
+
+/* ===== 复习页面 ===== */
+.review-page { padding: 16px; max-width: 600px; margin: 0 auto; }
+.review-page__header { text-align: center; margin-bottom: 24px; }
+.review-page__title { margin: 0; font-size: 22px; }
+.review-page__subtitle { color: var(--text-light); margin: 8px 0; }
+.review-page__count { color: var(--danger); font-size: 24px; }
+.review-page__empty { text-align: center; padding: 40px 16px; }
+.review-page__config { background: white; padding: 16px; border-radius: var(--radius); margin-bottom: 16px; display: flex; gap: 16px; flex-wrap: wrap; box-shadow: var(--shadow); }
+.review-page__field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 200px; }
+.review-page__field select { flex: 1; padding: 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; }
+.review-page__list { list-style: none; padding: 0; margin: 16px 0; }
+.review-page__item { display: flex; align-items: center; gap: 8px; padding: 12px 16px; margin-bottom: 4px; background: white; border-radius: var(--radius); border-left: 4px solid var(--primary); box-shadow: var(--shadow); }
+.review-page__num { color: var(--text-light); min-width: 24px; }
+.review-page__poem-title { flex: 1; font-weight: 500; }
+.review-page__poem-author { color: var(--text-light); font-size: 13px; }
+.review-page__poem-status { padding: 2px 10px; border-radius: 12px; font-size: 12px; background: var(--bg); }
+.review-page__poem-status--mastered { background: #d4edda; color: var(--success); }
+.review-page__poem-status--reviewing { background: #fff3cd; color: #f39c12; }
+.review-page__poem-status--learning { background: #cce5ff; color: var(--primary); }
+.review-page__actions { text-align: center; margin-top: 24px; }
+
+.review-progress { position: relative; height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 8px; overflow: hidden; }
+.review-progress__bar { height: 100%; background: var(--primary); transition: width 0.3s; }
+.review-progress__text { position: absolute; top: 8px; right: 16px; font-size: 12px; color: var(--text-light); }
+
+.review-report { padding: 16px; max-width: 600px; margin: 0 auto; }
+.review-report__title { text-align: center; font-size: 22px; margin: 0 0 24px; }
+.review-report__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.review-report__stat { text-align: center; padding: 16px; background: white; border-radius: var(--radius); box-shadow: var(--shadow); }
+.review-report__stat--mastered { background: #d4edda; }
+.review-report__stat--review { background: #fff3cd; }
+.review-report__stat-num { font-size: 28px; font-weight: 700; color: var(--primary); }
+.review-report__stat-label { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+.review-report__subtitle { color: var(--text); margin: 16px 0 8px; }
+.review-report__list { list-style: none; padding: 0; }
+.review-report__item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 4px; background: white; border-radius: var(--radius); box-shadow: var(--shadow); }
+.review-report__score { font-weight: 700; min-width: 40px; text-align: right; }
+.review-report__score--high { color: var(--success); }
+.review-report__score--mid { color: #f39c12; }
+.review-report__score--low { color: var(--danger); }
+.review-report__actions { text-align: center; margin-top: 24px; }
