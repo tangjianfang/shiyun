@@ -3,46 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#4a90e2">
+  <meta name="theme-color" content="#0a0a0f">
   <title>诗云 · 古诗词学习</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-  <header class="app-header">
-    <div class="app-header__user">
-      <span class="app-header__avatar" id="user-avatar">🐯</span>
-      <span class="app-header__name" id="user-name">小明</span>
-    </div>
-    <h1 class="app-header__title">诗云</h1>
-    <button class="app-header__settings" id="settings-btn" aria-label="设置">⚙️</button>
-  </header>
-
-  <main id="app-main" class="app-main">
-    <div class="loading">加载中…</div>
-  </main>
-
   <nav class="tab-bar" role="navigation">
+    <div class="tab-bar__brand" aria-label="诗云">诗</div>
     <a href="#/" class="tab-bar__item" data-tab="home">
-      <span class="tab-bar__icon">🏠</span>
-      <span class="tab-bar__label">首页</span>
+      <span class="tab-bar__icon">⌂</span>
+      <span class="tab-bar__label">Home</span>
     </a>
     <a href="#/learn" class="tab-bar__item" data-tab="learn">
-      <span class="tab-bar__icon">📚</span>
-      <span class="tab-bar__label">学习</span>
+      <span class="tab-bar__icon">◐</span>
+      <span class="tab-bar__label">Learn</span>
     </a>
     <a href="#/review" class="tab-bar__item" data-tab="review">
-      <span class="tab-bar__icon">🔄</span>
-      <span class="tab-bar__label">复习</span>
+      <span class="tab-bar__icon">↻</span>
+      <span class="tab-bar__label">Review</span>
     </a>
     <a href="#/quiz" class="tab-bar__item" data-tab="quiz">
-      <span class="tab-bar__icon">✏️</span>
-      <span class="tab-bar__label">考核</span>
+      <span class="tab-bar__icon">✦</span>
+      <span class="tab-bar__label">Quiz</span>
     </a>
     <a href="#/progress" class="tab-bar__item" data-tab="progress">
-      <span class="tab-bar__icon">📊</span>
-      <span class="tab-bar__label">进度</span>
+      <span class="tab-bar__icon">▤</span>
+      <span class="tab-bar__label">Stats</span>
     </a>
+    <div class="tab-bar__spacer"></div>
+    <div id="user-switcher-slot"></div>
   </nav>
+
+  <main id="app-main" class="app-main">
+    <div class="loading">加载中</div>
+  </main>
 
   <script type="module" src="./js/main.js"></script>
 </body>
