@@ -92,6 +92,11 @@ export function isPoemComplete(poem) {
   return !!(poem.image && poem.audio && poem.pinyin && poem.pinyin.length > 0);
 }
 
+/** 获取所有诗 */
+export function getAllPoems() {
+  return Array.from(poems.values());
+}
+
 /** 序列化全部诗为 JSON（用于嵌入到学习版） */
 export function serializePoems() {
   return JSON.stringify(Array.from(poems.values()));

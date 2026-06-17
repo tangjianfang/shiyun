@@ -219,3 +219,69 @@ button { font-family: inherit; cursor: pointer; }
 .poem-list__item-status--new { background: #e7f3ff; color: var(--primary); }
 .poem-list__item-status--learning { background: #fff3cd; color: #856404; }
 .poem-list__item-status--mastered { background: #d4edda; color: var(--success); }
+
+/* ===== 考核 - 通用 ===== */
+.quiz { background: white; border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.quiz__header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.quiz__title { flex: 1; font-size: 20px; color: var(--text); }
+.quiz__mode, .quiz__hint { color: var(--text-light); font-size: 13px; }
+.quiz__exit { background: var(--bg); border: 1px solid var(--border); padding: 4px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; }
+.quiz__prompt { font-size: 16px; text-align: center; margin: 16px 0; line-height: 1.6; color: var(--text); }
+.quiz__footer { margin-top: 20px; display: flex; gap: 12px; justify-content: center; }
+.quiz-result { text-align: center; padding: 40px 20px; }
+.quiz__score { font-size: 48px; color: var(--primary); margin-bottom: 12px; font-weight: 700; }
+.quiz__result-msg { font-size: 18px; color: var(--text); margin-bottom: 20px; }
+.quiz__review { background: var(--bg); padding: 16px; border-radius: var(--radius); margin: 16px 0; text-align: left; }
+.quiz__review h3 { margin-bottom: 8px; color: var(--text); }
+.quiz__review-list { list-style: none; padding: 0; }
+.quiz__review-list li { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.quiz__wrong { color: var(--danger); margin-left: 8px; }
+.quiz__correct { color: var(--success); margin-left: 8px; font-weight: 600; }
+.quiz__actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
+
+/* ===== 考核 - 填空 ===== */
+.fill-board { background: var(--bg); padding: 20px; border-radius: var(--radius); margin: 16px 0; }
+.fill-line { text-align: center; font-family: "STKaiti", "KaiTi", serif; font-size: 24px; margin: 12px 0; }
+.fill-cell { display: inline-block; min-width: 32px; padding: 2px 4px; color: var(--text); }
+.fill-blank { display: inline-block; min-width: 32px; padding: 2px 8px; margin: 0 2px; background: white; border: 2px dashed var(--primary); border-radius: 4px; color: var(--primary); cursor: pointer; font-weight: 700; }
+.fill-blank:hover { background: var(--bg); }
+.quiz__bank-label { font-size: 13px; color: var(--text-light); margin: 12px 0 4px; }
+.fill-bank { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; padding: 12px; background: var(--bg); border-radius: var(--radius); }
+.fill-bank__chip { min-width: 36px; min-height: 36px; padding: 4px 10px; border: 1px solid var(--border); background: white; border-radius: 6px; cursor: pointer; font-size: 18px; font-family: "STKaiti", "KaiTi", serif; }
+.fill-bank__chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ===== 考核 - 选择 ===== */
+.choice-options { display: flex; flex-direction: column; gap: 12px; }
+.choice-option { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: white; border: 2px solid var(--border); border-radius: var(--radius); cursor: pointer; font-size: 17px; text-align: left; transition: all 0.15s; }
+.choice-option:hover:not(:disabled) { border-color: var(--primary); background: #f0f7ff; }
+.choice-option__letter { min-width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: white; border-radius: 50%; font-weight: bold; }
+.choice-option.correct { border-color: var(--success); background: #d4edda; }
+.choice-option.correct .choice-option__letter { background: var(--success); }
+.choice-option.wrong { border-color: var(--danger); background: #f8d7da; }
+.choice-option.wrong .choice-option__letter { background: var(--danger); }
+.choice-option:disabled { cursor: not-allowed; opacity: 0.7; }
+.choice-option.correct:disabled, .choice-option.wrong:disabled { opacity: 1; }
+
+/* ===== 考核 - 排序 ===== */
+.order-list { list-style: none; padding: 0; margin: 16px 0; }
+.order-item { display: flex; align-items: center; gap: 12px; padding: 16px 20px; margin-bottom: 8px; background: white; border: 2px solid var(--border); border-radius: var(--radius); cursor: grab; user-select: none; font-size: 18px; }
+.order-item:hover { border-color: var(--primary); }
+.order-item.dragging { opacity: 0.4; cursor: grabbing; }
+.order-item.drag-over { border-top: 4px solid var(--primary); }
+.order-item__handle { color: var(--text-light); font-size: 20px; cursor: grab; }
+.order-item__text { flex: 1; font-family: "STKaiti", "KaiTi", serif; }
+.order-item__mobile-controls { display: none; gap: 4px; }
+.order-item__btn { min-width: 36px; min-height: 36px; border: 1px solid var(--border); background: var(--bg); border-radius: 6px; cursor: pointer; }
+.order-item__btn:hover { background: var(--primary); color: white; }
+
+@media (max-width: 640px) {
+  .order-item__mobile-controls { display: flex; }
+  .order-item__handle { display: none; }
+}
+
+/* ===== 考核 - 听诗选诗 ===== */
+.listen-player { display: flex; flex-direction: column; align-items: center; padding: 24px 16px; margin: 16px 0; background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%); border-radius: var(--radius); }
+.listen-player__btn { width: 80px; height: 80px; background: var(--primary); color: white; border: none; border-radius: 50%; font-size: 28px; cursor: pointer; box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3); transition: transform 0.15s; }
+.listen-player__btn:hover { transform: scale(1.05); }
+.listen-player__btn:active { transform: scale(0.95); }
+.listen-player__hint { margin-top: 12px; color: var(--text-light); font-size: 13px; }
