@@ -69,7 +69,7 @@ echo.
 echo ============================================================
 echo  Phase 2: Foundation parallel (storage + SRS)
 echo ============================================================
-call :run_parallel 11 "localStorage wrapper" 12 "SM-2 algorithm"
+call :run_parallel 11 storage 12 srs
 
 REM --- Phase 3: Generator (sequential) ---
 echo.
@@ -102,7 +102,7 @@ echo.
 echo ============================================================
 echo  Phase 6: 4 quiz modes (parallel)
 echo ============================================================
-call :run_parallel 15 "Fill-in-the-blank quiz" 16 "Multiple choice quiz" 17 "Ordering quiz" 18 "Listen-and-choose quiz"
+call :run_parallel 15 quizfill 16 quizchoice 17 quizorder 18 quizlisten
 
 REM --- Phase 7: Review + progress + print + multi-user ---
 echo.
