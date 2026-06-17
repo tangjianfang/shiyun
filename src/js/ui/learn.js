@@ -3,7 +3,7 @@
  */
 
 import { pinyin } from 'pinyin-pro';
-import { getPoem } from '../data.js';
+import { getPoem, poems as poemsMap } from '../data.js';
 import { getCurrentUserId, getPoemProgress, updatePoemProgress } from '../storage.js';
 import { createAudio, play, pause, stop, setSpeed, setOnEnd } from '../audio.js';
 import { navigate } from '../router.js';
@@ -11,7 +11,173 @@ import { navigate } from '../router.js';
 let currentAudio = null;
 
 export function renderLearnPlaceholder() {
-  setContent('<div class="placeholder">📚 学习模块（Task 14 完整实现）</div>');
+  renderPoemList();
+}
+
+// ===== 诗词列表页 =====
+
+export function renderPoemList() {
+  const main = document.getElementById('app-main');
+  if (!main) return;
+
+  const userId = getCurrentUserId();
+  const allPoems = getAllPoemsList();
+  const userProgress = {};
+  for (const poem of allPoems) {
+    const p = getPoemProgress(userId, poem.id);
+    if (p) userProgress[poem.id] = p;
+  }
+
+  const state = { grade: 0, dynasty: '', author: '', keyword: '' };
+
+  main.innerHTML = `
+    <section class="poem-list">
+      <header class="poem-list__header">
+        <h2 class="poem-list__title">📚 学新诗</h2>
+        <div class="poem-list__count" id="poem-list-count"></div>
+      </header>
+
+      <div class="poem-list__filters">
+        <input type="search" id="filter-keyword" class="poem-list__search-input" placeholder="🔍 搜索标题或作者" autocomplete="off">
+        <div class="poem-list__filter-row">
+          <select id="filter-grade" class="poem-list__select">
+            <option value="0">全部年级</option>
+            ${[1,2,3,4,5,6].map(g => `<option value="${g}">${g} 年级</option>`).join('')}
+          </select>
+          <select id="filter-dynasty" class="poem-list__select">
+            <option value="">全部朝代</option>
+            ${getAllDynastiesForFilter(allPoems).map(d => `<option value="${escape(d)}">${escape(d)}</option>`).join('')}
+          </select>
+          <select id="filter-author" class="poem-list__select">
+            <option value="">全部作者</option>
+            ${getAllAuthorsForFilter(allPoems).map(a => `<option value="${escape(a)}">${escape(a)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+
+      <div class="poem-list__items" id="poem-list-items"></div>
+    </section>
+  `;
+
+  const renderItems = () => {
+    const filtered = filterPoems(allPoems, state);
+    const itemsEl = document.getElementById('poem-list-items');
+    const countEl = document.getElementById('poem-list-count');
+    if (countEl) countEl.textContent = `共 ${filtered.length} 首`;
+
+    if (filtered.length === 0) {
+      itemsEl.innerHTML = `<div class="poem-list__empty">没有匹配的诗词</div>`;
+      return;
+    }
+
+    itemsEl.innerHTML = filtered.map(poem => {
+      const progress = userProgress[poem.id];
+      const badge = getStatusBadge(progress);
+      const thumb = poem.image
+        ? `<img src="${poem.image}" alt="${escape(poem.title)}" class="poem-list__thumb" loading="lazy">`
+        : `<div class="poem-list__thumb poem-list__thumb--placeholder">📜</div>`;
+      return `
+        <a href="#/poem/${poem.id}" class="poem-list__item" data-id="${poem.id}">
+          ${thumb}
+          <div class="poem-list__info">
+            <div class="poem-list__item-title">${escape(poem.title)}</div>
+            <div class="poem-list__item-meta">
+              <span>${escape(poem.dynasty)} · ${escape(poem.author)}</span>
+              <span>· ${escape(poem.type)}</span>
+            </div>
+          </div>
+          <span class="poem-list__badge poem-list__badge--${badge.type}">${escape(badge.label)}</span>
+        </a>
+      `;
+    }).join('');
+  };
+
+  renderItems();
+
+  let searchTimer = null;
+  document.getElementById('filter-keyword')?.addEventListener('input', (e) => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      state.keyword = e.target.value.trim();
+      renderItems();
+    }, 150);
+  });
+  document.getElementById('filter-grade')?.addEventListener('change', (e) => {
+    state.grade = Number(e.target.value);
+    renderItems();
+  });
+  document.getElementById('filter-dynasty')?.addEventListener('change', (e) => {
+    state.dynasty = e.target.value;
+    renderItems();
+  });
+  document.getElementById('filter-author')?.addEventListener('change', (e) => {
+    state.author = e.target.value;
+    renderItems();
+  });
+}
+
+// ===== 纯函数（可测试） =====
+
+export function getAllPoemsList() {
+  return Array.from(poemsMap.values()).sort((a, b) => {
+    if (a.grade !== b.grade) return a.grade - b.grade;
+    return (a.sequence || 0) - (b.sequence || 0);
+  });
+}
+
+export function getAllDynastiesForFilter(poems) {
+  return [...new Set(poems.map(p => p.dynasty))].sort();
+}
+
+export function getAllAuthorsForFilter(poems) {
+  return [...new Set(poems.map(p => p.author))].sort();
+}
+
+/**
+ * 过滤诗词
+ */
+export function filterPoems(poems, filters) {
+  const f = filters || {};
+  return poems.filter(p => {
+    if (f.grade && p.grade !== f.grade) return false;
+    if (f.dynasty && p.dynasty !== f.dynasty) return false;
+    if (f.author && p.author !== f.author) return false;
+    if (f.keyword) {
+      const kw = f.keyword.toLowerCase();
+      const inTitle = (p.title || '').toLowerCase().includes(kw);
+      const inAuthor = (p.author || '').toLowerCase().includes(kw);
+      if (!inTitle && !inAuthor) return false;
+    }
+    return true;
+  });
+}
+
+/**
+ * 状态徽章
+ */
+export function getStatusBadge(progress) {
+  if (!progress || !progress.status || progress.status === 'new') {
+    return { type: 'new', label: '新诗' };
+  }
+  if (progress.status === 'mastered') {
+    return { type: 'mastered', label: '⭐ 已掌握' };
+  }
+  if (progress.status === 'reviewing') {
+    return { type: 'reviewing', label: '已学 ' + (progress.learnCount || 0) + ' 次' };
+  }
+  return { type: 'learning', label: '学习中 ' + (progress.learnCount || 0) + '/' + 3 };
+}
+
+/**
+ * 关键词搜索（用于搜索框）
+ */
+export function searchPoemsCase(poems, keyword) {
+  if (!keyword) return poems;
+  const kw = keyword.toLowerCase();
+  return poems.filter(p =>
+    (p.title || '').toLowerCase().includes(kw) ||
+    (p.author || '').toLowerCase().includes(kw)
+  );
 }
 
 export function renderPoemDetail(params) {
