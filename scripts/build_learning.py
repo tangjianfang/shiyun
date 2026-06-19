@@ -475,11 +475,13 @@ def validate_sources():
     return len(errors)
 
 
-def assemble_html(template, css, js, poems_json):
+def assemble_html(template, css, js, poems_json, pinyin_js=""):
     html = template
     html = html.replace("<!-- @@STYLES -->", f"<style>\n{css}\n</style>")
     html = html.replace("<!-- @@DATA -->", f"<script>window.__SHIYUN_POEMS_META__ = {poems_json};</script>")
-    html = html.replace("<!-- @@SCRIPTS -->", f'<script src="./lib/pinyin-pro.min.js"></script>\n<script>\n{js}\n</script>')
+    # pinyin-pro 直接内联，实现真正单文件离线（进而可部署到 GitHub Pages 等静态托管）
+    pinyin_script = f"<script>\n{pinyin_js}\n</script>" if pinyin_js else ""
+    html = html.replace("<!-- @@SCRIPTS -->", f'{pinyin_script}\n<script>\n{js}\n</script>')
     build_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     html = html.replace("</head>", f'<meta name="build-time" content="{build_time}">\n</head>')
     return html
@@ -525,16 +527,33 @@ def build():
     log(f"      内嵌音频 {audio_count}/{len(poems)} 首，配图 {image_count}/{len(poems)} 首，AI 文本 {content_count}/{len(poems)} 首")
     poems_json = json.dumps(poems, ensure_ascii=False)
     log("[5/5] pinyin-pro 库")
-    if not setup_pinyin_lib():
+    # 读取 pinyin-pro 源码以内联方式注入，不再需要外部 ./lib/ 文件
+    pinyin_js = ""
+    pinyin_candidates = [
+        SRC_DIR / "lib" / "pinyin-pro.min.js",
+        SRC_DIR / "lib" / "pinyin-pro.js",
+        ROOT_DIR / "node_modules" / "pinyin-pro" / "dist" / "index.js",
+    ]
+    for src in pinyin_candidates:
+        if src.exists():
+            pinyin_js = read_text(src)
+            log(f"  + 内联: {src.relative_to(ROOT_DIR)} ({len(pinyin_js)//1024} KB)")
+            break
+    if not pinyin_js:
+        log("未找到 pinyin-pro 库", "error")
         return False
 
     log("组装 HTML ...")
-    final = assemble_html(template, css, js, poems_json)
+    final = assemble_html(template, css, js, poems_json, pinyin_js)
     ensure_dir(DIST_DIR)
     out = DIST_DIR / "诗云-学习版.html"
     out.write_text(final, encoding="utf-8")
+    # 同时输出 index.html，方便直接复制到 gh-pages 分支
+    index_out = DIST_DIR / "index.html"
+    index_out.write_text(final, encoding="utf-8")
     size_mb = out.stat().st_size / (1024 * 1024)
     log(f"[OK] 完成: {out.relative_to(ROOT_DIR)} ({size_mb:.2f} MB)", "ok")
+    log(f"[OK] 部署用: {index_out.relative_to(ROOT_DIR)} ({size_mb:.2f} MB)", "ok")
     return True
 
 
