@@ -1,0 +1,213 @@
+/* =====================================================================
+   诗云 · 布局系统 — 侧边栏（桌面）/ 底部 Tab（移动）/ 主容器
+   ===================================================================== */
+
+/* ── 全局页面结构 ── */
+.app-wrap {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ══════════════════════════════
+   侧边导航（桌面 ≥768px）
+══════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--paper-1);
+  border-right: 1px solid var(--paper-edge);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--s-5) 0 var(--s-4);
+  gap: var(--s-2);
+  z-index: 100;
+}
+
+/* 印章品牌 Logo */
+.sidebar__brand {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cinnabar-500);
+  color: #fff;
+  border-radius: var(--r-md);
+  font-family: var(--font-zh-display);
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  box-shadow: 0 2px 8px rgba(192,57,43,.30);
+  margin-bottom: var(--s-3);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s-1);
+  flex: 1;
+  width: 100%;
+}
+
+.sidebar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 68px;
+  padding: var(--s-2) var(--s-2) var(--s-2);
+  border-radius: var(--r-md);
+  color: var(--ink-500);
+  font-size: 0.7rem;
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+  border: none;
+  background: none;
+}
+.sidebar__item:hover { background: var(--paper-2); color: var(--ink-700); }
+.sidebar__item.active {
+  background: var(--cinnabar-100);
+  color: var(--cinnabar-600);
+}
+.sidebar__item-icon { display: grid; place-items: center; line-height: 1; }
+.sidebar__item-icon svg { width: 24px; height: 24px; }
+.sidebar__item-label { line-height: 1; }
+
+.sidebar__spacer { flex: 1; }
+.sidebar__user { margin-top: auto; }
+
+/* ══════════════════════════════
+   主内容区
+══════════════════════════════ */
+.app-main {
+  flex: 1;
+  min-height: 100vh;
+  padding: var(--s-6) var(--s-5);
+  /* 桌面：为侧边栏让出空间 */
+  margin-left: var(--sidebar-w);
+}
+
+.content-wrap {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+
+/* ══════════════════════════════
+   底部 Tab Bar（移动 <768px）
+══════════════════════════════ */
+.tab-bar {
+  display: none; /* 默认隐藏；移动端覆盖 */
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  /* 包含 iPhone 底部安全区 */
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* 苹果风格毛玻璃背景 */
+  background: rgba(243, 236, 224, 0.88);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(224, 213, 194, 0.6);
+  box-shadow: 0 -1px 0 rgba(80,60,30,.05), 0 -6px 20px rgba(80,60,30,.07);
+  z-index: 100;
+  align-items: stretch;
+  justify-content: space-around;
+}
+.tab-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  padding: var(--s-2) var(--s-1) var(--s-1);
+  color: var(--ink-400, var(--ink-500));
+  font-size: 0.65rem;
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  transition: color var(--t-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+/* M3 Expressive 风格——选中项图标区域用胶囊指示器高亮 */
+.tab-bar__icon {
+  display: grid;
+  place-items: center;
+  padding: 4px 18px;
+  border-radius: var(--r-pill);
+  transition: background var(--t-base) var(--ease-spring);
+}
+.tab-bar__icon svg { width: 22px; height: 22px; }
+.tab-bar__item.active { color: var(--cinnabar-600); }
+.tab-bar__item.active .tab-bar__icon {
+  background: var(--cinnabar-50);
+}
+.tab-bar__label {
+  line-height: 1;
+  transition: font-weight var(--t-fast);
+}
+.tab-bar__item.active .tab-bar__label { font-weight: var(--fw-bold); }
+
+/* ══════════════════════════════
+   页面顶部页头 .page-head
+══════════════════════════════ */
+.page-head {
+  margin-bottom: var(--s-4);
+}
+.page-head__greeting {
+  font-size: var(--fs-sm);
+  color: var(--ink-500);
+  margin-bottom: var(--s-1);
+}
+.page-head__title {
+  font-family: var(--font-zh-display);
+  font-size: var(--fs-h1);
+  font-weight: var(--fw-bold);
+  color: var(--ink-900);
+  line-height: 1.2;
+}
+.page-head__sub {
+  font-size: var(--fs-meta);
+  color: var(--ink-500);
+  margin-top: var(--s-1);
+}
+
+/* ══════════════════════════════
+   响应式断点
+══════════════════════════════ */
+
+/* 平板：768–1023px */
+@media (max-width: 1023px) {
+  :root { --sidebar-w: 68px; }
+  .sidebar__item-label { display: none; }
+  .app-main { padding: var(--s-4) var(--s-4); }
+}
+
+/* 移动：<768px */
+@media (max-width: 767px) {
+  :root {
+    --fs-h1:   1.4rem;
+    --fs-h2:   1.2rem;
+    --fs-body: 1rem;
+    --fs-poem: 1.7rem;
+    --s-5: 20px;
+    --s-6: 24px;
+    --s-7: 36px;
+  }
+  .sidebar { display: none; }
+  .tab-bar { display: flex; }
+  .app-main {
+    margin-left: 0;
+    padding: var(--s-3) var(--s-3);
+    /* 为毛玻璃 tab bar + iPhone 安全区计算底部留白 */
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom, 0px) + var(--s-3));
+  }
+  .content-wrap { max-width: 100%; }
+  /* 卡片在移动端紧凑 */
+  .card { padding: var(--s-3) var(--s-4); border-radius: var(--r-md); }
+  .btn--lg { padding: var(--s-3) var(--s-5); font-size: 1rem; }
+  .page-head { margin-bottom: var(--s-3); }
+}

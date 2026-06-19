@@ -227,5 +227,54 @@ export function resetAll() {
   return s;
 }
 
+// ===== 高级用户操作（user-switcher / progress 使用）=====
+
+/** 获取当前用户完整状态对象 */
+export function getCurrentUserState() {
+  return getUser(getCurrentUserId());
+}
+
+/** 切换当前用户（setCurrentUser 的别名） */
+export function switchUser(userId) {
+  setCurrentUser(userId);
+}
+
+/**
+ * 新建用户并返回其 ID
+ * @param {{ name: string, avatar: string, grade: number }} data
+ */
+export function addUser(data) {
+  const id = 'user_' + Date.now();
+  setUser(id, { name: data.name || id, avatar: data.avatar || '🐯', grade: data.grade || 1 });
+  return id;
+}
+
+/** 更新用户信息（setUser 的别名） */
+export function updateUser(userId, data) {
+  setUser(userId, data);
+}
+
+/** 删除用户（不能删除当前唯一用户） */
+export function deleteUser(userId) {
+  const s = ensureState();
+  const users = s.users;
+  if (!users[userId]) throw new Error('用户不存在: ' + userId);
+  if (Object.keys(users).length <= 1) throw new Error('不能删除唯一用户');
+  delete users[userId];
+  if (s.currentUser === userId) {
+    s.currentUser = Object.keys(users)[0];
+  }
+  writeState(s);
+}
+
+/** 重置某用户的诗词学习进度 */
+export function resetUserProgress(userId) {
+  const s = ensureState();
+  if (!s.users[userId]) throw new Error('用户不存在: ' + userId);
+  s.users[userId].poemProgress = {};
+  s.users[userId].quizHistory = [];
+  writeState(s);
+}
+
 // 初始化
 ensureState();

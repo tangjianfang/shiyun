@@ -7,7 +7,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:build": "pytest tests/test_build_script.py -v",
-    "build": "python scripts/build_learning.py"
+    "build": "python scripts/build_learning.py",
+    "gen:audio:first": "node scripts/generate-audio.mjs --first",
+    "gen:audio": "node scripts/generate-audio.mjs --all"
   },
   "devDependencies": {
     "vitest": "^1.6.0",

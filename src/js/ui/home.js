@@ -1,11 +1,12 @@
 /**
- * 首页 UI — 水墨赛博版
+ * 首页 UI — 明亮国风版
  */
 
 import { getUser, getCurrentUserId, getPoemProgress } from '../storage.js';
 import { getTodayReviewList } from '../srs.js';
 import { poems } from '../data.js';
 import { renderUserSwitcher } from './user-switcher.js';
+import { statCard, emptyState, esc, icon } from './components.js';
 
 export function renderHome() {
   const main = document.getElementById('app-main');
@@ -13,9 +14,7 @@ export function renderHome() {
 
   // 渲染用户切换器到侧边栏底部
   const switcherSlot = document.getElementById('user-switcher-slot');
-  if (switcherSlot) {
-    renderUserSwitcher(switcherSlot, () => renderHome());
-  }
+  if (switcherSlot) renderUserSwitcher(switcherSlot, () => renderHome());
 
   const userId = getCurrentUserId();
   const user = getUser(userId);
@@ -29,105 +28,78 @@ export function renderHome() {
   const today = new Date();
   const reviewList = getTodayReviewList(userProgress, today);
   const reviewCount = reviewList.length;
-
   const totalCount = poems.size;
   const learnedCount = Object.values(userProgress).filter(p => p.status !== 'new').length;
   const masteredCount = Object.values(userProgress).filter(p => p.status === 'mastered').length;
+  const userName = esc(user?.name || '小朋友');
 
   main.innerHTML = `
-    <header class="page-head fade-in">
-      <div class="page-head__title">
-        <span class="eyebrow">${formatDate(today)} · ${getPeriod()}</span>
-        <h1>${user?.name || '小朋友'}，${getGreeting()}</h1>
-      </div>
-      <div class="page-head__meta">
-        <span class="page-head__meta-dot"></span>
-        <span>SYSTEM ONLINE · ${totalCount} poems</span>
-      </div>
-    </header>
+    <div class="content-wrap fade-in">
+      <header class="page-head">
+        <p class="page-head__greeting">${formatDate(today)} · ${getGreeting()}</p>
+        <h1 class="page-head__title">${userName}，你好！</h1>
+      </header>
 
-    <section class="home">
-      <article class="card card--glow fade-in" style="margin-bottom: var(--s-5);">
-        <div style="display:flex;align-items:center;gap:var(--s-5);flex-wrap:wrap;">
-          <div style="flex:1;min-width:240px;">
-            <div class="eyebrow" style="margin-bottom:var(--s-3);">今日待复习</div>
-            <div style="display:flex;align-items:baseline;gap:var(--s-3);">
-              <span style="font-family:var(--font-mono);font-size:5rem;font-weight:600;color:var(--cinnabar);line-height:1;letter-spacing:-0.04em;font-variant-numeric:tabular-nums;">${String(reviewCount).padStart(2, '0')}</span>
-              <span style="font-family:var(--font-zh-display);font-size:1.5rem;color:var(--text-md);">首</span>
-            </div>
-            <p style="margin-top:var(--s-3);color:var(--text-lo);font-size:13px;">${reviewCount > 0 ? '科学的间隔复习让记忆更深' : '今日复习已完成 ✓'}</p>
+      <!-- 今日待复习横幅 -->
+      <article class="card card--accent review-banner">
+        <div class="review-banner__info">
+          <div class="review-banner__label">今日待复习</div>
+          <div class="review-banner__count-wrap">
+            <span class="review-banner__num">${reviewCount}</span>
+            <span class="review-banner__unit">首</span>
           </div>
-          <a href="#/review" class="btn ${reviewCount > 0 ? 'btn--primary' : 'btn--ghost'} btn--lg">
-            ${reviewCount > 0 ? '开始复习 →' : '查看进度'}
-          </a>
+          <p class="review-banner__hint">${reviewCount > 0 ? '科学间隔复习，记忆更深久' : '今日复习全部完成啦 🎉'}</p>
         </div>
+        <a href="#/review" class="btn ${reviewCount > 0 ? 'btn--primary btn--lg' : 'btn--secondary'}">
+          ${reviewCount > 0 ? '开始复习 →' : '查看进度'}
+        </a>
       </article>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s-4);margin-bottom:var(--s-5);">
-        <div class="stat-card fade-in">
-          <div class="stat-card__label">已学 / Learned</div>
-          <div class="stat-card__value">${String(learnedCount).padStart(3, '0')}<span class="stat-card__unit">/ ${totalCount}</span></div>
-          <div class="stat-card__bar" style="width:${(learnedCount / totalCount) * 100}%"></div>
-        </div>
-        <div class="stat-card fade-in">
-          <div class="stat-card__label">已掌握 / Mastered</div>
-          <div class="stat-card__value jade">${String(masteredCount).padStart(3, '0')}</div>
-          <div class="stat-card__bar" style="width:${(masteredCount / totalCount) * 100}%;background:linear-gradient(90deg,var(--jade),transparent)"></div>
-        </div>
-        <div class="stat-card fade-in">
-          <div class="stat-card__label">待复习 / Queue</div>
-          <div class="stat-card__value gold">${String(reviewCount).padStart(3, '0')}</div>
-          <div class="stat-card__bar" style="width:${Math.min(100, (reviewCount / 20) * 100)}%;background:linear-gradient(90deg,var(--gold),transparent)"></div>
-        </div>
+      <!-- 学习概览 -->
+      <div class="home-grid">
+        ${statCard({ label: '已学', value: learnedCount, unit: `/ ${totalCount}`, pct: (learnedCount / totalCount) * 100 })}
+        ${statCard({ label: '已掌握', value: masteredCount, unit: `/ ${totalCount}`, mod: 'stat-card__value--jade', pct: (masteredCount / totalCount) * 100 })}
+        ${statCard({ label: '待复习', value: reviewCount, mod: 'stat-card__value--amber', pct: Math.min(100, (reviewCount / 20) * 100) })}
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--s-4);">
-        <a href="#/learn" class="card fade-in" style="text-decoration:none;display:block;cursor:pointer;transition:all var(--t-base) var(--ease);">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-lo);letter-spacing:0.15em;text-transform:uppercase;">01 / Learn</div>
-          <h3 style="margin:var(--s-2) 0;">学新诗 ↗</h3>
-          <p style="color:var(--text-lo);font-size:13px;margin:0;">浏览 112 首诗词，朗读 · 收藏</p>
+      <!-- 快捷入口 -->
+      <div class="home-quick">
+        <a href="#/learn" class="card card--interactive quick-card">
+          <div class="quick-card__icon">${icon('book', 26)}</div>
+          <span class="quick-card__label">学新诗</span>
         </a>
-        <a href="#/review" class="card fade-in" style="text-decoration:none;display:block;cursor:pointer;">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-lo);letter-spacing:0.15em;text-transform:uppercase;">02 / Review</div>
-          <h3 style="margin:var(--s-2) 0;">今日复习 ↻</h3>
-          <p style="color:var(--text-lo);font-size:13px;margin:0;">SM-2 算法智能安排</p>
+        <a href="#/review" class="card card--interactive quick-card">
+          <div class="quick-card__icon">${icon('refresh', 26)}</div>
+          <span class="quick-card__label">今日复习</span>
         </a>
-        <a href="#/quiz" class="card fade-in" style="text-decoration:none;display:block;cursor:pointer;">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-lo);letter-spacing:0.15em;text-transform:uppercase;">03 / Quiz</div>
-          <h3 style="margin:var(--s-2) 0;">考核 ✦</h3>
-          <p style="color:var(--text-lo);font-size:13px;margin:0;">填空 · 选择 · 排序 · 听诗</p>
+        <a href="#/quiz" class="card card--interactive quick-card">
+          <div class="quick-card__icon">${icon('edit', 26)}</div>
+          <span class="quick-card__label">闯关考核</span>
         </a>
-        <a href="#/progress" class="card fade-in" style="text-decoration:none;display:block;cursor:pointer;">
-          <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-lo);letter-spacing:0.15em;text-transform:uppercase;">04 / Stats</div>
-          <h3 style="margin:var(--s-2) 0;">进度 ▤</h3>
-          <p style="color:var(--text-lo);font-size:13px;margin:0;">学习曲线 · 成就徽章</p>
+        <a href="#/progress" class="card card--interactive quick-card">
+          <div class="quick-card__icon">${icon('chart', 26)}</div>
+          <span class="quick-card__label">我的进度</span>
         </a>
       </div>
 
-      <aside class="card fade-in" style="margin-top:var(--s-6);background:transparent;border-style:dashed;border-color:var(--ink-line-hi);text-align:center;">
-        <p style="font-family:var(--font-zh-display);font-style:italic;color:var(--text-md);font-size:1.05rem;margin:0;">"${pickQuote()}"</p>
+      <!-- 每日格言 -->
+      <aside class="card" style="margin-top:var(--s-6);text-align:center;border-style:dashed;">
+        <p style="font-family:var(--font-zh-display);font-style:italic;color:var(--ink-500);font-size:1.05rem;">"${esc(pickQuote())}"</p>
       </aside>
-    </section>
+    </div>
   `;
 }
 
 function getGreeting() {
   const h = new Date().getHours();
-  if (h < 6) return '夜深了';
-  if (h < 11) return '早安';
+  if (h < 6)  return '夜深了';
+  if (h < 11) return '早上好';
   if (h < 14) return '午安';
   if (h < 18) return '下午好';
   return '晚上好';
 }
-function getPeriod() {
-  const h = new Date().getHours();
-  if (h < 6) return 'NIGHT';
-  if (h < 12) return 'MORNING';
-  if (h < 18) return 'AFTERNOON';
-  return 'EVENING';
-}
 function formatDate(d) {
-  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+  return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`;
 }
 const QUOTES = [
   '读书百遍，其义自见。',
@@ -135,6 +107,8 @@ const QUOTES = [
   '不积跬步，无以至千里。',
   '问渠那得清如许，为有源头活水来。',
   '少壮不努力，老大徒伤悲。',
+  '书读百遍，其义自见。',
+  '旧书不厌百回读，熟读深思子自知。',
 ];
 function pickQuote() {
   return QUOTES[Math.floor(Math.random() * QUOTES.length)];

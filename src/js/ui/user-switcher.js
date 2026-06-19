@@ -71,32 +71,26 @@ export function renderUserSwitcher(container, onChange) {
 
   container.innerHTML = `
     <div class="user-switcher" id="user-switcher">
-      <button class="us-trigger" id="us-trigger" type="button">
-        <span class="us-avatar">${current?.avatar || '🌱'}</span>
-        <span class="us-name">${escapeHtml(current?.name || '未选择')}</span>
-        <span class="us-grade">${current?.grade ? current.grade + ' 年级' : ''}</span>
-        <span class="us-caret">▾</span>
+      <button class="user-switcher-btn" id="us-trigger" type="button"
+              aria-label="切换用户" title="${escapeHtml(current?.name || '切换用户')}">
+        ${current?.avatar || '🌱'}
       </button>
-      <div class="us-dropdown" id="us-dropdown" hidden>
-        <div class="us-list">
+      <div class="user-panel" id="us-dropdown" hidden>
+        <div style="border-bottom:1px solid var(--paper-edge);padding-bottom:var(--s-2);margin-bottom:var(--s-2);">
           ${users.length === 0
-            ? '<p class="us-empty">还没有用户，先创建一个吧</p>'
+            ? `<p style="padding:var(--s-3) var(--s-4);font-size:var(--fs-sm);color:var(--ink-500);">还没有用户</p>`
             : users.map(u => `
-              <div class="us-item ${u.id === currentId ? 'active' : ''}" data-uid="${u.id}">
-                <span class="us-avatar">${u.avatar || '🌱'}</span>
-                <div class="us-info">
-                  <div class="us-name">${escapeHtml(u.name)}</div>
-                  <div class="us-meta">${u.grade} 年级${u.lastActiveAt ? ' · 最近 ' + u.lastActiveAt.slice(0, 10) : ''}</div>
-                </div>
-                ${u.id === currentId ? '<span class="us-check">✓</span>' : ''}
-              </div>
-            `).join('')}
+              <button class="user-panel__item${u.id === currentId ? ' user-panel__item--active' : ''}" data-uid="${u.id}">
+                <span>${u.avatar || '🌱'}</span>
+                <span>${escapeHtml(u.name)}</span>
+                ${u.id === currentId ? '<span style="margin-left:auto;color:var(--cinnabar-500)">✓</span>' : ''}
+              </button>`).join('')}
         </div>
-        <div class="us-actions">
-          <button class="btn btn-sm" id="us-btn-new">+ 新建用户</button>
-          ${currentId ? '<button class="btn btn-sm" id="us-btn-edit">编辑</button>' : ''}
-          ${currentId ? '<button class="btn btn-sm btn-danger" id="us-btn-delete">删除</button>' : ''}
-          ${currentId ? '<button class="btn btn-sm btn-warning" id="us-btn-reset">重置进度</button>' : ''}
+        <div style="padding:var(--s-2) var(--s-3);display:flex;flex-direction:column;gap:var(--s-1);">
+          <button class="btn btn--ghost btn--sm" id="us-btn-new" style="justify-content:flex-start;">+ 新建用户</button>
+          ${currentId ? `<button class="btn btn--ghost btn--sm" id="us-btn-edit" style="justify-content:flex-start;">✏️ 编辑资料</button>` : ''}
+          ${currentId ? `<button class="btn btn--ghost btn--sm" id="us-btn-reset" style="justify-content:flex-start;color:var(--amber-600);">↺ 重置进度</button>` : ''}
+          ${currentId ? `<button class="btn btn--ghost btn--sm" id="us-btn-delete" style="justify-content:flex-start;color:var(--cinnabar-600);">🗑 删除账号</button>` : ''}
         </div>
       </div>
     </div>

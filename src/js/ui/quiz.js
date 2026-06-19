@@ -12,6 +12,7 @@ import { buildOrderQuestion, scoreOrder, listWrongOrderLines, isFullyCorrect } f
 import { buildListenQuestion, scoreListen } from '../quiz/listen.js';
 import { getAllPoems } from '../data.js';
 import { play as audioPlay } from '../audio.js';
+import { esc } from './components.js';
 
 let currentAudio = null;
 
@@ -61,22 +62,25 @@ function renderFillQuiz(container, poem, opts) {
     `).join('');
 
     container.innerHTML = `
-      <div class="quiz quiz-fill">
-        <header class="quiz__header">
-          <h2 class="quiz__title">${poem.title}</h2>
-          <span class="quiz__mode">填空模式</span>
-          <button class="quiz__exit" data-action="exit">← 返回</button>
-        </header>
-        <div class="quiz__body">
-          <p class="quiz__prompt">把字填到诗里的空位：</p>
-          <div class="fill-board">${linesHtml}</div>
-          <p class="quiz__bank-label">字库（点击填入）：</p>
-          <div class="fill-bank">${bankHtml}</div>
+      <div class="content-wrap quiz-shell fade-in">
+        <div class="quiz-shell__progress">
+          <div class="quiz-shell__progress-fill" style="width:20%"></div>
         </div>
-        <footer class="quiz__footer">
-          <button class="btn" data-action="clear">清空</button>
-          <button class="btn btn--primary" data-action="submit">提交</button>
-        </footer>
+        <header style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-4);">
+          <button class="btn btn--ghost btn--sm" data-action="exit">← 退出</button>
+          <h2 style="font-family:var(--font-zh-display);font-size:var(--fs-h2);flex:1;">${esc(poem.title)}</h2>
+          <span class="badge badge--learning">填空</span>
+        </header>
+        <div class="card" style="margin-bottom:var(--s-4);">
+          <p class="text-meta" style="margin-bottom:var(--s-3);">把字填到诗句的空位：</p>
+          <div class="fill-board">${linesHtml}</div>
+        </div>
+        <p class="text-sm" style="margin-bottom:var(--s-2);">字库（点击填入）：</p>
+        <div class="quiz-shell__answer-area">${bankHtml}</div>
+        <div style="display:flex;gap:var(--s-3);margin-top:var(--s-5);">
+          <button class="btn btn--secondary" data-action="clear">清空</button>
+          <button class="btn btn--primary" data-action="submit">提交答案</button>
+        </div>
       </div>
     `;
     bindEvents();
@@ -134,19 +138,21 @@ function renderChoiceQuiz(container, poem, opts) {
   const optionLetters = ['A', 'B', 'C', 'D'];
 
   container.innerHTML = `
-    <div class="quiz quiz-choice">
-      <header class="quiz__header">
-        <h2 class="quiz__title">${poem.title}</h2>
-        <span class="quiz__mode">${question.mode === 'next-line' ? '给句选下句' : '给作者选作品'}</span>
-        <button class="quiz__exit" data-action="exit">← 返回</button>
+    <div class="content-wrap quiz-shell fade-in">
+      <div class="quiz-shell__progress">
+        <div class="quiz-shell__progress-fill" style="width:40%"></div>
+      </div>
+      <header style="display:flex;align-items:center;gap:var(--s-3);margin-bottom:var(--s-4);">
+        <button class="btn btn--ghost btn--sm" data-action="exit">← 退出</button>
+        <h2 style="font-family:var(--font-zh-display);font-size:var(--fs-h2);flex:1;">${esc(poem.title)}</h2>
+        <span class="badge badge--learning">选择</span>
       </header>
-      <div class="quiz__body">
-        <p class="quiz__prompt">${question.prompt}</p>
-        <div class="choice-options">
+      <div class="card" style="margin-bottom:var(--s-4);">
+        <p class="quiz-shell__stem" style="margin-bottom:var(--s-4);">${esc(question.prompt)}</p>
+        <div class="quiz-shell__answer-area">
           ${question.options.map((opt, i) => `
-            <button class="choice-option" data-idx="${i}">
-              <span class="choice-option__letter">${optionLetters[i]}</span>
-              <span class="choice-option__text">${opt}</span>
+            <button class="chip chip--answer" data-idx="${i}" style="min-width:120px;">
+              <strong>${optionLetters[i]}.</strong>&nbsp;${esc(opt)}
             </button>
           `).join('')}
         </div>
@@ -155,15 +161,15 @@ function renderChoiceQuiz(container, poem, opts) {
   `;
 
   let answered = false;
-  container.querySelectorAll('.choice-option').forEach(btn => {
+  container.querySelectorAll('.chip--answer').forEach(btn => {
     btn.addEventListener('click', () => {
       if (answered) return;
       answered = true;
       const idx = parseInt(btn.dataset.idx, 10);
       const isCorrect = idx === question.correctIndex;
-      container.querySelectorAll('.choice-option').forEach((b, i) => {
-        if (i === question.correctIndex) b.classList.add('correct');
-        else if (i === idx) b.classList.add('wrong');
+      container.querySelectorAll('.chip--answer').forEach((b, i) => {
+        if (i === question.correctIndex) b.classList.add('chip--correct');
+        else if (i === idx) b.classList.add('chip--wrong');
         b.disabled = true;
       });
       setTimeout(() => {
@@ -175,7 +181,7 @@ function renderChoiceQuiz(container, poem, opts) {
       }, 800);
     });
   });
-  container.querySelector('[data-action="exit"]').addEventListener('click', () => {
+  container.querySelector('[data-action="exit"]')?.addEventListener('click', () => {
     if (confirm('确定退出考核？')) opts.onExit?.();
   });
 }

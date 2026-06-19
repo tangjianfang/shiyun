@@ -1,20 +1,36 @@
 /**
- * 学习模块 UI（详情页 + 列表占位）
+ * 学习模块 UI — 明亮国风版
+ * 列表（Chip 筛选 + 骨架 + 空状态）+ 详情（音频状态机 + TTS 兜底）
  */
 
 import { pinyin } from 'pinyin-pro';
 import { getPoem, poems as poemsMap } from '../data.js';
 import { getCurrentUserId, getPoemProgress, updatePoemProgress } from '../storage.js';
-import { createAudio, play, pause, stop, setSpeed, setOnEnd } from '../audio.js';
+import {
+  createAudio, play, pause, stop, setSpeed, setOnEnd,
+  createSpeech, speak, stopSpeak, resumeSpeak, speechSupported
+} from '../audio.js';
 import { navigate } from '../router.js';
+import { badge, poemCard, emptyState, skeletonCard, audioBar, showToast, esc, icon } from './components.js';
 
-let currentAudio = null;
+let currentAudio = null;   // HTMLAudioElement 实例（有 poem.audio 时使用）
+let currentSpeech = null;  // SpeechSynthesisUtterance（TTS 兜底时使用）
+let audioState = 'idle';   // 'idle' | 'playing' | 'paused'
+let audioSpeed = 1;        // 当前速度
+let pendingKeyword = '';   // 待搜索关键词（详情页点关键词跳转列表时传递）
+
+/** renderLearnPage：main.js 路由入口 */
+export function renderLearnPage() {
+  return renderPoemList();
+}
 
 export function renderLearnPlaceholder() {
   renderPoemList();
 }
 
-// ===== 诗词列表页 =====
+// ═══════════════════════════════════════════════════════
+// 诗词列表页
+// ═══════════════════════════════════════════════════════
 
 export function renderPoemList() {
   const main = document.getElementById('app-main');
@@ -30,93 +46,384 @@ export function renderPoemList() {
 
   const state = { grade: 0, dynasty: '', author: '', keyword: '' };
 
+  // 从详情页关键词跳转过来：预填搜索
+  if (pendingKeyword) {
+    state.keyword = pendingKeyword;
+    pendingKeyword = '';
+  }
+
+  const dynasties = getAllDynastiesForFilter(allPoems);
+  const authors   = getAllAuthorsForFilter(allPoems);
+
+  // 骨架屏先显示
   main.innerHTML = `
-    <section class="poem-list">
-      <header class="poem-list__header">
-        <h2 class="poem-list__title">📚 学新诗</h2>
-        <div class="poem-list__count" id="poem-list-count"></div>
+    <div class="content-wrap fade-in">
+      <header class="page-head">
+        <h1 class="page-head__title">📖 学新诗</h1>
       </header>
 
-      <div class="poem-list__filters">
-        <input type="search" id="filter-keyword" class="poem-list__search-input" placeholder="🔍 搜索标题或作者" autocomplete="off">
-        <div class="poem-list__filter-row">
-          <select id="filter-grade" class="poem-list__select">
-            <option value="0">全部年级</option>
-            ${[1,2,3,4,5,6].map(g => `<option value="${g}">${g} 年级</option>`).join('')}
-          </select>
-          <select id="filter-dynasty" class="poem-list__select">
-            <option value="">全部朝代</option>
-            ${getAllDynastiesForFilter(allPoems).map(d => `<option value="${escape(d)}">${escape(d)}</option>`).join('')}
-          </select>
-          <select id="filter-author" class="poem-list__select">
-            <option value="">全部作者</option>
-            ${getAllAuthorsForFilter(allPoems).map(a => `<option value="${escape(a)}">${escape(a)}</option>`).join('')}
-          </select>
+      <div class="poem-list">
+        <div class="poem-list__search">
+          <span class="poem-list__search-icon">🔍</span>
+          <input type="search" id="filter-keyword" class="input"
+                 placeholder="搜索标题或作者" autocomplete="off">
+        </div>
+
+        <!-- 年级 Chip -->
+        <div class="poem-list__chips" id="grade-chips">
+          <button class="chip chip--active" data-grade="0">全部年级</button>
+          ${[1,2,3,4,5,6].map(g =>
+            `<button class="chip" data-grade="${g}">${g} 年级</button>`
+          ).join('')}
+        </div>
+
+        <!-- 朝代 Chip -->
+        <div class="poem-list__chips" id="dynasty-chips">
+          <button class="chip chip--active" data-dynasty="">全部朝代</button>
+          ${dynasties.map(d =>
+            `<button class="chip" data-dynasty="${esc(d)}">${esc(d)}</button>`
+          ).join('')}
+        </div>
+
+        <div class="poem-list__header">
+          <div class="poem-list__count" id="poem-list-count"></div>
+        </div>
+
+        <div class="poem-list__grid" id="poem-list-items">
+          ${Array(6).fill(0).map(() => skeletonCard()).join('')}
         </div>
       </div>
-
-      <div class="poem-list__items" id="poem-list-items"></div>
-    </section>
+    </div>
   `;
 
-  const renderItems = () => {
+  // 100ms 后正式渲染（给浏览器机会先绘制骨架屏）
+  setTimeout(() => renderItems(), 100);
+
+  function renderItems() {
     const filtered = filterPoems(allPoems, state);
-    const itemsEl = document.getElementById('poem-list-items');
-    const countEl = document.getElementById('poem-list-count');
+    const itemsEl  = document.getElementById('poem-list-items');
+    const countEl  = document.getElementById('poem-list-count');
     if (countEl) countEl.textContent = `共 ${filtered.length} 首`;
+    if (!itemsEl) return;
 
     if (filtered.length === 0) {
-      itemsEl.innerHTML = `<div class="poem-list__empty">没有匹配的诗词</div>`;
+      itemsEl.innerHTML = emptyState({
+        icon: '🔍',
+        title: '没有找到相关诗词',
+        body: '换个词试试，或清除筛选条件吧～',
+      });
       return;
     }
 
     itemsEl.innerHTML = filtered.map(poem => {
       const progress = userProgress[poem.id];
-      const badge = getStatusBadge(progress);
-      const thumb = poem.image
-        ? `<img src="${poem.image}" alt="${escape(poem.title)}" class="poem-list__thumb" loading="lazy">`
-        : `<div class="poem-list__thumb poem-list__thumb--placeholder">📜</div>`;
-      return `
-        <a href="#/poem/${poem.id}" class="poem-list__item" data-id="${poem.id}">
-          ${thumb}
-          <div class="poem-list__info">
-            <div class="poem-list__item-title">${escape(poem.title)}</div>
-            <div class="poem-list__item-meta">
-              <span>${escape(poem.dynasty)} · ${escape(poem.author)}</span>
-              <span>· ${escape(poem.type)}</span>
-            </div>
-          </div>
-          <span class="poem-list__badge poem-list__badge--${badge.type}">${escape(badge.label)}</span>
-        </a>
-      `;
+      const status   = progressToStatus(progress);
+      return poemCard({
+        poem,
+        status,
+        onclick: `window.location.hash='#/poem/${poem.id}'`,
+      });
     }).join('');
-  };
+  }
 
-  renderItems();
-
+  // 搜索防抖
   let searchTimer = null;
-  document.getElementById('filter-keyword')?.addEventListener('input', (e) => {
+  const kwInput = document.getElementById('filter-keyword');
+  if (kwInput && state.keyword) kwInput.value = state.keyword;
+  kwInput?.addEventListener('input', e => {
     clearTimeout(searchTimer);
-    searchTimer = setTimeout(() => {
-      state.keyword = e.target.value.trim();
-      renderItems();
-    }, 150);
+    searchTimer = setTimeout(() => { state.keyword = e.target.value.trim(); renderItems(); }, 150);
   });
-  document.getElementById('filter-grade')?.addEventListener('change', (e) => {
-    state.grade = Number(e.target.value);
+
+  // 年级 chip 组
+  document.getElementById('grade-chips')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-grade]');
+    if (!btn) return;
+    state.grade = Number(btn.dataset.grade);
+    document.querySelectorAll('#grade-chips .chip').forEach(c => c.classList.toggle('chip--active', c === btn));
     renderItems();
   });
-  document.getElementById('filter-dynasty')?.addEventListener('change', (e) => {
-    state.dynasty = e.target.value;
-    renderItems();
-  });
-  document.getElementById('filter-author')?.addEventListener('change', (e) => {
-    state.author = e.target.value;
+
+  // 朝代 chip 组
+  document.getElementById('dynasty-chips')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-dynasty]');
+    if (!btn) return;
+    state.dynasty = btn.dataset.dynasty;
+    document.querySelectorAll('#dynasty-chips .chip').forEach(c => c.classList.toggle('chip--active', c === btn));
     renderItems();
   });
 }
 
-// ===== 纯函数（可测试） =====
+// ═══════════════════════════════════════════════════════
+// 诗词详情页
+// ═══════════════════════════════════════════════════════
+
+export function renderPoemDetail(params) {
+  const main = document.getElementById('app-main');
+  if (!main) return;
+
+  // 停止上一首播放
+  _stopAll();
+
+  const poem = getPoem(params.id);
+  if (!poem) {
+    main.innerHTML = emptyState({ icon: '❓', title: `找不到诗词：${esc(params.id)}` });
+    return;
+  }
+
+  const userId  = getCurrentUserId();
+  const progress = getPoemProgress(userId, poem.id);
+  const isFavorite = !!(progress && progress.favorite);
+
+  const pinyinLines = pinyinForLines(poem.content || []);
+
+  main.innerHTML = `
+    <div class="content-wrap fade-in">
+      <div class="poem-detail">
+        <div class="poem-detail__back">
+          <button class="btn btn--ghost btn--sm" id="poem-back">← 返回</button>
+        </div>
+
+        <!-- 配图 -->
+        <div class="poem-detail__cover">
+          ${poem.image
+            ? `<img src="${esc(poem.image)}" alt="${esc(poem.title)}">`
+            : `<div class="poem-detail__cover-icon">🖼️</div><span>✨ 配图生成中</span>`}
+        </div>
+
+        <!-- 标题区 -->
+        <div class="poem-detail__header">
+          <div>
+            <h1 class="poem-detail__title">${esc(poem.title)}</h1>
+            <div class="poem-detail__tags">
+              ${poem.dynasty ? `<span class="poem-detail__tag">${esc(poem.dynasty)}</span>` : ''}
+              ${poem.author  ? `<span class="poem-detail__tag">${esc(poem.author)}</span>`  : ''}
+              ${poem.type    ? `<span class="poem-detail__tag">${esc(poem.type)}</span>`    : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- 朗读控件（音频状态机） -->
+        ${audioBar({ hasSrc: !!poem.audio, favored: isFavorite })}
+
+        <!-- 诗词正文（拼音 + 大字） -->
+        <div class="poem-content" id="poem-content">
+          ${(poem.content || []).map((line, li) => `
+            <div class="poem-line" data-line="${li}">
+              ${line.split('').map((ch, ci) => {
+                const py = (pinyinLines[li] || '').split(' ')[ci] || '';
+                return `<div class="poem-char">
+                  <span class="poem-char__pinyin">${esc(py)}</span>
+                  <span class="poem-char__text">${esc(ch)}</span>
+                </div>`;
+              }).join('')}
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- 释义区块 -->
+        <div class="poem-sections card">
+          <details class="poem-section" open>
+            <summary>📖 创作背景</summary>
+            <div class="poem-section__body">${esc(poem.background || '暂无背景资料，内容生成中…')}</div>
+          </details>
+          ${poem.annotations && Object.keys(poem.annotations).length > 0 ? `
+          <hr class="ink-divider">
+          <details class="poem-section">
+            <summary>📝 字词注释</summary>
+            <div class="poem-section__body">
+              ${Object.entries(poem.annotations).map(([k, v]) =>
+                `<p><strong>${esc(k)}</strong>：${esc(v)}</p>`
+              ).join('')}
+            </div>
+          </details>` : ''}
+          <hr class="ink-divider">
+          <details class="poem-section">
+            <summary>💡 主题思想</summary>
+            <div class="poem-section__body">${esc(poem.theme || '暂无，内容生成中…')}</div>
+          </details>
+          ${poem.translation ? `
+          <hr class="ink-divider">
+          <details class="poem-section">
+            <summary>🌐 白话翻译</summary>
+            <div class="poem-section__body">${esc(poem.translation)}</div>
+          </details>` : ''}
+        </div>
+
+        ${(poem.keywords && poem.keywords.length) ? `
+        <div class="poem-keywords">
+          <span class="poem-keywords__label">联想关键词</span>
+          <div class="poem-keywords__tags">
+            ${poem.keywords.map(k => `<a class="poem-keyword-tag" href="#/learn" data-kw="${esc(k)}">${esc(k)}</a>`).join('')}
+          </div>
+        </div>` : ''}
+
+        <div class="poem-detail__actions">
+          <button class="btn btn--primary btn--lg" id="poem-finished">✓ 我学完了，去考核 →</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // ── 音频控件事件绑定 ──
+  _bindAudioBar(poem);
+
+  // ── 联想关键词：点击跳转列表并搜索 ──
+  main.querySelectorAll('.poem-keyword-tag').forEach(tag => {
+    tag.addEventListener('click', (e) => {
+      e.preventDefault();
+      _stopAll();
+      pendingKeyword = tag.dataset.kw || '';
+      navigate('#/learn');
+    });
+  });
+
+  // ── 返回 ──
+  document.getElementById('poem-back')?.addEventListener('click', () => {
+    _stopAll();
+    history.length > 1 ? history.back() : navigate('#/learn');
+  });
+
+  // ── 完成学习 ──
+  document.getElementById('poem-finished')?.addEventListener('click', () => {
+    _stopAll();
+    updatePoemProgress(userId, poem.id, {
+      status: 'learning',
+      learnCount: (progress?.learnCount || 0) + 1,
+    });
+    navigate('#/quiz?poemId=' + poem.id);
+  });
+}
+
+// ── 音频状态机 ──
+
+function _bindAudioBar(poem) {
+  const playBtn  = document.getElementById('audio-play');
+  const favBtn   = document.getElementById('audio-fav');
+  const speedBtns = document.querySelectorAll('.audio-bar__speed-btn');
+
+  if (!playBtn) return;
+
+  const userId = getCurrentUserId();
+
+  // 判断音源
+  const hasMp3 = !!poem.audio;
+  const hasTts  = speechSupported();
+
+  if (!hasMp3 && !hasTts) return; // 按钮已经渲染为"暂不可用"
+
+  if (hasMp3) {
+    currentAudio = createAudio(poem.audio);
+    setOnEnd(currentAudio, () => { _setAudioState('idle'); _highlightLine(-1); });
+    const durMs = poem.audioDurationMs || 0;
+    currentAudio.ontimeupdate = () => {
+      const dur = (currentAudio.duration && isFinite(currentAudio.duration))
+        ? currentAudio.duration : (durMs / 1000);
+      const idx = lineAtTime(currentAudio.currentTime, dur, poem.title, poem.content || []);
+      _highlightLine(idx);
+    };
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (audioState === 'idle') {
+      _startPlay(poem, audioSpeed);
+    } else if (audioState === 'playing') {
+      _pausePlay();
+    } else {
+      _resumePlay(poem, audioSpeed);
+    }
+  });
+
+  speedBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const speed = Number(btn.dataset.speed);
+      audioSpeed = speed;
+      speedBtns.forEach(b => b.classList.toggle('audio-bar__speed-btn--active', b === btn));
+      speedBtns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+      // 若正在播放，立即切换速度
+      if (audioState === 'playing') {
+        if (hasMp3 && currentAudio) {
+          setSpeed(currentAudio, speed);
+        } else if (!hasMp3) {
+          _stopAll();
+          _startPlay(poem, speed);
+        }
+      }
+    });
+  });
+
+  favBtn?.addEventListener('click', () => {
+    const isFav = favBtn.getAttribute('aria-pressed') === 'true';
+    const next  = !isFav;
+    updatePoemProgress(userId, poem.id, { favorite: next });
+    favBtn.setAttribute('aria-pressed', String(next));
+    favBtn.classList.toggle('audio-bar__fav--active', next);
+    favBtn.innerHTML    = icon('star', 20);
+    favBtn.setAttribute('aria-label', next ? '取消收藏' : '收藏此诗');
+    showToast(next ? '已收藏' : '已取消收藏', next ? 'success' : 'default');
+  });
+}
+
+function _startPlay(poem, speed) {
+  const hasMp3 = !!poem.audio;
+  if (hasMp3 && currentAudio) {
+    setSpeed(currentAudio, speed);
+    play(currentAudio);
+  } else if (speechSupported()) {
+    currentSpeech = createSpeech(poem.content || [], { rate: speed });
+    currentSpeech.onend = () => _setAudioState('idle');
+    speak(currentSpeech);
+  }
+  _setAudioState('playing');
+}
+
+function _pausePlay() {
+  if (currentAudio) pause(currentAudio);
+  else pauseSpeak();
+  _setAudioState('paused');
+}
+
+function _resumePlay(poem, speed) {
+  if (currentAudio) {
+    play(currentAudio);
+  } else if (speechSupported()) {
+    // TTS resume 浏览器支持不稳定，重新朗读
+    _startPlay(poem, speed);
+    return;
+  }
+  _setAudioState('playing');
+}
+
+function _stopAll() {
+  if (currentAudio) { stop(currentAudio); currentAudio = null; }
+  stopSpeak();
+  audioState  = 'idle';
+  audioSpeed  = 1;
+  _highlightLine(-1);
+}
+
+/** 高亮当前朗读到的诗句；idx<0 表示清除全部高亮 */
+function _highlightLine(idx) {
+  const lines = document.querySelectorAll('#poem-content .poem-line');
+  lines.forEach((el, i) => el.classList.toggle('poem-line--active', i === idx));
+}
+
+function _setAudioState(s) {
+  audioState = s;
+  const playBtn = document.getElementById('audio-play');
+  if (!playBtn) return;
+  if (s === 'playing') {
+    playBtn.innerHTML = `${icon('pause', 18)}<span>暂停</span>`;
+    playBtn.setAttribute('aria-pressed', 'true');
+  } else {
+    playBtn.innerHTML = `${icon('play', 18)}<span>播放</span>`;
+    playBtn.setAttribute('aria-pressed', 'false');
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// 纯函数（可测试）
+// ═══════════════════════════════════════════════════════
 
 export function getAllPoemsList() {
   return Array.from(poemsMap.values()).sort((a, b) => {
@@ -126,237 +433,56 @@ export function getAllPoemsList() {
 }
 
 export function getAllDynastiesForFilter(poems) {
-  return [...new Set(poems.map(p => p.dynasty))].sort();
+  return [...new Set(poems.map(p => p.dynasty))].filter(Boolean).sort();
 }
 
 export function getAllAuthorsForFilter(poems) {
-  return [...new Set(poems.map(p => p.author))].sort();
+  return [...new Set(poems.map(p => p.author))].filter(Boolean).sort();
 }
 
-/**
- * 过滤诗词
- */
 export function filterPoems(poems, filters) {
   const f = filters || {};
   return poems.filter(p => {
-    if (f.grade && p.grade !== f.grade) return false;
-    if (f.dynasty && p.dynasty !== f.dynasty) return false;
-    if (f.author && p.author !== f.author) return false;
+    if (f.grade    && p.grade   !== f.grade)    return false;
+    if (f.dynasty  && p.dynasty !== f.dynasty)  return false;
+    if (f.author   && p.author  !== f.author)   return false;
     if (f.keyword) {
       const kw = f.keyword.toLowerCase();
-      const inTitle = (p.title || '').toLowerCase().includes(kw);
-      const inAuthor = (p.author || '').toLowerCase().includes(kw);
-      if (!inTitle && !inAuthor) return false;
+      const match = [(p.title||''), (p.author||''), ...(p.content||[]), ...(p.keywords||[])];
+      if (!match.some(t => t.toLowerCase().includes(kw))) return false;
     }
     return true;
   });
 }
 
-/**
- * 状态徽章
- */
 export function getStatusBadge(progress) {
-  if (!progress || !progress.status || progress.status === 'new') {
-    return { type: 'new', label: '新诗' };
-  }
-  if (progress.status === 'mastered') {
-    return { type: 'mastered', label: '⭐ 已掌握' };
-  }
-  if (progress.status === 'reviewing') {
-    return { type: 'reviewing', label: '已学 ' + (progress.learnCount || 0) + ' 次' };
-  }
-  return { type: 'learning', label: '学习中 ' + (progress.learnCount || 0) + '/' + 3 };
+  if (!progress || !progress.status || progress.status === 'new') return { type: 'new',      label: '新诗' };
+  if (progress.status === 'mastered')   return { type: 'mastered',  label: '⭐ 已掌握' };
+  if (progress.status === 'reviewing')  return { type: 'review',    label: `复习中` };
+  return { type: 'learning', label: '学习中' };
 }
 
-/**
- * 关键词搜索（用于搜索框）
- */
+function progressToStatus(progress) {
+  if (!progress || !progress.status || progress.status === 'new') return 'new';
+  if (progress.status === 'mastered')  return 'mastered';
+  if (progress.status === 'reviewing') return 'review';
+  return 'learning';
+}
+
 export function searchPoemsCase(poems, keyword) {
   if (!keyword) return poems;
   const kw = keyword.toLowerCase();
   return poems.filter(p =>
-    (p.title || '').toLowerCase().includes(kw) ||
+    (p.title  || '').toLowerCase().includes(kw) ||
     (p.author || '').toLowerCase().includes(kw)
   );
 }
-
-export function renderPoemDetail(params) {
-  const main = document.getElementById('app-main');
-  if (!main) return;
-
-  const poem = getPoem(params.id);
-  if (!poem) {
-    main.innerHTML = `<div class="placeholder">找不到诗词：${params.id}</div>`;
-    return;
-  }
-
-  const userId = getCurrentUserId();
-  const progress = getPoemProgress(userId, poem.id);
-  const isFavorite = !!(progress && progress.favorite);
-
-  const pinyinLines = pinyinForLines(poem.content);
-
-  main.innerHTML = `
-    <article class="poem-detail">
-      <button class="poem-detail__back" id="poem-back">← 返回</button>
-
-      <div class="poem-detail__image-wrap">
-        ${poem.image
-          ? `<img src="${poem.image}" alt="${poem.title}" class="poem-detail__image">`
-          : `<div class="poem-detail__image poem-detail__image--placeholder">🎨<br><span>暂无配图</span></div>`
-        }
-      </div>
-
-      <header class="poem-detail__header">
-        <h1 class="poem-detail__title">${escape(poem.title)}</h1>
-        <div class="poem-detail__meta">
-          <span>${escape(poem.dynasty)}</span>
-          <span>·</span>
-          <span>${escape(poem.author)}</span>
-          <span>·</span>
-          <span>${escape(poem.type)}</span>
-        </div>
-      </header>
-
-      <section class="poem-detail__body">
-        <div class="poem-detail__audio-controls">
-          <button class="audio-btn audio-btn--play" id="audio-play" ${poem.audio ? '' : 'disabled'}>
-            <span class="audio-btn__icon">▶</span>
-            <span class="audio-btn__label">朗读</span>
-          </button>
-          <button class="audio-btn" id="audio-slow" ${poem.audio ? '' : 'disabled'}>
-            <span class="audio-btn__icon">⏪</span>
-            <span class="audio-btn__label">慢速</span>
-          </button>
-          <button class="audio-btn" id="audio-stop" ${poem.audio ? '' : 'disabled'}>
-            <span class="audio-btn__icon">⏹</span>
-            <span class="audio-btn__label">停止</span>
-          </button>
-          <button class="audio-btn audio-btn--favorite ${isFavorite ? 'audio-btn--active' : ''}" id="poem-favorite">
-            <span class="audio-btn__icon">${isFavorite ? '⭐' : '☆'}</span>
-            <span class="audio-btn__label">${isFavorite ? '已收藏' : '收藏'}</span>
-          </button>
-        </div>
-
-        <div class="poem-detail__text">
-          ${poem.content.map((line, i) => `
-            <div class="poem-detail__line">
-              <div class="poem-detail__cn">${escape(line)}</div>
-              <div class="poem-detail__py">${escape(pinyinLines[i] || '')}</div>
-            </div>
-          `).join('')}
-        </div>
-      </section>
-
-      <section class="poem-detail__section">
-        <h2 class="poem-detail__section-title">📖 创作背景</h2>
-        <p class="poem-detail__section-content">${escape(poem.background || '暂无背景资料')}</p>
-      </section>
-
-      ${poem.annotations && Object.keys(poem.annotations).length > 0 ? `
-      <section class="poem-detail__section">
-        <h2 class="poem-detail__section-title">📝 字词注释</h2>
-        <dl class="poem-detail__annotations">
-          ${Object.entries(poem.annotations).map(([k, v]) => `
-            <div class="poem-detail__annotation">
-              <dt>${escape(k)}</dt>
-              <dd>${escape(v)}</dd>
-            </div>
-          `).join('')}
-        </dl>
-      </section>
-      ` : ''}
-
-      <section class="poem-detail__section">
-        <h2 class="poem-detail__section-title">💡 主题思想</h2>
-        <p class="poem-detail__section-content">${escape(poem.theme || '暂无')}</p>
-        ${poem.keywords && poem.keywords.length > 0 ? `
-          <div class="poem-detail__keywords">
-            ${poem.keywords.map(k => `<span class="poem-detail__keyword">${escape(k)}</span>`).join('')}
-          </div>
-        ` : ''}
-      </section>
-
-      ${poem.translation ? `
-      <section class="poem-detail__section">
-        <h2 class="poem-detail__section-title">🌐 白话翻译</h2>
-        <p class="poem-detail__section-content">${escape(poem.translation)}</p>
-      </section>
-      ` : ''}
-
-      <div class="poem-detail__actions">
-        <button class="btn btn--primary btn--large" id="poem-finished">
-          ✓ 我学完了（去考核）
-        </button>
-      </div>
-    </article>
-  `;
-
-  document.getElementById('poem-back')?.addEventListener('click', () => {
-    stop(currentAudio);
-    history.length > 1 ? history.back() : navigate('#/learn');
-  });
-
-  const playBtn = document.getElementById('audio-play');
-  const slowBtn = document.getElementById('audio-slow');
-  const stopBtn = document.getElementById('audio-stop');
-
-  if (poem.audio) {
-    currentAudio = createAudio(poem.audio);
-    setOnEnd(currentAudio, () => updatePlayBtn('▶', '朗读'));
-
-    playBtn?.addEventListener('click', () => {
-      setSpeed(currentAudio, 1.0);
-      play(currentAudio);
-      updatePlayBtn('⏸', '暂停');
-    });
-
-    slowBtn?.addEventListener('click', () => {
-      stop(currentAudio);
-      setSpeed(currentAudio, 0.6);
-      play(currentAudio);
-      updatePlayBtn('⏸', '暂停');
-    });
-
-    stopBtn?.addEventListener('click', () => {
-      stop(currentAudio);
-      updatePlayBtn('▶', '朗读');
-    });
-  }
-
-  document.getElementById('poem-favorite')?.addEventListener('click', (e) => {
-    const newState = !isFavorite;
-    updatePoemProgress(userId, poem.id, { favorite: newState });
-    e.currentTarget.classList.toggle('audio-btn--active', newState);
-    e.currentTarget.querySelector('.audio-btn__icon').textContent = newState ? '⭐' : '☆';
-    e.currentTarget.querySelector('.audio-btn__label').textContent = newState ? '已收藏' : '收藏';
-  });
-
-  document.getElementById('poem-finished')?.addEventListener('click', () => {
-    stop(currentAudio);
-    updatePoemProgress(userId, poem.id, {
-      status: 'learning',
-      learnCount: (progress?.learnCount || 0) + 1,
-    });
-    navigate('#/quiz?poemId=' + poem.id);
-  });
-
-  function updatePlayBtn(icon, label) {
-    if (!playBtn) return;
-    playBtn.querySelector('.audio-btn__icon').textContent = icon;
-    playBtn.querySelector('.audio-btn__label').textContent = label;
-  }
-}
-
-// ===== 拼音工具 =====
 
 export function pinyinForText(text) {
   if (!text) return '';
   try {
     return pinyin(text, { toneType: 'symbol', type: 'array', v: true }).join(' ');
-  } catch {
-    return '';
-  }
+  } catch { return ''; }
 }
 
 export function pinyinForLines(lines) {
@@ -364,16 +490,28 @@ export function pinyinForLines(lines) {
   return lines.map(line => pinyinForText(line));
 }
 
-function escape(s) {
-  if (s == null) return '';
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+/**
+ * 按字符数权重估算当前时间点正在朗读的诗句索引。
+ * 朗读文本为「标题。句1，句2，…。」，所以标题占开头一段。
+ * @returns {number} 诗句索引，-1 表示仍在读标题或无法估算
+ */
+export function lineAtTime(currentSec, durationSec, title, lines) {
+  if (!durationSec || durationSec <= 0 || !Array.isArray(lines) || lines.length === 0) return -1;
+  const titleLen = (title || '').length;
+  const lineLens = lines.map(l => (l || '').length);
+  const total = titleLen + lineLens.reduce((a, b) => a + b, 0);
+  if (total === 0) return -1;
+  const pos = (currentSec / durationSec) * total;  // 当前朗读到的字符位置
+  if (pos < titleLen) return -1;                   // 仍在读标题
+  let acc = titleLen;
+  for (let i = 0; i < lines.length; i++) {
+    acc += lineLens[i];
+    if (pos < acc) return i;
+  }
+  return lines.length - 1;
 }
 
-function setContent(html) {
-  const main = document.getElementById('app-main');
-  if (main) main.innerHTML = html;
+// pauseSpeak 在 audio.js 中已导出；这里补充仅 learn.js 内部用的同名别名
+function pauseSpeak() {
+  if (speechSupported()) window.speechSynthesis.pause();
 }

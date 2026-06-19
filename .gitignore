@@ -10,3 +10,10 @@ dist/
 诗云-生成器.html
 __pycache__/
 *.pyc
+
+# AI 生成的媒体资源（体积大，可通过脚本重新生成）
+assets/images/*.jpg
+assets/images/*.png
+assets/images/*.webp
+assets/audio/*.mp3
+assets/audio/*.wav

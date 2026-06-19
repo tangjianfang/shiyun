@@ -78,6 +78,11 @@ export function attachUserState(poems, userState) {
   }));
 }
 
+/** 触发浏览器打印对话框 */
+export function triggerPrint() {
+  window.print();
+}
+
 export function renderPrintHtml(groups, formatId) {
   const pages = groups.map((group, idx) => renderPage(group, formatId, idx + 1, groups.length)).join('\n');
   return `<div class="print-doc format-${formatId}">${pages}</div>`;

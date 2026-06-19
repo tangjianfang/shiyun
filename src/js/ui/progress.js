@@ -3,6 +3,7 @@
  */
 
 import { getCurrentUserId, getAllUsers, switchUser, addUser, resetUserProgress, updateUser, getUser } from '../storage.js';
+import { statCard, esc } from './components.js';
 
 function getCurrentUserState() {
   return getUser(getCurrentUserId()) || {};
@@ -203,7 +204,7 @@ export function renderDynastyPieSvg(dist, { size = 220 } = {}) {
 
 /* ========================= 进度页 UI 渲染 ========================= */
 
-export function renderProgressPage(container) {
+export function renderProgressPage(container = document.getElementById('app-main')) {
   const userState = getCurrentUserState();
   const userId = getCurrentUserId();
   const poems = getAllPoemsSafe();
@@ -220,96 +221,97 @@ export function renderProgressPage(container) {
   }
   const allAchievements = userState.achievements || [];
 
-  const users = getAllUsers();
-  const usersList = users.map(u => `
-    <li class="user-item ${u.id === userId ? 'active' : ''}" data-user-id="${u.id}">
-      <span class="avatar">${escapeHtml(u.avatar || '🌱')}</span>
-      <span class="name">${escapeHtml(u.name)}</span>
-      <span class="grade">${u.grade} 年级</span>
-    </li>
-  `).join('');
-
   container.innerHTML = `
-    <div class="progress-page">
-      <h2>📊 学习进度</h2>
+    <div class="content-wrap fade-in">
+      <header class="page-head">
+        <h1 class="page-head__title">📊 我的进度</h1>
+      </header>
 
-      <section class="user-bar" id="user-bar">
-        <div class="current-user" id="current-user-btn">
-          <span class="avatar">${escapeHtml(userState.avatar || '🌱')}</span>
-          <span class="name">${escapeHtml(userState.name || '未命名')}</span>
-          <span class="grade">${userState.grade || '-'} 年级</span>
-          <span class="caret">▾</span>
+      <!-- 用户卡 -->
+      <div class="progress-user-card card" style="margin-bottom:var(--s-5);">
+        <div class="progress-user-avatar">${esc(userState.avatar || (userState.name || '用')[0])}</div>
+        <div>
+          <div style="font-family:var(--font-zh-display);font-size:1.2rem;font-weight:700;">${esc(userState.name || '未命名')}</div>
+          <div class="text-meta">${userState.grade || '-'} 年级</div>
         </div>
-        <div class="user-dropdown" id="user-dropdown" hidden>
-          <ul class="users-list">${usersList}</ul>
-          <div class="user-actions">
-            <button class="btn btn-sm" id="btn-add-user">+ 新建用户</button>
-            <button class="btn btn-sm btn-danger" id="btn-reset-progress">重置进度</button>
-            <button class="btn btn-sm" id="btn-export-progress">导出进度</button>
-            <label class="btn btn-sm">
-              导入进度
-              <input type="file" id="input-import-progress" accept=".json" hidden>
-            </label>
-          </div>
-        </div>
-      </section>
+        <button class="btn btn--secondary btn--sm" style="margin-left:auto;" id="btn-edit-user">编辑资料</button>
+      </div>
 
-      <section class="stats-cards">
-        <div class="card stat-card">
-          <div class="stat-num">${stats.total}</div>
-          <div class="stat-label">总数</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-num">${stats.learned}</div>
-          <div class="stat-label">已学</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-num" style="color:#28a745">${stats.mastered}</div>
-          <div class="stat-label">已掌握</div>
-        </div>
-        <div class="card stat-card">
-          <div class="stat-num" style="color:#dc3545">${stats.dueForReview}</div>
-          <div class="stat-label">待复习</div>
-        </div>
-      </section>
+      <!-- 概览数据 -->
+      <div class="progress-overview">
+        ${statCard({ label: '总诗词', value: stats.total })}
+        ${statCard({ label: '已学', value: stats.learned, unit: `/ ${stats.total}`, pct: (stats.learned / stats.total) * 100 })}
+        ${statCard({ label: '已掌握', value: stats.mastered, mod: 'stat-card__value--jade', pct: (stats.mastered / stats.total) * 100 })}
+        ${statCard({ label: '今日待复习', value: stats.dueForReview, mod: 'stat-card__value--amber' })}
+      </div>
 
-      <section class="chart-section card">
-        <h3>学习曲线（最近 30 天）</h3>
+      <!-- 学习曲线 -->
+      <div class="card" style="margin-bottom:var(--s-5);">
+        <h2 class="text-h2" style="margin-bottom:var(--s-4);">学习曲线（最近 30 天）</h2>
         ${curveSvg}
-      </section>
+      </div>
 
-      <section class="chart-section card">
-        <h3>朝代分布</h3>
+      <!-- 朝代分布 -->
+      <div class="card" style="margin-bottom:var(--s-5);">
+        <h2 class="text-h2" style="margin-bottom:var(--s-4);">朝代分布</h2>
         ${pieSvg}
-      </section>
+      </div>
 
-      <section class="achievements-section card">
-        <h3>🏆 成就徽章</h3>
-        <div class="achievements-grid">
+      <!-- 成就墙 -->
+      <div class="card" style="margin-bottom:var(--s-5);">
+        <h2 class="text-h2" style="margin-bottom:var(--s-4);">🏆 成就徽章</h2>
+        <div class="progress-achievements">
           ${ACHIEVEMENT_DEFS.map(def => {
             const unlocked = allAchievements.includes(def.id);
-            return `<div class="achievement ${unlocked ? 'unlocked' : 'locked'}" title="${escapeHtml(def.desc)}">
-              <div class="ach-icon">${def.icon}</div>
-              <div class="ach-name">${escapeHtml(def.name)}</div>
-              <div class="ach-desc">${escapeHtml(def.desc)}</div>
+            return `<div class="achievement-card card${unlocked ? '' : ' achievement-card--locked'}">
+              <div class="achievement-card__icon">${def.icon}</div>
+              <div class="achievement-card__name">${esc(def.name)}</div>
+              <div class="achievement-card__progress">${esc(def.desc)}</div>
             </div>`;
           }).join('')}
         </div>
-      </section>
+      </div>
 
-      <section class="user-mgmt card" id="user-mgmt-section">
-        <h3>⚙️ 个人设置</h3>
-        <div class="form-row">
-          <label>姓名 <input type="text" id="input-user-name" value="${escapeHtml(userState.name || '')}"></label>
-          <label>头像（emoji）<input type="text" id="input-user-avatar" value="${escapeHtml(userState.avatar || '')}" maxlength="2"></label>
-          <label>年级
-            <select id="input-user-grade">
-              ${[1,2,3,4,5,6].map(g => `<option value="${g}" ${g === userState.grade ? 'selected' : ''}>${g} 年级</option>`).join('')}
-            </select>
-          </label>
-          <button class="btn btn-primary" id="btn-save-user">保存</button>
+      <!-- 多用户管理 -->
+      <div class="card" id="user-mgmt-section">
+        <h2 class="text-h2" style="margin-bottom:var(--s-4);">⚙️ 用户管理</h2>
+        <div id="user-edit-form" hidden>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--s-4);align-items:flex-end;margin-bottom:var(--s-4);">
+            <label style="display:flex;flex-direction:column;gap:var(--s-2);">
+              <span class="text-sm">姓名</span>
+              <input type="text" id="input-user-name" class="input" value="${esc(userState.name || '')}" style="width:160px;">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:var(--s-2);">
+              <span class="text-sm">头像（emoji）</span>
+              <input type="text" id="input-user-avatar" class="input" value="${esc(userState.avatar || '')}" maxlength="2" style="width:80px;">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:var(--s-2);">
+              <span class="text-sm">年级</span>
+              <select id="input-user-grade" class="input select" style="width:100px;">
+                ${[1,2,3,4,5,6].map(g => `<option value="${g}"${g === userState.grade ? ' selected' : ''}>${g} 年级</option>`).join('')}
+              </select>
+            </label>
+            <button class="btn btn--primary" id="btn-save-user">保存</button>
+            <button class="btn btn--ghost" id="btn-cancel-edit">取消</button>
+          </div>
         </div>
-      </section>
+
+        <div style="display:flex;flex-wrap:wrap;gap:var(--s-3);margin-bottom:var(--s-4);">
+          ${getAllUsers().map(u => `
+            <button class="btn ${u.id === userId ? 'btn--primary' : 'btn--secondary'}" data-switch-user="${esc(u.id)}">
+              ${esc(u.avatar || '🌱')} ${esc(u.name)}
+            </button>`).join('')}
+          <button class="btn btn--ghost" id="btn-add-user">+ 新建用户</button>
+        </div>
+        <div style="display:flex;gap:var(--s-3);flex-wrap:wrap;">
+          <button class="btn btn--danger btn--sm" id="btn-reset-progress">重置本账号进度</button>
+          <button class="btn btn--secondary btn--sm" id="btn-export-progress">导出进度</button>
+          <label class="btn btn--secondary btn--sm" style="cursor:pointer;">
+            导入进度
+            <input type="file" id="input-import-progress" accept=".json" hidden>
+          </label>
+        </div>
+      </div>
     </div>
   `;
 
@@ -317,18 +319,25 @@ export function renderProgressPage(container) {
 }
 
 function bindProgressEvents(container) {
-  const dropdown = container.querySelector('#user-dropdown');
-  container.querySelector('#current-user-btn')?.addEventListener('click', () => {
-    dropdown.hidden = !dropdown.hidden;
+  container.querySelector('#btn-edit-user')?.addEventListener('click', () => {
+    container.querySelector('#user-edit-form').hidden = false;
+  });
+  container.querySelector('#btn-cancel-edit')?.addEventListener('click', () => {
+    container.querySelector('#user-edit-form').hidden = true;
+  });
+  container.querySelector('#btn-save-user')?.addEventListener('click', () => {
+    const name = container.querySelector('#input-user-name').value.trim();
+    const avatar = container.querySelector('#input-user-avatar').value.trim() || '🌱';
+    const grade = parseInt(container.querySelector('#input-user-grade').value, 10);
+    if (!name) return;
+    updateUser(getCurrentUserId(), { name, avatar, grade });
+    renderProgressPage(container);
   });
 
-  container.querySelectorAll('.user-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const uid = item.dataset.userId;
-      if (uid && uid !== getCurrentUserId()) {
-        switchUser(uid);
-        renderProgressPage(container);
-      }
+  container.querySelectorAll('[data-switch-user]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const uid = btn.dataset.switchUser;
+      if (uid && uid !== getCurrentUserId()) { switchUser(uid); renderProgressPage(container); }
     });
   });
 
@@ -338,7 +347,7 @@ function bindProgressEvents(container) {
     const gradeStr = prompt('请输入年级（1-6）：', '1');
     const grade = parseInt(gradeStr, 10);
     if (!grade || grade < 1 || grade > 6) return alert('年级无效');
-    const avatar = prompt('请输入 emoji 头像（如 🌸、🐯、📚）：', '🌱') || '🌱';
+    const avatar = prompt('请输入 emoji 头像（如 🌸 🐯 📚）：', '🌱') || '🌱';
     const id = addUser({ name, grade, avatar });
     switchUser(id);
     renderProgressPage(container);
@@ -370,26 +379,14 @@ function bindProgressEvents(container) {
       try {
         const data = JSON.parse(ev.target.result);
         const cur = getCurrentUserState();
-        if (data.poemProgress) cur.poemProgress = data.poemProgress;
-        if (data.quizHistory) cur.quizHistory = data.quizHistory;
-        if (data.achievements) cur.achievements = data.achievements;
+        if (data.poemProgress)  cur.poemProgress  = data.poemProgress;
+        if (data.quizHistory)   cur.quizHistory   = data.quizHistory;
+        if (data.achievements)  cur.achievements  = data.achievements;
         alert('导入成功');
         renderProgressPage(container);
-      } catch (err) {
-        alert('导入失败：JSON 格式错误');
-      }
+      } catch { alert('导入失败：JSON 格式错误'); }
     };
     reader.readAsText(file);
-  });
-
-  container.querySelector('#btn-save-user')?.addEventListener('click', () => {
-    const name = container.querySelector('#input-user-name').value.trim();
-    const avatar = container.querySelector('#input-user-avatar').value.trim() || '🌱';
-    const grade = parseInt(container.querySelector('#input-user-grade').value, 10);
-    if (!name) return alert('姓名不能为空');
-    updateUser(getCurrentUserId(), { name, avatar, grade });
-    alert('已保存');
-    renderProgressPage(container);
   });
 }
 

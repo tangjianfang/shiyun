@@ -13,6 +13,7 @@ import { getTodayReviewList, nextReview } from '../srs.js';
 import { getPoem, getAllPoems } from '../data.js';
 import { getCurrentUserId, getPoemProgress, updatePoemProgress, addQuizHistory } from '../storage.js';
 import { startQuiz } from './quiz.js';
+import { badge, emptyState, esc } from './components.js';
 
 const AVAILABLE_MODES = ['fill', 'choice', 'order', 'listen'];
 
@@ -150,80 +151,77 @@ export function getDuePoemsForReview() {
 
 // === UI 渲染 ===
 
-export function renderReviewPage(container) {
+export function renderReviewPage(container = document.getElementById('app-main')) {
   const userId = getCurrentUserId();
   const allProgress = JSON.parse(localStorage.getItem('shiyun_user_state') || '{}')?.users?.[userId]?.poemProgress || {};
   const poemIds = getTodayReviewList(allProgress);
   const count = poemIds.length;
 
+  if (count === 0) {
+    container.innerHTML = `<div class="content-wrap">${emptyState({
+      icon: '🎉',
+      title: '今日复习全部完成啦！',
+      body: '明天还会有新的复习任务，今天先去学新诗吧～',
+      action: `<a href="#/learn" class="btn btn--primary">去学新诗</a>`,
+    })}</div>`;
+    return;
+  }
+
   container.innerHTML = `
-    <div class="review-page">
-      <header class="review-page__header">
-        <h2 class="review-page__title">🔄 今日复习</h2>
-        <p class="review-page__subtitle">待复习 <strong class="review-page__count">${count}</strong> 首</p>
+    <div class="content-wrap fade-in">
+      <header class="page-head">
+        <h1 class="page-head__title">🔁 今日复习</h1>
+        <p class="page-head__sub">待复习 <strong>${count}</strong> 首诗词</p>
       </header>
 
-      ${count === 0 ? `
-        <div class="review-page__empty">
-          <p>🎉 今日没有待复习的诗</p>
-          <a href="#/learn" class="btn btn--primary">去学新诗</a>
-        </div>
-      ` : `
-        <div class="review-page__config">
-          <label class="review-page__field">
-            <span>考核模式：</span>
-            <select class="review-page__mode">
-              <option value="fill">填空（默认）</option>
+      <div class="card" style="margin-bottom:var(--s-5);">
+        <div style="display:flex;gap:var(--s-5);flex-wrap:wrap;align-items:center;">
+          <label style="display:flex;align-items:center;gap:var(--s-3);">
+            <span class="text-sm">考核模式：</span>
+            <select class="input select review-page__mode" style="width:auto;">
+              <option value="fill">填空（推荐）</option>
               <option value="choice">选择</option>
               <option value="order">排序</option>
-              <option value="listen">听诗选诗</option>
-              <option value="mixed">混合（推荐）</option>
+              <option value="listen">听诗</option>
+              <option value="mixed">混合</option>
             </select>
           </label>
-          <label class="review-page__field">
-            <span>数量限制：</span>
-            <select class="review-page__limit">
-              <option value="">全部</option>
+          <label style="display:flex;align-items:center;gap:var(--s-3);">
+            <span class="text-sm">每次数量：</span>
+            <select class="input select review-page__limit" style="width:auto;">
+              <option value="">全部 ${count} 首</option>
               <option value="5">5 首</option>
               <option value="10">10 首</option>
               <option value="20">20 首</option>
             </select>
           </label>
+          <button class="btn btn--primary" data-action="start">开始复习 →</button>
         </div>
+      </div>
 
-        <ul class="review-page__list">
-          ${poemIds.map((id, i) => {
-            const poem = getPoem(id);
-            const progress = getPoemProgress(userId, id);
-            return `
-              <li class="review-page__item" data-id="${id}">
-                <span class="review-page__num">${i + 1}.</span>
-                <span class="review-page__poem-title">${poem ? poem.title : id}</span>
-                <span class="review-page__poem-author">${poem && poem.author ? poem.author : ''}</span>
-                <span class="review-page__poem-status review-page__poem-status--${progress ? progress.status : 'new'}">${statusLabel(progress ? progress.status : 'new')}</span>
-              </li>
-            `;
-          }).join('')}
-        </ul>
-
-        <div class="review-page__actions">
-          <button class="btn btn--primary btn--large" data-action="start">开始复习</button>
-        </div>
-      `}
+      <div class="review-list">
+        ${poemIds.map((id, i) => {
+          const poem = getPoem(id);
+          const progress = getPoemProgress(userId, id);
+          const status = (progress?.status) || 'new';
+          return `
+            <div class="card" style="display:flex;align-items:center;gap:var(--s-3);">
+              <span class="text-meta" style="min-width:2rem;">${i + 1}.</span>
+              <span style="flex:1;font-family:var(--font-zh-display);font-size:1.05rem;">${esc(poem?.title || id)}</span>
+              <span class="text-sm" style="color:var(--ink-500);">${esc(poem?.author || '')}</span>
+              ${badge(status)}
+            </div>`;
+        }).join('')}
+      </div>
     </div>
   `;
 
-  if (count === 0) return;
-
-  container.querySelector('[data-action="start"]').addEventListener('click', () => {
+  container.querySelector('[data-action="start"]')?.addEventListener('click', () => {
     const mode = container.querySelector('.review-page__mode').value;
     const limitVal = container.querySelector('.review-page__limit').value;
     const limit = limitVal ? parseInt(limitVal, 10) : null;
     const session = buildReviewSession({ mode, limit });
-    if (session.poems.length === 0) {
-      alert('没有可复习的诗');
-      return;
-    }
+    if (session.poems.length === 0) return;
     runReviewSession(container, session);
   });
 }
@@ -279,58 +277,44 @@ function runReviewSession(container, session) {
 
 function showReviewReport(container, session) {
   const summary = summarizeReview(session);
-
   const main = container.closest('#app-main') || document.getElementById('app-main');
-  if (main) {
-    const prog = main.querySelector('.review-progress');
-    if (prog) prog.remove();
-  }
+  if (main) { const prog = main.querySelector('.review-progress'); if (prog) prog.remove(); }
 
-  const resultsHtml = session.results.map((r, i) => {
-    const poem = session.poems.find(p => p.id === r.poemId);
-    return `
-      <li class="review-report__item">
-        <span class="review-report__num">${i + 1}.</span>
-        <span class="review-report__title">${poem ? poem.title : r.poemId}</span>
-        <span class="review-report__mode">${modeLabel(r.mode)}</span>
-        <span class="review-report__score review-report__score--${scoreClass(r.score)}">${r.score}</span>
-      </li>
-    `;
-  }).join('');
+  const stars = summary.avgScore >= 90 ? '⭐⭐⭐' : summary.avgScore >= 70 ? '⭐⭐' : '⭐';
 
   container.innerHTML = `
-    <div class="review-report">
-      <h2 class="review-report__title">🎉 今日复习完成</h2>
-      <div class="review-report__stats">
-        <div class="review-report__stat review-report__stat--mastered">
-          <div class="review-report__stat-num">${summary.mastered}</div>
-          <div class="review-report__stat-label">已掌握</div>
+    <div class="content-wrap fade-in">
+      <div class="review-result card" style="max-width:500px;margin:var(--s-7) auto;">
+        <div style="text-align:center;margin-bottom:var(--s-5);">
+          <div class="review-result__stars">${stars}</div>
+          <h2 style="font-family:var(--font-zh-display);font-size:var(--fs-h1);margin:var(--s-3) 0;">复习完成！</h2>
+          <p class="text-meta">${summary.avgScore >= 90 ? '优秀，保持下去！' : summary.avgScore >= 70 ? '不错，继续加油！' : '再接再厉，多多练习～'}</p>
         </div>
-        <div class="review-report__stat review-report__stat--review">
-          <div class="review-report__stat-num">${summary.needReview}</div>
-          <div class="review-report__stat-label">待巩固</div>
+        <div class="home-grid" style="margin-bottom:var(--s-5);">
+          <div class="stat-card">
+            <div class="stat-card__label">本次复习</div>
+            <div class="stat-card__value">${summary.total}<span class="stat-card__unit">首</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">已掌握</div>
+            <div class="stat-card__value stat-card__value--jade">${summary.mastered}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">平均得分</div>
+            <div class="stat-card__value">${summary.avgScore}</div>
+          </div>
         </div>
-        <div class="review-report__stat">
-          <div class="review-report__stat-num">${summary.avgScore}</div>
-          <div class="review-report__stat-label">平均分</div>
+        <div style="display:flex;gap:var(--s-3);justify-content:center;flex-wrap:wrap;">
+          <a href="#/" class="btn btn--primary">返回首页</a>
+          <button class="btn btn--secondary" data-action="restart">再来一轮</button>
         </div>
-      </div>
-      <h3 class="review-report__subtitle">本轮详情</h3>
-      <ul class="review-report__list">${resultsHtml}</ul>
-      <div class="review-report__actions">
-        <a href="#/" class="btn btn--primary">返回首页</a>
-        <button class="btn" data-action="restart">再来一轮</button>
       </div>
     </div>
   `;
 
-  container.querySelector('[data-action="restart"]').addEventListener('click', () => {
-    renderReviewPage(container);
-  });
+  container.querySelector('[data-action="restart"]')?.addEventListener('click', () => renderReviewPage(container));
 
-  window.dispatchEvent(new CustomEvent('shiyun:review-complete', {
-    detail: { summary, session },
-  }));
+  window.dispatchEvent(new CustomEvent('shiyun:review-complete', { detail: { summary, session } }));
 }
 
 function statusLabel(status) {

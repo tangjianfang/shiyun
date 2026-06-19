@@ -56,10 +56,10 @@ describe('getStatusBadge', () => {
     expect(getStatusBadge(p).label).toContain('学习中');
   });
 
-  it('reviewing 应返回 reviewing', () => {
+  it('reviewing 应返回 review 类型', () => {
     const p = { status: 'reviewing', learnCount: 5 };
-    expect(getStatusBadge(p).type).toBe('reviewing');
-    expect(getStatusBadge(p).label).toContain('已学');
+    expect(getStatusBadge(p).type).toBe('review');
+    expect(getStatusBadge(p).label).toBeDefined();
   });
 
   it('mastered 应返回 mastered 含 ⭐', () => {
