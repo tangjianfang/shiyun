@@ -10,6 +10,9 @@ import { filterPoems, attachUserState, groupForPrint, renderPrintHtml, triggerPr
 const GRADES = [1, 2, 3, 4, 5, 6];
 
 export function renderPrintPage(container) {
+  const root = container || document.getElementById('app-main');
+  if (!root) return;
+
   loadPoemMeta();
   const poems = getAllPoems().map(p => ({ ...p }));
   const poemsWithState = attachUserState(poems);
@@ -17,7 +20,7 @@ export function renderPrintPage(container) {
   const dynasties = getAllDynasties();
   const authors = getAllAuthors();
 
-  container.innerHTML = `
+  root.innerHTML = `
     <div class="print-page">
       <h2>🖨️ 打印</h2>
 
@@ -81,13 +84,13 @@ export function renderPrintPage(container) {
   `;
 
   const updatePreview = () => {
-    const criteria = readCriteria(container);
-    const formatId = container.querySelector('input[name="format"]:checked')?.value || 'dense';
+    const criteria = readCriteria(root);
+    const formatId = root.querySelector('input[name="format"]:checked')?.value || 'dense';
     const filtered = filterPoems(poemsWithState, criteria);
     const groups = groupForPrint(filtered, formatId);
-    const summary = container.querySelector('#print-summary');
+    const summary = root.querySelector('#print-summary');
     summary.textContent = `共 ${filtered.length} 首诗 / ${groups.length} 页`;
-    const preview = container.querySelector('#print-preview');
+    const preview = root.querySelector('#print-preview');
     if (groups.length === 0) {
       preview.innerHTML = '<p class="empty-tip">没有符合条件的诗</p>';
       return;
@@ -95,13 +98,13 @@ export function renderPrintPage(container) {
     preview.innerHTML = renderPrintHtml(groups, formatId);
   };
 
-  container.querySelectorAll('input, select').forEach(el => {
+  root.querySelectorAll('input, select').forEach(el => {
     el.addEventListener('change', updatePreview);
     if (el.type === 'text') el.addEventListener('input', updatePreview);
   });
 
-  container.querySelector('#btn-print').addEventListener('click', () => {
-    triggerPrint(container);
+  root.querySelector('#btn-print').addEventListener('click', () => {
+    triggerPrint(root);
   });
 
   updatePreview();

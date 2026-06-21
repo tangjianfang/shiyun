@@ -445,6 +445,7 @@
 
 /* ══════════════════════════════
    诗云 · 时代长河（#/cloud）
+   多行 HTML Grid 布局：所有诗人天然可见，移动端自适应
 ══════════════════════════════ */
 .cloud-legend {
   display: flex;
@@ -457,49 +458,109 @@
 }
 .cloud-legend__item { display: inline-flex; align-items: center; gap: var(--s-2); }
 .cloud-legend__line { width: 22px; height: 0; border-top-width: 2px; border-top-style: solid; }
-.cloud-legend__line--friend { border-color: var(--cinnabar-500); }
-.cloud-legend__line--school { border-color: var(--indigo-600); border-top-style: dashed; }
-.cloud-legend__line--mentor { border-color: var(--jade-600); border-top-style: dotted; }
+.cloud-legend__line--friend { border-color: #c0392b; }
+.cloud-legend__line--school { border-color: #3a5a78; border-top-style: dashed; }
+.cloud-legend__line--mentor { border-color: #3a8f6f; border-top-style: dotted; }
 .cloud-legend__item--hint { margin-left: auto; font-style: italic; color: var(--ink-300); }
 
-.cloud-scroll {
-  overflow-x: auto;
-  overflow-y: hidden;
-  border-radius: var(--r-lg);
-  background:
-    radial-gradient(120% 80% at 50% 0%, rgba(160,190,210,.10), transparent 60%),
-    linear-gradient(180deg, var(--paper-0), var(--paper-1));
+.cloud-rows { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.cloud-row {
+  background: var(--paper-1);
   border: 1px solid var(--paper-edge);
-  box-shadow: var(--shadow-sm) inset;
-  -webkit-overflow-scrolling: touch;
+  border-radius: var(--r-lg);
+  padding: var(--s-4);
 }
-.cloud-svg { display: block; }
+.cloud-row__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+  padding-bottom: var(--s-2);
+  border-bottom: 1px dashed var(--paper-edge);
+}
+.cloud-row__chip {
+  font-family: var(--font-zh-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h2);
+  color: #2b2620;
+  background: var(--c, #d8cdb8);
+  padding: 2px var(--s-3);
+  border-radius: var(--r-pill);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px var(--c, #d8cdb8);
+}
+.cloud-row__range {
+  font-size: var(--fs-sm);
+  color: var(--ink-500);
+  font-family: var(--font-pinyin);
+}
+.cloud-row__count {
+  margin-left: auto;
+  font-size: var(--fs-sm);
+  color: var(--ink-500);
+}
+.cloud-row__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+  gap: var(--s-2);
+}
 
-.cloud-era {
+/* 节点按钮：四种尺寸档位 */
+.cloud-node {
+  appearance: none;
+  border: 1.5px solid var(--c, #d8cdb8);
+  background: color-mix(in srgb, var(--c, #d8cdb8) 18%, var(--paper-0));
+  border-radius: var(--r-md);
+  padding: var(--s-2) var(--s-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
   font-family: var(--font-zh-ui);
-  font-size: 12px;
-  fill: var(--ink-500);
-  font-weight: var(--fw-medium);
+  color: var(--ink-900);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+  min-height: 56px;
+  position: relative;
+}
+.cloud-node:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: color-mix(in srgb, var(--c, #d8cdb8) 32%, var(--paper-0));
+}
+.cloud-node:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--focus-ring); }
+.cloud-node--active {
+  background: color-mix(in srgb, var(--c, #d8cdb8) 50%, var(--paper-0));
+  box-shadow: 0 0 0 2px var(--cinnabar-500), var(--shadow-md);
+  transform: translateY(-1px);
+}
+.cloud-node__name {
+  font-family: var(--font-zh-display);
+  font-weight: var(--fw-bold);
+  font-size: 15px;
+  line-height: 1.1;
+}
+.cloud-node__count {
+  font-size: 11px;
+  color: var(--ink-500);
+}
+.cloud-node__years {
+  font-size: 10px;
+  color: var(--ink-300);
+  font-family: var(--font-pinyin);
 }
 
-.cloud-link { transition: stroke-width var(--t-base), opacity var(--t-base); opacity: .5; }
-.cloud-link--active { opacity: 1; stroke-width: 3; }
-
-.cloud-node { cursor: pointer; animation: cloud-float 6s ease-in-out infinite; animation-delay: calc(var(--i) * -0.3s); }
-.cloud-node__body { transition: transform var(--t-base) var(--ease-out), filter var(--t-base); filter: drop-shadow(0 4px 10px rgba(80,60,30,.18)); }
-.cloud-node__halo { transition: opacity var(--t-base); }
-.cloud-node__name { font-family: var(--font-zh-display); font-size: 14px; font-weight: var(--fw-bold); fill: #fff; pointer-events: none; }
-.cloud-node__year { font-family: var(--font-zh-ui); font-size: 11px; fill: var(--ink-500); pointer-events: none; }
-.cloud-node:hover .cloud-node__body,
-.cloud-node:focus .cloud-node__body { filter: drop-shadow(0 6px 16px rgba(192,57,43,.35)); }
-.cloud-node:focus { outline: none; }
-.cloud-node--active .cloud-node__halo { opacity: .4; }
-.cloud-node--active .cloud-node__name { font-size: 15px; }
-
-@keyframes cloud-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
+/* 尺寸档位（按入选诗数量） */
+.cloud-node--xl { min-height: 76px; padding: var(--s-3) var(--s-3); }
+.cloud-node--xl .cloud-node__name { font-size: 18px; }
+.cloud-node--xl .cloud-node__count { font-size: 12px; font-weight: var(--fw-medium); color: var(--ink-700); }
+.cloud-node--lg { min-height: 66px; }
+.cloud-node--lg .cloud-node__name { font-size: 16px; }
+.cloud-node--md { min-height: 60px; }
+.cloud-node--sm { min-height: 52px; }
+.cloud-node--sm .cloud-node__name { font-size: 13px; }
+.cloud-node--sm .cloud-node__years { display: none; }
 
 .cloud-detail {
   margin-top: var(--s-5);
@@ -539,11 +600,14 @@
 
 /* 云页移动端适配 */
 @media (max-width: 767px) {
+  .cloud-row { padding: var(--s-3); }
+  .cloud-row__grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: var(--s-1); }
+  .cloud-node { padding: var(--s-2); min-height: 48px; }
+  .cloud-node__name { font-size: 13px; }
   .cloud-detail {
     padding: var(--s-3) var(--s-4);
     margin-top: var(--s-3);
   }
   .cloud-detail__name { font-size: 1.3rem; }
   .cloud-poem-chip { padding: var(--s-1) var(--s-3); font-size: var(--fs-sm); }
-  .poem-keywords { margin-top: var(--s-3); gap: var(--s-2); }
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { lineAtTime } from '../src/js/ui/learn.js';
-import { layoutAuthors } from '../src/js/ui/cloud.js';
+import { groupByDynasty } from '../src/js/ui/cloud.js';
 import { AUTHORS_META, authorYear, authorIndex, DYNASTY_BANDS } from '../src/data/authors-meta.js';
 
 describe('lineAtTime（按句同步高亮估算）', () => {
@@ -14,12 +14,10 @@ describe('lineAtTime（按句同步高亮估算）', () => {
   });
 
   it('开头仍在读标题，返回 -1', () => {
-    // pos < 3 → currentSec/dur*23 < 3 → currentSec < 3/23*dur
     expect(lineAtTime(0, 23, title, lines)).toBe(-1); // pos=0
   });
 
   it('读到正文第一句返回 0', () => {
-    // 想要 pos 落在 [3,8) → currentSec 落在 [3,8)（dur=23 时 pos=currentSec）
     expect(lineAtTime(5, 23, title, lines)).toBe(0);
   });
 
@@ -55,34 +53,26 @@ describe('作者数据集 authors-meta', () => {
   });
 });
 
-describe('layoutAuthors（诗云布局）', () => {
+describe('groupByDynasty（按朝代分组）', () => {
   const sample = [
     { name: '杜甫', dynasty: '唐', birth: 712, relations: [] },
     { name: '李白', dynasty: '唐', birth: 701, relations: [] },
     { name: '诗经', dynasty: '先秦', birth: -800, relations: [] },
+    { name: '苏轼', dynasty: '宋', birth: 1037, relations: [] },
   ];
 
-  it('按年代升序排列', () => {
-    const nodes = layoutAuthors(sample);
-    expect(nodes.map(n => n.name)).toEqual(['诗经', '李白', '杜甫']);
+  it('按 DYNASTY_BANDS 时间先后返回组', () => {
+    const rows = groupByDynasty(sample);
+    expect(rows.map(r => r.dynasty)).toEqual(['先秦', '唐', '宋']);
   });
 
-  it('每个节点有 x/y 坐标且 x 递增', () => {
-    const nodes = layoutAuthors(sample);
-    expect(nodes[0].x).toBeLessThan(nodes[1].x);
-    expect(nodes[1].x).toBeLessThan(nodes[2].x);
-    nodes.forEach(n => {
-      expect(typeof n.x).toBe('number');
-      expect(typeof n.y).toBe('number');
-    });
+  it('组内按生年升序', () => {
+    const rows = groupByDynasty(sample);
+    expect(rows[1].authors.map(a => a.name)).toEqual(['李白', '杜甫']);
   });
 
-  it('size 反映入选诗作数量', () => {
-    const counts = new Map([['李白', 6], ['杜甫', 3]]);
-    const nodes = layoutAuthors(sample, counts);
-    const libai = nodes.find(n => n.name === '李白');
-    const dufu = nodes.find(n => n.name === '杜甫');
-    expect(libai.size).toBe(6);
-    expect(dufu.size).toBe(3);
+  it('空朝代被过滤', () => {
+    const rows = groupByDynasty([{ name: '无名', dynasty: '不存在', birth: 100, relations: [] }]);
+    expect(rows).toHaveLength(0);
   });
 });

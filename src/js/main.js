@@ -10,6 +10,7 @@ import { renderReviewPage } from './ui/review.js';
 import { startQuiz } from './ui/quiz.js';
 import { renderProgressPage } from './ui/progress.js';
 import { renderCloudPage } from './ui/cloud.js';
+import { renderPrintPage } from './ui/print.js';
 
 const routes = {
   '#/': () => renderHome(),
@@ -24,6 +25,7 @@ const routes = {
   },
   '#/cloud': () => renderCloudPage(),
   '#/progress': () => renderProgressPage(),
+  '#/print': () => renderPrintPage(),
   '#/styleguide': () => renderStyleGuide(),
 };
 
