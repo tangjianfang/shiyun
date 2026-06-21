@@ -29,19 +29,31 @@ export function renderPrintPage(container) {
         <div class="filter-grid">
           <div class="filter-group">
             <label>年级</label>
-            <div class="chip-group" id="grades-chips">
+            <div class="chip-group" id="grades-chips" data-bulk>
+              <div class="bulk-actions">
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
+              </div>
               ${GRADES.map(g => `<label class="chip"><input type="checkbox" value="${g}" checked>${g} 年级</label>`).join('')}
             </div>
           </div>
           <div class="filter-group">
             <label>朝代</label>
-            <div class="chip-group" id="dynasties-chips">
+            <div class="chip-group" id="dynasties-chips" data-bulk>
+              <div class="bulk-actions">
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
+              </div>
               ${dynasties.map(d => `<label class="chip"><input type="checkbox" value="${escapeHtml(d)}" checked>${escapeHtml(d)}</label>`).join('')}
             </div>
           </div>
           <div class="filter-group">
             <label>作者</label>
-            <div class="chip-group scrollable" id="authors-chips">
+            <div class="chip-group scrollable" id="authors-chips" data-bulk>
+              <div class="bulk-actions">
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
+              </div>
               ${authors.map(a => `<label class="chip"><input type="checkbox" value="${escapeHtml(a)}" checked>${escapeHtml(a)}</label>`).join('')}
             </div>
           </div>
@@ -101,6 +113,19 @@ export function renderPrintPage(container) {
   root.querySelectorAll('input, select').forEach(el => {
     el.addEventListener('change', updatePreview);
     if (el.type === 'text') el.addEventListener('input', updatePreview);
+  });
+
+  // 批量操作：每个 chip-group 内的 [data-bulk-action] 按钮
+  root.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('[data-bulk-action]');
+    if (!btn || !root.contains(btn)) return;
+    const group = btn.closest('.chip-group');
+    if (!group) return;
+    const checked = btn.dataset.bulkAction === 'all';
+    group.querySelectorAll('input[type=checkbox]').forEach(cb => {
+      cb.checked = checked;
+    });
+    updatePreview();
   });
 
   root.querySelector('#btn-print').addEventListener('click', () => {

@@ -26,9 +26,11 @@ export function filterPoems(poems, criteria = {}) {
   const { grades, dynasties, authors, reviewFilter = 'all', keyword } = criteria;
   const today = new Date().toISOString().slice(0, 10);
   return poems.filter(p => {
-    if (grades && grades.length > 0 && !grades.includes(p.grade)) return false;
-    if (dynasties && dynasties.length > 0 && !dynasties.includes(p.dynasty)) return false;
-    if (authors && authors.length > 0 && !authors.includes(p.author)) return false;
+    // 当筛选项被显式传为数组时，视为"已选"白名单：空数组 = 一项都不选。
+    // 这样取消全选时预览会立刻归零，而不是把所有诗重新吐出来。
+    if (grades && !grades.includes(p.grade)) return false;
+    if (dynasties && !dynasties.includes(p.dynasty)) return false;
+    if (authors && !authors.includes(p.author)) return false;
     if (keyword && keyword.trim()) {
       const kw = keyword.trim().toLowerCase();
       const inTitle = (p.title || '').toLowerCase().includes(kw);

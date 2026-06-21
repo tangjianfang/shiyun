@@ -611,3 +611,99 @@
   .cloud-detail__name { font-size: 1.3rem; }
   .cloud-poem-chip { padding: var(--s-1) var(--s-3); font-size: var(--fs-sm); }
 }
+
+/* ══════════════════════════════
+   打印 Print
+══════════════════════════════ */
+.print-page .filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--s-3);
+}
+.print-page .filter-group > label {
+  display: block;
+  font-weight: 600;
+  color: var(--ink-500);
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-sm);
+}
+.print-page .chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+  padding: var(--s-2);
+  background: var(--paper-1);
+  border-radius: var(--r-md);
+  border: 1px solid var(--paper-edge);
+}
+.print-page .chip-group.scrollable {
+  max-height: 140px;
+  overflow-y: auto;
+}
+.print-page .chip-group .bulk-actions {
+  display: flex;
+  gap: var(--s-1);
+  width: 100%;
+  padding-bottom: var(--s-2);
+  margin-bottom: var(--s-1);
+  border-bottom: 1px dashed var(--paper-edge);
+}
+.print-page .chip-group .bulk-actions .btn {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+}
+.print-page .filter-group select,
+.print-page .filter-group input[type=text] {
+  width: 100%;
+  padding: var(--s-2);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-sm);
+  background: var(--paper-1);
+  font-size: var(--fs-base);
+}
+.print-page .format-selector .format-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+.print-page .format-card {
+  display: block;
+  padding: var(--s-3);
+  border: 1px solid var(--paper-edge);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: var(--paper-1);
+}
+.print-page .format-card:hover {
+  border-color: var(--cinnabar-300, #e89a8e);
+  background: var(--paper-0);
+}
+.print-page .format-card input { margin-right: var(--s-2); }
+.print-page .format-card .format-name { font-weight: 600; margin-bottom: 4px; }
+.print-page .format-card .format-desc { color: var(--ink-500); font-size: var(--fs-sm); }
+.print-page .format-card .format-meta { color: var(--ink-300); font-size: var(--fs-xs); margin-top: 4px; }
+.print-page .print-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin: var(--s-4) 0;
+}
+.print-page .print-actions .summary {
+  color: var(--ink-500);
+  font-size: var(--fs-sm);
+}
+.print-page .print-preview {
+  margin-top: var(--s-4);
+  border: 1px dashed var(--paper-edge);
+  border-radius: var(--r-md);
+  padding: var(--s-3);
+  min-height: 120px;
+}
+.print-page .print-preview .empty-tip {
+  color: var(--ink-300);
+  text-align: center;
+  padding: var(--s-6);
+}
