@@ -83,6 +83,110 @@
   .home-quick { grid-template-columns: repeat(4, 1fr); }
 }
 
+/* ── 12 学期时间线：上学之旅 ── */
+.home-semesters {
+  margin-bottom: var(--s-4);
+}
+.home-semesters__head {
+  margin-bottom: var(--s-3);
+}
+.home-semesters__title {
+  font-family: var(--font-zh-display);
+  font-size: 1.25rem;
+  font-weight: var(--fw-bold);
+  color: var(--ink-900);
+  margin: 0 0 var(--s-1) 0;
+}
+.home-semesters__sub {
+  font-size: var(--fs-sm);
+  color: var(--ink-500);
+  margin: 0;
+}
+.home-semesters__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--s-2);
+}
+.sem-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border: 1px solid var(--paper-200);
+  border-radius: var(--r-md);
+  background: var(--paper-50);
+  text-decoration: none;
+  color: var(--ink-700);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  overflow: hidden;
+}
+.sem-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--cinnabar-300);
+  box-shadow: var(--shadow-soft);
+}
+.sem-card--current {
+  border-color: var(--cinnabar-500);
+  background: linear-gradient(180deg, var(--cinnabar-50), var(--paper-50));
+}
+.sem-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+}
+.sem-card__idx {
+  font-family: var(--font-zh-display);
+  font-size: 1.1rem;
+  font-weight: var(--fw-bold);
+  color: var(--cinnabar-500);
+}
+.sem-card__label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--ink-700);
+}
+.sem-card__progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--paper-200);
+  overflow: hidden;
+}
+.sem-card__bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cinnabar-400), var(--cinnabar-600));
+  border-radius: 999px;
+  transition: width .3s ease;
+}
+.sem-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--fs-xs);
+  color: var(--ink-500);
+}
+.sem-card__count { font-weight: var(--fw-medium); }
+.sem-card__pct   { font-family: var(--font-zh-display); }
+.sem-card__badge {
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-2);
+  font-size: 0.7rem;
+  font-weight: var(--fw-bold);
+  color: var(--amber-500);
+}
+
+@media (max-width: 900px) {
+  .home-semesters__grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 600px) {
+  .home-semesters__grid { grid-template-columns: repeat(3, 1fr); }
+  .home-semesters__title { font-size: 1.05rem; }
+}
+@media (max-width: 380px) {
+  .home-semesters__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ══════════════════════════════
    诗词列表 Poem List
 ══════════════════════════════ */
@@ -456,11 +560,25 @@
   font-size: var(--fs-sm);
   color: var(--ink-500);
 }
+
+/* 学期筛选（双视图维度） */
+.cloud-sem-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.cloud-sem-filter__label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--ink-700);
+}
 .cloud-legend__item { display: inline-flex; align-items: center; gap: var(--s-2); }
 .cloud-legend__line { width: 22px; height: 0; border-top-width: 2px; border-top-style: solid; }
-.cloud-legend__line--friend { border-color: #c0392b; }
-.cloud-legend__line--school { border-color: #3a5a78; border-top-style: dashed; }
-.cloud-legend__line--mentor { border-color: #3a8f6f; border-top-style: dotted; }
+.cloud-legend__line--friend { border-color: #2563eb; }
+.cloud-legend__line--school { border-color: #1e40af; border-top-style: dashed; }
+.cloud-legend__line--mentor { border-color: #059669; border-top-style: dotted; }
 .cloud-legend__item--hint { margin-left: auto; font-style: italic; color: var(--ink-300); }
 
 .cloud-rows { display: flex; flex-direction: column; gap: var(--s-4); }

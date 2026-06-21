@@ -63,12 +63,22 @@ function patternToRegex(pattern) {
   return new RegExp('^' + regexStr + '$');
 }
 
-/** 匹配模式，返回参数对象或 null */
+/** 匹配模式，返回参数对象或 null（参数值自动 URL decode） */
 function matchRoute(pattern, hash) {
   const regex = patternToRegex(pattern);
   const m = hash.match(regex);
   if (!m) return null;
-  return m.groups || {};
+  // URL 解码参数（hash 中的中文/特殊字符以 %E4%B8%8A 形式编码）
+  const groups = m.groups || {};
+  const decoded = {};
+  for (const k of Object.keys(groups)) {
+    try {
+      decoded[k] = decodeURIComponent(groups[k]);
+    } catch {
+      decoded[k] = groups[k];  // 解码失败则保留原值
+    }
+  }
+  return decoded;
 }
 
 /** 高亮底部 tab */

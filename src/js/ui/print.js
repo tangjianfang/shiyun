@@ -8,6 +8,7 @@ import { loadPoemMeta, getAllDynasties, getAllAuthors, getAllPoems } from '../da
 import { filterPoems, attachUserState, groupForPrint, renderPrintHtml, triggerPrint, FORMAT_DEFS, REVIEW_FILTERS } from '../print.js';
 
 const GRADES = [1, 2, 3, 4, 5, 6];
+const SEMESTERS = ['上', '下'];
 
 export function renderPrintPage(container) {
   const root = container || document.getElementById('app-main');
@@ -34,7 +35,17 @@ export function renderPrintPage(container) {
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
               </div>
-              ${GRADES.map(g => `<label class="chip"><input type="checkbox" value="${g}" checked>${g} 年级</label>`).join('')}
+              ${GRADES.map(g => `<label class="chip"><input type="checkbox" value="${g}">${g} 年级</label>`).join('')}
+            </div>
+          </div>
+          <div class="filter-group">
+            <label>学期（上下册）</label>
+            <div class="chip-group" id="semesters-chips" data-bulk>
+              <div class="bulk-actions">
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
+                <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
+              </div>
+              ${SEMESTERS.map(s => `<label class="chip"><input type="checkbox" value="${escapeHtml(s)}">${s === '上' ? '上册' : '下册'}</label>`).join('')}
             </div>
           </div>
           <div class="filter-group">
@@ -44,7 +55,7 @@ export function renderPrintPage(container) {
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
               </div>
-              ${dynasties.map(d => `<label class="chip"><input type="checkbox" value="${escapeHtml(d)}" checked>${escapeHtml(d)}</label>`).join('')}
+              ${dynasties.map(d => `<label class="chip"><input type="checkbox" value="${escapeHtml(d)}">${escapeHtml(d)}</label>`).join('')}
             </div>
           </div>
           <div class="filter-group">
@@ -54,7 +65,7 @@ export function renderPrintPage(container) {
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="all">全选</button>
                 <button type="button" class="btn btn--ghost btn--sm" data-bulk-action="none">取消全选</button>
               </div>
-              ${authors.map(a => `<label class="chip"><input type="checkbox" value="${escapeHtml(a)}" checked>${escapeHtml(a)}</label>`).join('')}
+              ${authors.map(a => `<label class="chip"><input type="checkbox" value="${escapeHtml(a)}">${escapeHtml(a)}</label>`).join('')}
             </div>
           </div>
           <div class="filter-group">
@@ -101,10 +112,21 @@ export function renderPrintPage(container) {
     const filtered = filterPoems(poemsWithState, criteria);
     const groups = groupForPrint(filtered, formatId);
     const summary = root.querySelector('#print-summary');
-    summary.textContent = `共 ${filtered.length} 首诗 / ${groups.length} 页`;
+    const totalSelected =
+      (criteria.grades?.length || 0) +
+      (criteria.semesters?.length || 0) +
+      (criteria.dynasties?.length || 0) +
+      (criteria.authors?.length || 0) +
+      (criteria.keyword?.trim() ? 1 : 0) +
+      (criteria.reviewFilter && criteria.reviewFilter !== 'all' ? 1 : 0);
+    summary.textContent = totalSelected === 0
+      ? '请勾选要打印的诗（共 112 首可选）'
+      : `共 ${filtered.length} 首诗 / ${groups.length} 页`;
     const preview = root.querySelector('#print-preview');
     if (groups.length === 0) {
-      preview.innerHTML = '<p class="empty-tip">没有符合条件的诗</p>';
+      preview.innerHTML = totalSelected === 0
+        ? '<p class="empty-tip">还没有勾选任何诗。点击各类的「全选」可一次性选中该类全部，或单个点击喜欢的诗。</p>'
+        : '<p class="empty-tip">没有符合条件的诗</p>';
       return;
     }
     preview.innerHTML = renderPrintHtml(groups, formatId);
@@ -137,11 +159,12 @@ export function renderPrintPage(container) {
 
 function readCriteria(container) {
   const grades = Array.from(container.querySelectorAll('#grades-chips input:checked')).map(i => parseInt(i.value, 10));
+  const semesters = Array.from(container.querySelectorAll('#semesters-chips input:checked')).map(i => i.value);
   const dynasties = Array.from(container.querySelectorAll('#dynasties-chips input:checked')).map(i => i.value);
   const authors = Array.from(container.querySelectorAll('#authors-chips input:checked')).map(i => i.value);
   const reviewFilter = container.querySelector('#review-filter').value;
   const keyword = container.querySelector('#keyword').value;
-  return { grades, dynasties, authors, reviewFilter, keyword };
+  return { grades, semesters, dynasties, authors, reviewFilter, keyword };
 }
 
 function escapeHtml(str) {

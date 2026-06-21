@@ -4,7 +4,7 @@
 
 import { getUser, getCurrentUserId, getPoemProgress } from '../storage.js';
 import { getTodayReviewList } from '../srs.js';
-import { poems } from '../data.js';
+import { poems, getPoemsBySemester, ALL_SEMESTERS } from '../data.js';
 import { renderUserSwitcher } from './user-switcher.js';
 import { statCard, emptyState, esc, icon } from './components.js';
 
@@ -81,6 +81,51 @@ export function renderHome() {
           <span class="quick-card__label">我的进度</span>
         </a>
       </div>
+
+      <!-- 12 学期时间线：上学之旅 -->
+      <section class="home-semesters">
+        <header class="home-semesters__head">
+          <h2 class="home-semesters__title">📚 上学之旅 · 12 个学期</h2>
+          <p class="home-semesters__sub">按部编版小学语文教材 1-6 年级上下册排布。点击进入该学期诗列表。</p>
+        </header>
+        <div class="home-semesters__grid">
+          ${ALL_SEMESTERS.map((s, i) => {
+            const semPoems = getPoemsBySemester(s.grade, s.semester);
+            const total = semPoems.length;
+            const learned = semPoems.filter(p => {
+              const prog = userProgress[p.id];
+              return prog && prog.status && prog.status !== 'new';
+            }).length;
+            const mastered = semPoems.filter(p => {
+              const prog = userProgress[p.id];
+              return prog && prog.status === 'mastered';
+            }).length;
+            const pct = total > 0 ? Math.round((learned / total) * 100) : 0;
+            const isCurrent = i === Math.min(...ALL_SEMESTERS.map((s2, idx) => {
+              const sp = getPoemsBySemester(s2.grade, s2.semester);
+              const l = sp.filter(p => userProgress[p.id]?.status === 'mastered').length;
+              return l < sp.length ? idx : 999;
+            }));
+            return `
+              <a class="sem-card ${isCurrent ? 'sem-card--current' : ''}"
+                 href="#/learn?grade=${s.grade}&sem=${encodeURIComponent(s.semester)}">
+                <header class="sem-card__head">
+                  <span class="sem-card__idx">${i + 1}</span>
+                  <span class="sem-card__label">${s.label}</span>
+                </header>
+                <div class="sem-card__progress">
+                  <div class="sem-card__bar" style="width:${pct}%"></div>
+                </div>
+                <div class="sem-card__meta">
+                  <span class="sem-card__count">${learned}/${total}</span>
+                  <span class="sem-card__pct">${pct}%</span>
+                </div>
+                ${mastered > 0 ? `<span class="sem-card__badge">⭐ ${mastered}</span>` : ''}
+              </a>
+            `;
+          }).join('')}
+        </div>
+      </section>
 
       <!-- 每日格言 -->
       <aside class="card" style="margin-top:var(--s-6);text-align:center;border-style:dashed;">

@@ -1,1458 +1,786 @@
 {
-  "g1-01": {
-    "file": "assets/audio/g1-01-静夜思-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 137652,
-    "durationMs": 8496,
-    "generatedAt": "2026-06-19T15:04:15.382Z"
-  },
-  "g1-02": {
-    "file": "assets/audio/g1-02-咏鹅-唐-骆宾王.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 139956,
-    "durationMs": 8640,
-    "generatedAt": "2026-06-19T15:05:22.794Z"
-  },
-  "g1-03": {
-    "file": "assets/audio/g1-03-江南-汉-汉乐府.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 217140,
-    "durationMs": 13464,
-    "generatedAt": "2026-06-19T15:05:24.564Z"
-  },
-  "g1-04": {
-    "file": "assets/audio/g1-04-画-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 133044,
-    "durationMs": 8208,
-    "generatedAt": "2026-06-19T15:05:25.888Z"
-  },
-  "g1-05": {
-    "file": "assets/audio/g1-05-悯农·其二-唐-李绅.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 148020,
-    "durationMs": 9144,
-    "generatedAt": "2026-06-19T15:05:27.210Z"
-  },
-  "g1-06": {
-    "file": "assets/audio/g1-06-古朗月行（节选）-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 154932,
-    "durationMs": 9576,
-    "generatedAt": "2026-06-19T15:05:28.580Z"
-  },
-  "g1-07": {
-    "file": "assets/audio/g1-07-风-唐-李峤.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 146292,
-    "durationMs": 9036,
-    "generatedAt": "2026-06-19T15:05:29.960Z"
-  },
-  "g1-08": {
-    "file": "assets/audio/g1-08-春晓-唐-孟浩然.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 143412,
-    "durationMs": 8856,
-    "generatedAt": "2026-06-19T15:05:31.348Z"
-  },
-  "g1-09": {
-    "file": "assets/audio/g1-09-赠汪伦-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 179124,
-    "durationMs": 11088,
-    "generatedAt": "2026-06-19T15:05:32.862Z"
-  },
-  "g1-10": {
-    "file": "assets/audio/g1-10-绝句-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 195252,
-    "durationMs": 12096,
-    "generatedAt": "2026-06-19T15:05:34.482Z"
-  },
-  "g1-11": {
-    "file": "assets/audio/g1-11-寻隐者不遇-唐-贾岛.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 145140,
-    "durationMs": 8964,
-    "generatedAt": "2026-06-19T15:05:35.853Z"
-  },
-  "g1-12": {
-    "file": "assets/audio/g1-12-登鹳雀楼-唐-王之涣.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 129012,
-    "durationMs": 7956,
-    "generatedAt": "2026-06-19T15:05:37.234Z"
-  },
-  "g2-01": {
-    "file": "assets/audio/g2-01-村居-清-高鼎.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 176820,
-    "durationMs": 10944,
-    "generatedAt": "2026-06-19T15:05:38.766Z"
-  },
-  "g2-03": {
-    "file": "assets/audio/g2-03-晓出净慈寺送林子方-宋-杨万里.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 212532,
-    "durationMs": 13176,
-    "generatedAt": "2026-06-19T15:05:43.679Z"
-  },
-  "g2-05": {
-    "file": "assets/audio/g2-05-枫桥夜泊-唐-张继.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 210228,
-    "durationMs": 13032,
-    "generatedAt": "2026-06-19T15:05:48.586Z"
-  },
-  "g2-07": {
-    "file": "assets/audio/g2-07-敕勒歌-南北朝-北朝民歌.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 224628,
-    "durationMs": 13932,
-    "generatedAt": "2026-06-19T15:05:53.499Z"
-  },
-  "g2-10": {
-    "file": "assets/audio/g2-10-游子吟-唐-孟郊.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 200436,
-    "durationMs": 12420,
-    "generatedAt": "2026-06-19T15:06:01.441Z"
-  },
-  "g2-12": {
-    "file": "assets/audio/g2-12-江上渔者-宋-范仲淹.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 142836,
-    "durationMs": 8820,
-    "generatedAt": "2026-06-19T15:06:05.945Z"
-  },
-  "g3-01": {
-    "file": "assets/audio/g3-01-赠刘景文-宋-苏轼.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 181428,
-    "durationMs": 11232,
-    "generatedAt": "2026-06-19T15:06:13.787Z"
-  },
-  "g3-03": {
-    "file": "assets/audio/g3-03-九月九日忆山东兄弟-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 237300,
-    "durationMs": 14724,
-    "generatedAt": "2026-06-19T15:06:18.665Z"
-  },
-  "g3-05": {
-    "file": "assets/audio/g3-05-饮湖上初晴后雨-宋-苏轼.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 222324,
-    "durationMs": 13788,
-    "generatedAt": "2026-06-19T15:06:23.551Z"
-  },
-  "g3-08": {
-    "file": "assets/audio/g3-08-山行-唐-杜牧.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 200436,
-    "durationMs": 12420,
-    "generatedAt": "2026-06-19T15:06:31.411Z"
-  },
-  "g3-10": {
-    "file": "assets/audio/g3-10-长歌行-汉-汉乐府.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 359988,
-    "durationMs": 22392,
-    "generatedAt": "2026-06-19T15:06:36.922Z"
-  },
-  "g3-12": {
-    "file": "assets/audio/g3-12-惠崇春江晚景-宋-苏轼.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 195828,
-    "durationMs": 12132,
-    "generatedAt": "2026-06-19T15:06:41.661Z"
-  },
-  "g3-15": {
-    "file": "assets/audio/g3-15-游园不值-宋-叶绍翁.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 199860,
-    "durationMs": 12384,
-    "generatedAt": "2026-06-19T15:06:49.623Z"
-  },
-  "g3-17": {
-    "file": "assets/audio/g3-17-四时田园杂兴-宋-范成大.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 221748,
-    "durationMs": 13752,
-    "generatedAt": "2026-06-19T15:06:54.468Z"
-  },
-  "g3-19": {
-    "file": "assets/audio/g3-19-竹里馆-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 140532,
-    "durationMs": 8676,
-    "generatedAt": "2026-06-19T15:06:58.944Z"
-  },
-  "g4-02": {
-    "file": "assets/audio/g4-02-鹿柴-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 142260,
-    "durationMs": 8784,
-    "generatedAt": "2026-06-19T15:07:07.002Z"
-  },
-  "g4-04": {
-    "file": "assets/audio/g4-04-出塞-唐-王昌龄.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 173940,
-    "durationMs": 10764,
-    "generatedAt": "2026-06-19T15:07:11.667Z"
-  },
-  "g4-07": {
-    "file": "assets/audio/g4-07-别董大-唐-高适.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 191220,
-    "durationMs": 11844,
-    "generatedAt": "2026-06-19T15:07:19.599Z"
-  },
-  "g4-09": {
-    "file": "assets/audio/g4-09-暮江吟-唐-白居易.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 214836,
-    "durationMs": 13320,
-    "generatedAt": "2026-06-19T15:07:24.684Z"
-  },
-  "g4-11": {
-    "file": "assets/audio/g4-11-芙蓉楼送辛渐-唐-王昌龄.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 208500,
-    "durationMs": 12924,
-    "generatedAt": "2026-06-19T15:07:29.493Z"
-  },
-  "g4-14": {
-    "file": "assets/audio/g4-14-竹石-清-郑燮.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 191220,
-    "durationMs": 11844,
-    "generatedAt": "2026-06-19T15:07:37.333Z"
-  },
-  "g4-16": {
-    "file": "assets/audio/g4-16-江畔独步寻花·其六-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 217140,
-    "durationMs": 13464,
-    "generatedAt": "2026-06-19T15:07:42.237Z"
-  },
-  "g4-18": {
-    "file": "assets/audio/g4-18-山中-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 154932,
-    "durationMs": 9576,
-    "generatedAt": "2026-06-19T15:07:46.784Z"
-  },
-  "g5-01": {
-    "file": "assets/audio/g5-01-蝉-唐-虞世南.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 139380,
-    "durationMs": 8604,
-    "generatedAt": "2026-06-19T15:07:54.554Z"
-  },
-  "g5-03": {
-    "file": "assets/audio/g5-03-示儿-宋-陆游.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 176820,
-    "durationMs": 10944,
-    "generatedAt": "2026-06-19T15:07:59.261Z"
-  },
-  "g5-06": {
-    "file": "assets/audio/g5-06-闻官军收河南河北-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 339828,
-    "durationMs": 21132,
-    "generatedAt": "2026-06-19T15:08:07.729Z"
-  },
-  "g5-08": {
-    "file": "assets/audio/g5-08-山居秋暝-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 285684,
-    "durationMs": 17748,
-    "generatedAt": "2026-06-19T15:08:12.906Z"
-  },
-  "g5-10": {
-    "file": "assets/audio/g5-10-春日偶成-宋-程颢.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 173940,
-    "durationMs": 10764,
-    "generatedAt": "2026-06-19T15:08:17.800Z"
-  },
-  "g5-13": {
-    "file": "assets/audio/g5-13-从军行-唐-王昌龄.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 194676,
-    "durationMs": 12060,
-    "generatedAt": "2026-06-19T15:08:25.653Z"
-  },
-  "g5-15": {
-    "file": "assets/audio/g5-15-十一月四日风雨大作-宋-陆游.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 217716,
-    "durationMs": 13500,
-    "generatedAt": "2026-06-19T15:08:30.677Z"
-  },
-  "g5-17": {
-    "file": "assets/audio/g5-17-春望-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 281076,
-    "durationMs": 17460,
-    "generatedAt": "2026-06-19T15:08:35.941Z"
-  },
-  "g5-20": {
-    "file": "assets/audio/g5-20-黄鹤楼-唐-崔颢.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 328308,
-    "durationMs": 20412,
-    "generatedAt": "2026-06-19T15:08:44.382Z"
-  },
-  "g6-02": {
-    "file": "assets/audio/g6-02-六月二十七日望湖楼醉书-宋-苏轼.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 209652,
-    "durationMs": 12996,
-    "generatedAt": "2026-06-19T15:08:49.183Z"
-  },
-  "g6-04": {
-    "file": "assets/audio/g6-04-长相思-清-纳兰性德.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 336372,
-    "durationMs": 20916,
-    "generatedAt": "2026-06-19T15:08:54.502Z"
-  },
-  "g6-06": {
-    "file": "assets/audio/g6-06-浪淘沙·九曲黄河-唐-刘禹锡.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 213684,
-    "durationMs": 13248,
-    "generatedAt": "2026-06-19T15:08:59.359Z"
-  },
-  "g6-09": {
-    "file": "assets/audio/g6-09-闻王昌龄左迁龙标遥有此寄-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 232116,
-    "durationMs": 14400,
-    "generatedAt": "2026-06-19T15:09:07.421Z"
-  },
-  "g6-11": {
-    "file": "assets/audio/g6-11-渔家傲·秋思-宋-范仲淹.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 426228,
-    "durationMs": 26532,
-    "generatedAt": "2026-06-19T15:09:13.346Z"
-  },
-  "g6-13": {
-    "file": "assets/audio/g6-13-卜算子·送鲍浩然之浙东-宋-王观.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 331188,
-    "durationMs": 20592,
-    "generatedAt": "2026-06-19T15:09:18.739Z"
-  },
-  "g6-15": {
-    "file": "assets/audio/g6-15-天竺寺八月十五日夜桂子-唐-皮日休.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 210804,
-    "durationMs": 13068,
-    "generatedAt": "2026-06-19T15:09:23.588Z"
-  },
-  "g6-18": {
-    "file": "assets/audio/g6-18-小儿垂钓-唐-胡令能.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 208500,
-    "durationMs": 12924,
-    "generatedAt": "2026-06-19T15:09:31.553Z"
-  },
-  "g6-20": {
-    "file": "assets/audio/g6-20-所见-清-袁枚.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 133620,
-    "durationMs": 8244,
-    "generatedAt": "2026-06-19T15:09:36.137Z"
-  },
-  "g6-22": {
-    "file": "assets/audio/g6-22-十五夜望月-唐-王建.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 210804,
-    "durationMs": 13068,
-    "generatedAt": "2026-06-19T15:09:41.018Z"
-  },
-  "g6-25": {
-    "file": "assets/audio/g6-25-约客-宋-赵师秀.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 184884,
-    "durationMs": 11448,
-    "generatedAt": "2026-06-19T15:09:48.918Z"
-  },
-  "g2-02": {
-    "file": "assets/audio/g2-02-咏柳-唐-贺知章.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 193524,
-    "durationMs": 11988,
-    "generatedAt": "2026-06-19T15:10:43.238Z"
-  },
-  "g2-04": {
-    "file": "assets/audio/g2-04-绝句·两个黄鹂-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 214260,
-    "durationMs": 13284,
-    "generatedAt": "2026-06-19T15:10:45.834Z"
-  },
-  "g2-06": {
-    "file": "assets/audio/g2-06-江南春-唐-杜牧.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 197556,
-    "durationMs": 12240,
-    "generatedAt": "2026-06-19T15:10:48.266Z"
-  },
-  "g2-08": {
-    "file": "assets/audio/g2-08-赋得古原草送别（节选）-唐-白居易.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 190644,
-    "durationMs": 11808,
-    "generatedAt": "2026-06-19T15:10:50.686Z"
-  },
-  "g2-09": {
-    "file": "assets/audio/g2-09-书湖阴先生壁-宋-王安石.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 202164,
-    "durationMs": 12528,
-    "generatedAt": "2026-06-19T15:10:53.118Z"
-  },
-  "g2-11": {
-    "file": "assets/audio/g2-11-江雪-唐-柳宗元.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 135924,
-    "durationMs": 8388,
-    "generatedAt": "2026-06-19T15:10:55.310Z"
-  },
-  "g2-13": {
-    "file": "assets/audio/g2-13-望庐山瀑布-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 200436,
-    "durationMs": 12420,
-    "generatedAt": "2026-06-19T15:10:57.756Z"
-  },
-  "g2-14": {
-    "file": "assets/audio/g2-14-早发白帝城-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 190068,
-    "durationMs": 11772,
-    "generatedAt": "2026-06-19T15:11:00.207Z"
-  },
-  "g3-02": {
-    "file": "assets/audio/g3-02-夜书所见-宋-叶绍翁.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 203316,
-    "durationMs": 12600,
-    "generatedAt": "2026-06-19T15:11:02.886Z"
-  },
-  "g3-04": {
-    "file": "assets/audio/g3-04-望天门山-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 205620,
-    "durationMs": 12744,
-    "generatedAt": "2026-06-19T15:11:05.336Z"
-  },
-  "g3-06": {
-    "file": "assets/audio/g3-06-望洞庭-唐-刘禹锡.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 198132,
-    "durationMs": 12276,
-    "generatedAt": "2026-06-19T15:11:07.866Z"
-  },
-  "g3-07": {
-    "file": "assets/audio/g3-07-早春呈水部张十八员外-唐-韩愈.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 226356,
-    "durationMs": 14040,
-    "generatedAt": "2026-06-19T15:11:10.452Z"
-  },
-  "g3-09": {
-    "file": "assets/audio/g3-09-回乡偶书-唐-贺知章.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 168756,
-    "durationMs": 10440,
-    "generatedAt": "2026-06-19T15:11:12.739Z"
-  },
-  "g3-11": {
-    "file": "assets/audio/g3-11-绝句·迟日江山丽-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 179124,
-    "durationMs": 11088,
-    "generatedAt": "2026-06-19T15:11:15.072Z"
-  },
-  "g3-13": {
-    "file": "assets/audio/g3-13-三衢道中-宋-曾几.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 205620,
-    "durationMs": 12744,
-    "generatedAt": "2026-06-19T15:11:17.482Z"
-  },
-  "g3-14": {
-    "file": "assets/audio/g3-14-春日-宋-朱熹.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 197556,
-    "durationMs": 12240,
-    "generatedAt": "2026-06-19T15:11:30.402Z"
-  },
-  "g3-16": {
-    "file": "assets/audio/g3-16-乡村四月-宋-翁卷.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 181428,
-    "durationMs": 11232,
-    "generatedAt": "2026-06-19T15:11:32.736Z"
-  },
-  "g3-18": {
-    "file": "assets/audio/g3-18-宿新市徐公店-宋-杨万里.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 190068,
-    "durationMs": 11772,
-    "generatedAt": "2026-06-19T15:11:35.057Z"
-  },
-  "g3-20": {
-    "file": "assets/audio/g3-20-滁州西涧-唐-韦应物.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 197556,
-    "durationMs": 12240,
-    "generatedAt": "2026-06-19T15:11:47.554Z"
-  },
-  "g4-01": {
-    "file": "assets/audio/g4-01-浪淘沙·其一-唐-刘禹锡.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 206772,
-    "durationMs": 12816,
-    "generatedAt": "2026-06-19T15:11:50.036Z"
-  },
-  "g4-03": {
-    "file": "assets/audio/g4-03-凉州词·葡萄美酒-唐-王翰.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 205044,
-    "durationMs": 12708,
-    "generatedAt": "2026-06-19T15:12:02.693Z"
-  },
-  "g4-05": {
-    "file": "assets/audio/g4-05-凉州词·黄河远上-唐-王之涣.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 193524,
-    "durationMs": 11988,
-    "generatedAt": "2026-06-19T15:12:05.057Z"
-  },
-  "g4-06": {
-    "file": "assets/audio/g4-06-夏日绝句-宋-李清照.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 152052,
-    "durationMs": 9396,
-    "generatedAt": "2026-06-19T15:12:07.203Z"
-  },
-  "g4-08": {
-    "file": "assets/audio/g4-08-蜂-唐-罗隐.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 167028,
-    "durationMs": 10332,
-    "generatedAt": "2026-06-19T15:12:19.629Z"
-  },
-  "g4-10": {
-    "file": "assets/audio/g4-10-嫦娥-唐-李商隐.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 199860,
-    "durationMs": 12384,
-    "generatedAt": "2026-06-19T15:12:22.063Z"
-  },
-  "g4-12": {
-    "file": "assets/audio/g4-12-塞下曲·月黑雁飞高-唐-卢纶.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 178548,
-    "durationMs": 11052,
-    "generatedAt": "2026-06-19T15:12:24.532Z"
-  },
-  "g4-13": {
-    "file": "assets/audio/g4-13-墨梅-元-王冕.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 161268,
-    "durationMs": 9972,
-    "generatedAt": "2026-06-19T15:12:37.021Z"
-  },
-  "g4-15": {
-    "file": "assets/audio/g4-15-石灰吟-明-于谦.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 203316,
-    "durationMs": 12600,
-    "generatedAt": "2026-06-19T15:12:39.460Z"
-  },
-  "g4-17": {
-    "file": "assets/audio/g4-17-渔歌子-唐-张志和.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 204468,
-    "durationMs": 12672,
-    "generatedAt": "2026-06-19T15:12:41.932Z"
-  },
-  "g4-19": {
-    "file": "assets/audio/g4-19-雪梅-宋-卢钺.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 195252,
-    "durationMs": 12096,
-    "generatedAt": "2026-06-19T15:12:54.547Z"
-  },
-  "g4-20": {
-    "file": "assets/audio/g4-20-终南望余雪-唐-祖咏.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 169332,
-    "durationMs": 10476,
-    "generatedAt": "2026-06-19T15:12:56.821Z"
-  },
-  "g5-02": {
-    "file": "assets/audio/g5-02-乞巧-唐-林杰.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 186612,
-    "durationMs": 11556,
-    "generatedAt": "2026-06-19T15:12:59.207Z"
-  },
-  "g5-04": {
-    "file": "assets/audio/g5-04-题临安邸-宋-林升.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 193524,
-    "durationMs": 11988,
-    "generatedAt": "2026-06-19T15:13:12.062Z"
-  },
-  "g5-05": {
-    "file": "assets/audio/g5-05-己亥杂诗-清-龚自珍.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 186036,
-    "durationMs": 11520,
-    "generatedAt": "2026-06-19T15:13:14.434Z"
-  },
-  "g5-07": {
-    "file": "assets/audio/g5-07-宿建德江-唐-孟浩然.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 164148,
-    "durationMs": 10152,
-    "generatedAt": "2026-06-19T15:13:26.998Z"
-  },
-  "g5-09": {
-    "file": "assets/audio/g5-09-黄鹤楼送孟浩然之广陵-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 207924,
-    "durationMs": 12888,
-    "generatedAt": "2026-06-19T15:13:29.507Z"
-  },
-  "g5-11": {
-    "file": "assets/audio/g5-11-稚子弄冰-宋-杨万里.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 207348,
-    "durationMs": 12852,
-    "generatedAt": "2026-06-19T15:13:32.009Z"
-  },
-  "g5-12": {
-    "file": "assets/audio/g5-12-村晚-宋-雷震.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 188340,
-    "durationMs": 11664,
-    "generatedAt": "2026-06-19T15:13:44.526Z"
-  },
-  "g5-14": {
-    "file": "assets/audio/g5-14-秋夜将晓出篱门迎凉有感-宋-陆游.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 196980,
-    "durationMs": 12204,
-    "generatedAt": "2026-06-19T15:13:46.939Z"
-  },
-  "g5-16": {
-    "file": "assets/audio/g5-16-望岳-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 276468,
-    "durationMs": 17172,
-    "generatedAt": "2026-06-19T15:13:49.724Z"
-  },
-  "g5-18": {
-    "file": "assets/audio/g5-18-题西林壁-宋-苏轼.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 188340,
-    "durationMs": 11664,
-    "generatedAt": "2026-06-19T15:14:02.217Z"
-  },
-  "g5-19": {
-    "file": "assets/audio/g5-19-泊船瓜洲-宋-王安石.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 186036,
-    "durationMs": 11520,
-    "generatedAt": "2026-06-19T15:14:04.603Z"
-  },
-  "g6-01": {
-    "file": "assets/audio/g6-01-宿业师山房待丁大不至-唐-孟浩然.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 298356,
-    "durationMs": 18540,
-    "generatedAt": "2026-06-19T15:14:07.523Z"
-  },
-  "g6-03": {
-    "file": "assets/audio/g6-03-西江月·夜行黄沙道中-宋-辛弃疾.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 374964,
-    "durationMs": 23328,
-    "generatedAt": "2026-06-19T15:14:21.109Z"
-  },
-  "g6-05": {
-    "file": "assets/audio/g6-05-忆江南-唐-白居易.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 201012,
-    "durationMs": 12456,
-    "generatedAt": "2026-06-19T15:14:23.518Z"
-  },
-  "g6-07": {
-    "file": "assets/audio/g6-07-乐游原-唐-李商隐.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 148020,
-    "durationMs": 9144,
-    "generatedAt": "2026-06-19T15:14:25.692Z"
-  },
-  "g6-08": {
-    "file": "assets/audio/g6-08-题都城南庄-唐-崔护.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 186612,
-    "durationMs": 11556,
-    "generatedAt": "2026-06-19T15:14:38.222Z"
-  },
-  "g6-10": {
-    "file": "assets/audio/g6-10-行路难-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 495924,
-    "durationMs": 30888,
-    "generatedAt": "2026-06-19T15:14:41.760Z"
-  },
-  "g6-12": {
-    "file": "assets/audio/g6-12-浣溪沙-宋-晏殊.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 290868,
-    "durationMs": 18072,
-    "generatedAt": "2026-06-19T15:14:44.555Z"
-  },
-  "g6-14": {
-    "file": "assets/audio/g6-14-元日-宋-王安石.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 185460,
-    "durationMs": 11484,
-    "generatedAt": "2026-06-19T15:14:46.897Z"
-  },
-  "g6-16": {
-    "file": "assets/audio/g6-16-清明-唐-杜牧.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 183732,
-    "durationMs": 11376,
-    "generatedAt": "2026-06-19T15:14:59.413Z"
-  },
-  "g6-17": {
-    "file": "assets/audio/g6-17-池上-唐-白居易.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 156660,
-    "durationMs": 9684,
-    "generatedAt": "2026-06-19T15:15:01.656Z"
-  },
-  "g6-19": {
-    "file": "assets/audio/g6-19-春夜喜雨-唐-杜甫.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 309876,
-    "durationMs": 19260,
-    "generatedAt": "2026-06-19T15:15:14.755Z"
-  },
-  "g6-21": {
-    "file": "assets/audio/g6-21-采薇（节选）-先秦-诗经.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 252276,
-    "durationMs": 15660,
-    "generatedAt": "2026-06-19T15:15:17.370Z"
-  },
-  "g6-23": {
-    "file": "assets/audio/g6-23-春夜洛城闻笛-唐-李白.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 217140,
-    "durationMs": 13464,
-    "generatedAt": "2026-06-19T15:15:19.871Z"
-  },
-  "g6-24": {
-    "file": "assets/audio/g6-24-送元二使安西-唐-王维.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 205620,
-    "durationMs": 12744,
-    "generatedAt": "2026-06-19T15:15:32.475Z"
-  },
-  "g6-26": {
-    "file": "assets/audio/g6-26-竹枝词-唐-刘禹锡.mp3",
-    "model": "speech-2.8-hd",
-    "voice": "female-tianmei-jingpin",
-    "speed": 0.9,
-    "vol": 1,
-    "pitch": 0,
-    "sampleRate": 32000,
-    "bitrate": 128000,
-    "bytes": 188916,
-    "durationMs": 11700,
-    "generatedAt": "2026-06-19T15:15:34.858Z"
+  "g1-上-01": {
+    "file": "assets/audio/g1-上-01-咏鹅.mp3",
+    "source": "官网下载",
+    "sourceFile": "001 咏鹅.mp3",
+    "bytes": 471083,
+    "linkedAt": "2026-06-21T17:46:05.146Z"
+  },
+  "g1-上-02": {
+    "file": "assets/audio/g1-上-02-江南.mp3",
+    "source": "官网下载",
+    "sourceFile": "002 江南.mp3",
+    "bytes": 709737,
+    "linkedAt": "2026-06-21T17:46:05.150Z"
+  },
+  "g1-上-03": {
+    "file": "assets/audio/g1-上-03-画.mp3",
+    "source": "官网下载",
+    "sourceFile": "003 画.mp3",
+    "bytes": 440990,
+    "linkedAt": "2026-06-21T17:46:05.153Z"
+  },
+  "g1-上-04": {
+    "file": "assets/audio/g1-上-04-悯农（其二）.mp3",
+    "source": "官网下载",
+    "sourceFile": "004 悯农（其二）.mp3",
+    "bytes": 567631,
+    "linkedAt": "2026-06-21T17:46:05.155Z"
+  },
+  "g1-上-05": {
+    "file": "assets/audio/g1-上-05-古朗月行（节选）.mp3",
+    "source": "官网下载",
+    "sourceFile": "005 古朗月行（节选）.mp3",
+    "bytes": 558854,
+    "linkedAt": "2026-06-21T17:46:05.158Z"
+  },
+  "g1-上-06": {
+    "file": "assets/audio/g1-上-06-风.mp3",
+    "source": "官网下载",
+    "sourceFile": "006 风.mp3",
+    "bytes": 514132,
+    "linkedAt": "2026-06-21T17:46:05.160Z"
+  },
+  "g1-下-01": {
+    "file": "assets/audio/g1-下-01-春晓.mp3",
+    "source": "官网下载",
+    "sourceFile": "007 春晓.mp3",
+    "bytes": 494488,
+    "linkedAt": "2026-06-21T17:46:05.162Z"
+  },
+  "g1-下-02": {
+    "file": "assets/audio/g1-下-02-赠汪伦.mp3",
+    "source": "官网下载",
+    "sourceFile": "008 赠汪伦.mp3",
+    "bytes": 546733,
+    "linkedAt": "2026-06-21T17:46:05.164Z"
+  },
+  "g1-下-03": {
+    "file": "assets/audio/g1-下-03-静夜思.mp3",
+    "source": "官网下载",
+    "sourceFile": "009 静夜思.mp3",
+    "bytes": 487383,
+    "linkedAt": "2026-06-21T17:46:05.166Z"
+  },
+  "g1-下-04": {
+    "file": "assets/audio/g1-下-04-寻隐者不遇.mp3",
+    "source": "官网下载",
+    "sourceFile": "010 寻隐者不遇.mp3",
+    "bytes": 504519,
+    "linkedAt": "2026-06-21T17:46:05.168Z"
+  },
+  "g1-下-05": {
+    "file": "assets/audio/g1-下-05-池上.mp3",
+    "source": "官网下载",
+    "sourceFile": "011 池上.mp3",
+    "bytes": 504519,
+    "linkedAt": "2026-06-21T17:46:05.169Z"
+  },
+  "g1-下-06": {
+    "file": "assets/audio/g1-下-06-小池.mp3",
+    "source": "官网下载",
+    "sourceFile": "012 小池.mp3",
+    "bytes": 532941,
+    "linkedAt": "2026-06-21T17:46:05.171Z"
+  },
+  "g1-下-07": {
+    "file": "assets/audio/g1-下-07-画鸡.mp3",
+    "source": "官网下载",
+    "sourceFile": "013 画鸡.mp3",
+    "bytes": 500340,
+    "linkedAt": "2026-06-21T17:46:05.173Z"
+  },
+  "g2-上-01": {
+    "file": "assets/audio/g2-上-01-梅花.mp3",
+    "source": "官网下载",
+    "sourceFile": "014 梅花.mp3",
+    "bytes": 498668,
+    "linkedAt": "2026-06-21T17:46:05.174Z"
+  },
+  "g2-上-02": {
+    "file": "assets/audio/g2-上-02-小儿垂钓.mp3",
+    "source": "官网下载",
+    "sourceFile": "015 小儿垂钓.mp3",
+    "bytes": 551749,
+    "linkedAt": "2026-06-21T17:46:05.176Z"
+  },
+  "g2-上-03": {
+    "file": "assets/audio/g2-上-03-登鹳雀楼.mp3",
+    "source": "官网下载",
+    "sourceFile": "016 登鹳雀楼.mp3",
+    "bytes": 522074,
+    "linkedAt": "2026-06-21T17:46:05.178Z"
+  },
+  "g2-上-04": {
+    "file": "assets/audio/g2-上-04-望庐山瀑布.mp3",
+    "source": "官网下载",
+    "sourceFile": "017 望庐山瀑布.mp3",
+    "bytes": 598142,
+    "linkedAt": "2026-06-21T17:46:05.179Z"
+  },
+  "g2-上-05": {
+    "file": "assets/audio/g2-上-05-江雪.mp3",
+    "source": "官网下载",
+    "sourceFile": "018 江雪.mp3",
+    "bytes": 504101,
+    "linkedAt": "2026-06-21T17:46:05.181Z"
+  },
+  "g2-上-06": {
+    "file": "assets/audio/g2-上-06-夜宿山寺.mp3",
+    "source": "官网下载",
+    "sourceFile": "019 夜宿山寺.mp3",
+    "bytes": 519984,
+    "linkedAt": "2026-06-21T17:46:05.182Z"
+  },
+  "g2-上-07": {
+    "file": "assets/audio/g2-上-07-敕勒歌.mp3",
+    "source": "官网下载",
+    "sourceFile": "020 敕勒歌.mp3",
+    "bytes": 535030,
+    "linkedAt": "2026-06-21T17:46:05.184Z"
+  },
+  "g2-下-01": {
+    "file": "assets/audio/g2-下-01-村居.mp3",
+    "source": "官网下载",
+    "sourceFile": "021 村居.mp3",
+    "bytes": 564705,
+    "linkedAt": "2026-06-21T17:46:05.186Z"
+  },
+  "g2-下-02": {
+    "file": "assets/audio/g2-下-02-咏柳.mp3",
+    "source": "官网下载",
+    "sourceFile": "022 咏柳.mp3",
+    "bytes": 583096,
+    "linkedAt": "2026-06-21T17:46:05.188Z"
+  },
+  "g2-下-03": {
+    "file": "assets/audio/g2-下-03-赋得古原草送别（节选）.mp3",
+    "source": "官网下载",
+    "sourceFile": "023 赋得古原草送别（节选）.mp3",
+    "bytes": 574318,
+    "linkedAt": "2026-06-21T17:46:05.190Z"
+  },
+  "g2-下-04": {
+    "file": "assets/audio/g2-下-04-晓出净慈寺送林子方.mp3",
+    "source": "官网下载",
+    "sourceFile": "024 晓出净慈寺送林子方.mp3",
+    "bytes": 611099,
+    "linkedAt": "2026-06-21T17:46:05.192Z"
+  },
+  "g2-下-05": {
+    "file": "assets/audio/g2-下-05-绝句.mp3",
+    "source": "官网下载",
+    "sourceFile": "025 绝句.mp3",
+    "bytes": 577662,
+    "linkedAt": "2026-06-21T17:46:05.194Z"
+  },
+  "g2-下-06": {
+    "file": "assets/audio/g2-下-06-悯农（其一）.mp3",
+    "source": "官网下载",
+    "sourceFile": "026 悯农（其一）.mp3",
+    "bytes": 524999,
+    "linkedAt": "2026-06-21T17:46:05.196Z"
+  },
+  "g2-下-07": {
+    "file": "assets/audio/g2-下-07-舟夜书所见.mp3",
+    "source": "官网下载",
+    "sourceFile": "027 舟夜书所见.mp3",
+    "bytes": 527089,
+    "linkedAt": "2026-06-21T17:46:05.198Z"
+  },
+  "g3-上-01": {
+    "file": "assets/audio/g3-上-01-所见.mp3",
+    "source": "官网下载",
+    "sourceFile": "028 所见.mp3",
+    "bytes": 463141,
+    "linkedAt": "2026-06-21T17:46:05.200Z"
+  },
+  "g3-上-02": {
+    "file": "assets/audio/g3-上-02-山行.mp3",
+    "source": "官网下载",
+    "sourceFile": "029 山行.mp3",
+    "bytes": 581842,
+    "linkedAt": "2026-06-21T17:46:05.202Z"
+  },
+  "g3-上-03": {
+    "file": "assets/audio/g3-上-03-赠刘景文.mp3",
+    "source": "官网下载",
+    "sourceFile": "030 赠刘景文.mp3",
+    "bytes": 564287,
+    "linkedAt": "2026-06-21T17:46:05.204Z"
+  },
+  "g3-上-04": {
+    "file": "assets/audio/g3-上-04-夜书所见.mp3",
+    "source": "官网下载",
+    "sourceFile": "031 夜书所见.mp3",
+    "bytes": 556346,
+    "linkedAt": "2026-06-21T17:46:05.205Z"
+  },
+  "g3-上-05": {
+    "file": "assets/audio/g3-上-05-望天门山.mp3",
+    "source": "官网下载",
+    "sourceFile": "032 望天门山.mp3",
+    "bytes": 599396,
+    "linkedAt": "2026-06-21T17:46:05.207Z"
+  },
+  "g3-上-06": {
+    "file": "assets/audio/g3-上-06-饮湖上初晴后雨.mp3",
+    "source": "官网下载",
+    "sourceFile": "033 饮湖上初晴后雨.mp3",
+    "bytes": 612771,
+    "linkedAt": "2026-06-21T17:46:05.209Z"
+  },
+  "g3-上-07": {
+    "file": "assets/audio/g3-上-07-望洞庭.mp3",
+    "source": "官网下载",
+    "sourceFile": "034 望洞庭.mp3",
+    "bytes": 549241,
+    "linkedAt": "2026-06-21T17:46:05.211Z"
+  },
+  "g3-上-08": {
+    "file": "assets/audio/g3-上-08-早发白帝城.mp3",
+    "source": "官网下载",
+    "sourceFile": "035 早发白帝城.mp3",
+    "bytes": 578916,
+    "linkedAt": "2026-06-21T17:46:05.212Z"
+  },
+  "g3-上-09": {
+    "file": "assets/audio/g3-上-09-采莲曲.mp3",
+    "source": "官网下载",
+    "sourceFile": "036 采莲曲.mp3",
+    "bytes": 609009,
+    "linkedAt": "2026-06-21T17:46:05.214Z"
+  },
+  "g3-下-01": {
+    "file": "assets/audio/g3-下-01-绝句.mp3",
+    "source": "官网下载",
+    "sourceFile": "037 绝句.mp3",
+    "bytes": 519566,
+    "linkedAt": "2026-06-21T17:46:05.216Z"
+  },
+  "g3-下-02": {
+    "file": "assets/audio/g3-下-02-惠崇春江晚景.mp3",
+    "source": "官网下载",
+    "sourceFile": "038 惠崇春江晚景.mp3",
+    "bytes": 585185,
+    "linkedAt": "2026-06-21T17:46:05.218Z"
+  },
+  "g3-下-03": {
+    "file": "assets/audio/g3-下-03-三衢道中.mp3",
+    "source": "官网下载",
+    "sourceFile": "039 三衢道中.mp3",
+    "bytes": 556346,
+    "linkedAt": "2026-06-21T17:46:05.219Z"
+  },
+  "g3-下-04": {
+    "file": "assets/audio/g3-下-04-忆江南.mp3",
+    "source": "官网下载",
+    "sourceFile": "040 忆江南.mp3",
+    "bytes": 531269,
+    "linkedAt": "2026-06-21T17:46:05.222Z"
+  },
+  "g3-下-05": {
+    "file": "assets/audio/g3-下-05-元日.mp3",
+    "source": "官网下载",
+    "sourceFile": "041 元日.mp3",
+    "bytes": 557600,
+    "linkedAt": "2026-06-21T17:46:05.223Z"
+  },
+  "g3-下-06": {
+    "file": "assets/audio/g3-下-06-清明.mp3",
+    "source": "官网下载",
+    "sourceFile": "042 清明.mp3",
+    "bytes": 601068,
+    "linkedAt": "2026-06-21T17:46:05.225Z"
+  },
+  "g3-下-07": {
+    "file": "assets/audio/g3-下-07-九月九日忆山东兄弟.mp3",
+    "source": "官网下载",
+    "sourceFile": "043 九月九日忆山东兄弟.mp3",
+    "bytes": 669613,
+    "linkedAt": "2026-06-21T17:46:05.227Z"
+  },
+  "g3-下-08": {
+    "file": "assets/audio/g3-下-08-滁州西涧.mp3",
+    "source": "官网下载",
+    "sourceFile": "044 滁州西涧.mp3",
+    "bytes": 611935,
+    "linkedAt": "2026-06-21T17:46:05.228Z"
+  },
+  "g3-下-09": {
+    "file": "assets/audio/g3-下-09-大林寺桃花.mp3",
+    "source": "官网下载",
+    "sourceFile": "045 大林寺桃花.mp3",
+    "bytes": 630743,
+    "linkedAt": "2026-06-21T17:46:05.230Z"
+  },
+  "g4-上-01": {
+    "file": "assets/audio/g4-上-01-浪淘沙（其七）.mp3",
+    "source": "官网下载",
+    "sourceFile": "046 浪淘沙（其七）.mp3",
+    "bytes": 634923,
+    "linkedAt": "2026-06-21T17:46:05.232Z"
+  },
+  "g4-上-02": {
+    "file": "assets/audio/g4-上-02-鹿柴.mp3",
+    "source": "官网下载",
+    "sourceFile": "047 鹿柴.mp3",
+    "bytes": 500758,
+    "linkedAt": "2026-06-21T17:46:05.234Z"
+  },
+  "g4-上-03": {
+    "file": "assets/audio/g4-上-03-暮江吟.mp3",
+    "source": "官网下载",
+    "sourceFile": "048 暮江吟.mp3",
+    "bytes": 601904,
+    "linkedAt": "2026-06-21T17:46:05.235Z"
+  },
+  "g4-上-04": {
+    "file": "assets/audio/g4-上-04-题西林壁.mp3",
+    "source": "官网下载",
+    "sourceFile": "049 题西林壁.mp3",
+    "bytes": 571393,
+    "linkedAt": "2026-06-21T17:46:05.237Z"
+  },
+  "g4-上-05": {
+    "file": "assets/audio/g4-上-05-雪梅.mp3",
+    "source": "官网下载",
+    "sourceFile": "050 雪梅.mp3",
+    "bytes": 543390,
+    "linkedAt": "2026-06-21T17:46:05.239Z"
+  },
+  "g4-上-06": {
+    "file": "assets/audio/g4-上-06-嫦娥.mp3",
+    "source": "官网下载",
+    "sourceFile": "051 嫦娥.mp3",
+    "bytes": 570557,
+    "linkedAt": "2026-06-21T17:46:05.240Z"
+  },
+  "g4-上-07": {
+    "file": "assets/audio/g4-上-07-出塞.mp3",
+    "source": "官网下载",
+    "sourceFile": "052 出塞.mp3",
+    "bytes": 504937,
+    "linkedAt": "2026-06-21T17:46:05.242Z"
+  },
+  "g4-上-08": {
+    "file": "assets/audio/g4-上-08-凉州词.mp3",
+    "source": "官网下载",
+    "sourceFile": "053 凉州词.mp3",
+    "bytes": 563870,
+    "linkedAt": "2026-06-21T17:46:05.243Z"
+  },
+  "g4-上-09": {
+    "file": "assets/audio/g4-上-09-夏日绝句.mp3",
+    "source": "官网下载",
+    "sourceFile": "054 夏日绝句.mp3",
+    "bytes": 439736,
+    "linkedAt": "2026-06-21T17:46:05.245Z"
+  },
+  "g4-下-01": {
+    "file": "assets/audio/g4-下-01-别董大.mp3",
+    "source": "官网下载",
+    "sourceFile": "055 别董大.mp3",
+    "bytes": 530433,
+    "linkedAt": "2026-06-21T17:46:05.247Z"
+  },
+  "g4-下-02": {
+    "file": "assets/audio/g4-下-02-宿新市徐公店.mp3",
+    "source": "官网下载",
+    "sourceFile": "056 宿新市徐公店.mp3",
+    "bytes": 588111,
+    "linkedAt": "2026-06-21T17:46:05.249Z"
+  },
+  "g4-下-03": {
+    "file": "assets/audio/g4-下-03-四时田园杂兴（其二十五）.mp3",
+    "source": "官网下载",
+    "sourceFile": "057 四时田园杂兴（其二十五）.mp3",
+    "bytes": 625310,
+    "linkedAt": "2026-06-21T17:46:05.251Z"
+  },
+  "g4-下-04": {
+    "file": "assets/audio/g4-下-04-清平乐·村居.mp3",
+    "source": "官网下载",
+    "sourceFile": "058 清平乐·村居.mp3",
+    "bytes": 808376,
+    "linkedAt": "2026-06-21T17:46:05.253Z"
+  },
+  "g4-下-05": {
+    "file": "assets/audio/g4-下-05-江畔独步寻花.mp3",
+    "source": "官网下载",
+    "sourceFile": "059 江畔独步寻花.mp3",
+    "bytes": 559690,
+    "linkedAt": "2026-06-21T17:46:05.254Z"
+  },
+  "g4-下-06": {
+    "file": "assets/audio/g4-下-06-蜂.mp3",
+    "source": "官网下载",
+    "sourceFile": "060 蜂.mp3",
+    "bytes": 519566,
+    "linkedAt": "2026-06-21T17:46:05.256Z"
+  },
+  "g4-下-07": {
+    "file": "assets/audio/g4-下-07-独坐敬亭山.mp3",
+    "source": "官网下载",
+    "sourceFile": "061 独坐敬亭山.mp3",
+    "bytes": 516640,
+    "linkedAt": "2026-06-21T17:46:05.258Z"
+  },
+  "g4-下-08": {
+    "file": "assets/audio/g4-下-08-芙蓉楼送辛渐.mp3",
+    "source": "官网下载",
+    "sourceFile": "062 芙蓉楼送辛渐.mp3",
+    "bytes": 595634,
+    "linkedAt": "2026-06-21T17:46:05.259Z"
+  },
+  "g4-下-09": {
+    "file": "assets/audio/g4-下-09-塞下曲.mp3",
+    "source": "官网下载",
+    "sourceFile": "063 塞下曲.mp3",
+    "bytes": 480696,
+    "linkedAt": "2026-06-21T17:46:05.261Z"
+  },
+  "g4-下-10": {
+    "file": "assets/audio/g4-下-10-墨梅.mp3",
+    "source": "官网下载",
+    "sourceFile": "064 墨梅.mp3",
+    "bytes": 525417,
+    "linkedAt": "2026-06-21T17:46:05.263Z"
+  },
+  "g5-上-01": {
+    "file": "assets/audio/g5-上-01-蝉.mp3",
+    "source": "官网下载",
+    "sourceFile": "065 蝉.mp3",
+    "bytes": 504937,
+    "linkedAt": "2026-06-21T17:46:05.264Z"
+  },
+  "g5-上-02": {
+    "file": "assets/audio/g5-上-02-乞巧.mp3",
+    "source": "官网下载",
+    "sourceFile": "066 乞巧.mp3",
+    "bytes": 595216,
+    "linkedAt": "2026-06-21T17:46:05.266Z"
+  },
+  "g5-上-03": {
+    "file": "assets/audio/g5-上-03-示儿.mp3",
+    "source": "官网下载",
+    "sourceFile": "067 示儿.mp3",
+    "bytes": 579752,
+    "linkedAt": "2026-06-21T17:46:05.268Z"
+  },
+  "g5-上-04": {
+    "file": "assets/audio/g5-上-04-题临安邸.mp3",
+    "source": "官网下载",
+    "sourceFile": "068 题临安邸.mp3",
+    "bytes": 604830,
+    "linkedAt": "2026-06-21T17:46:05.269Z"
+  },
+  "g5-上-05": {
+    "file": "assets/audio/g5-上-05-己亥杂诗.mp3",
+    "source": "官网下载",
+    "sourceFile": "069 己亥杂诗.mp3",
+    "bytes": 565123,
+    "linkedAt": "2026-06-21T17:46:05.271Z"
+  },
+  "g5-上-06": {
+    "file": "assets/audio/g5-上-06-山居秋暝.mp3",
+    "source": "官网下载",
+    "sourceFile": "070 山居秋暝.mp3",
+    "bytes": 732725,
+    "linkedAt": "2026-06-21T17:46:05.273Z"
+  },
+  "g5-上-07": {
+    "file": "assets/audio/g5-上-07-枫桥夜泊.mp3",
+    "source": "官网下载",
+    "sourceFile": "071 枫桥夜泊.mp3",
+    "bytes": 618622,
+    "linkedAt": "2026-06-21T17:46:05.275Z"
+  },
+  "g5-上-08": {
+    "file": "assets/audio/g5-上-08-长相思.mp3",
+    "source": "官网下载",
+    "sourceFile": "072 长相思.mp3",
+    "bytes": 744846,
+    "linkedAt": "2026-06-21T17:46:05.277Z"
+  },
+  "g5-上-09": {
+    "file": "assets/audio/g5-上-09-渔歌子.mp3",
+    "source": "官网下载",
+    "sourceFile": "073 渔歌子.mp3",
+    "bytes": 513714,
+    "linkedAt": "2026-06-21T17:46:05.279Z"
+  },
+  "g5-上-10": {
+    "file": "assets/audio/g5-上-10-观书有感（其一）.mp3",
+    "source": "官网下载",
+    "sourceFile": "074 观书有感（其一）.mp3",
+    "bytes": 612353,
+    "linkedAt": "2026-06-21T17:46:05.281Z"
+  },
+  "g5-上-11": {
+    "file": "assets/audio/g5-上-11-观书有感（其二）.mp3",
+    "source": "官网下载",
+    "sourceFile": "075 观书有感（其二）.mp3",
+    "bytes": 613607,
+    "linkedAt": "2026-06-21T17:46:05.282Z"
+  },
+  "g5-下-01": {
+    "file": "assets/audio/g5-下-01-四时田园杂兴（其三十一）.mp3",
+    "source": "官网下载",
+    "sourceFile": "076 四时田园杂兴（其三十一）.mp3",
+    "bytes": 598978,
+    "linkedAt": "2026-06-21T17:46:05.284Z"
+  },
+  "g5-下-02": {
+    "file": "assets/audio/g5-下-02-稚子弄冰.mp3",
+    "source": "官网下载",
+    "sourceFile": "077 稚子弄冰.mp3",
+    "bytes": 531687,
+    "linkedAt": "2026-06-21T17:46:05.286Z"
+  },
+  "g5-下-03": {
+    "file": "assets/audio/g5-下-03-村晚.mp3",
+    "source": "官网下载",
+    "sourceFile": "078 村晚.mp3",
+    "bytes": 583096,
+    "linkedAt": "2026-06-21T17:46:05.287Z"
+  },
+  "g5-下-04": {
+    "file": "assets/audio/g5-下-04-游子吟.mp3",
+    "source": "官网下载",
+    "sourceFile": "079 游子吟.mp3",
+    "bytes": 614861,
+    "linkedAt": "2026-06-21T17:46:05.289Z"
+  },
+  "g5-下-05": {
+    "file": "assets/audio/g5-下-05-鸟鸣涧.mp3",
+    "source": "官网下载",
+    "sourceFile": "080 鸟鸣涧.mp3",
+    "bytes": 554256,
+    "linkedAt": "2026-06-21T17:46:05.291Z"
+  },
+  "g5-下-06": {
+    "file": "assets/audio/g5-下-06-从军行.mp3",
+    "source": "官网下载",
+    "sourceFile": "081 从军行.mp3",
+    "bytes": 570139,
+    "linkedAt": "2026-06-21T17:46:05.292Z"
+  },
+  "g5-下-07": {
+    "file": "assets/audio/g5-下-07-秋夜将晓出篱门迎凉有感.mp3",
+    "source": "官网下载",
+    "sourceFile": "082 秋夜将晓出篱门迎凉有感.mp3",
+    "bytes": 519566,
+    "linkedAt": "2026-06-21T17:46:05.294Z"
+  },
+  "g5-下-08": {
+    "file": "assets/audio/g5-下-08-闻官军收河南河北.mp3",
+    "source": "官网下载",
+    "sourceFile": "083 闻官军收河南河北.mp3",
+    "bytes": 827602,
+    "linkedAt": "2026-06-21T17:46:05.296Z"
+  },
+  "g5-下-09": {
+    "file": "assets/audio/g5-下-09-凉州词.mp3",
+    "source": "官网下载",
+    "sourceFile": "084 凉州词.mp3",
+    "bytes": 582678,
+    "linkedAt": "2026-06-21T17:46:05.297Z"
+  },
+  "g5-下-10": {
+    "file": "assets/audio/g5-下-10-黄鹤楼送孟浩然之广陵.mp3",
+    "source": "官网下载",
+    "sourceFile": "085 黄鹤楼送孟浩然之广陵.mp3",
+    "bytes": 638266,
+    "linkedAt": "2026-06-21T17:46:05.299Z"
+  },
+  "g5-下-11": {
+    "file": "assets/audio/g5-下-11-乡村四月.mp3",
+    "source": "官网下载",
+    "sourceFile": "086 乡村四月.mp3",
+    "bytes": 550913,
+    "linkedAt": "2026-06-21T17:46:05.301Z"
+  },
+  "g6-上-01": {
+    "file": "assets/audio/g6-上-01-宿建德江.mp3",
+    "source": "官网下载",
+    "sourceFile": "087 宿建德江.mp3",
+    "bytes": 504937,
+    "linkedAt": "2026-06-21T17:46:05.302Z"
+  },
+  "g6-上-02": {
+    "file": "assets/audio/g6-上-02-六月二十七日望湖楼醉书.mp3",
+    "source": "官网下载",
+    "sourceFile": "088 六月二十七日望湖楼醉书.mp3",
+    "bytes": 597306,
+    "linkedAt": "2026-06-21T17:46:05.304Z"
+  },
+  "g6-上-03": {
+    "file": "assets/audio/g6-上-03-西江月·夜行黄沙道中.mp3",
+    "source": "官网下载",
+    "sourceFile": "089 西江月·夜行黄沙道中.mp3",
+    "bytes": 986008,
+    "linkedAt": "2026-06-21T17:46:05.306Z"
+  },
+  "g6-上-04": {
+    "file": "assets/audio/g6-上-04-过故人庄.mp3",
+    "source": "官网下载",
+    "sourceFile": "090 过故人庄.mp3",
+    "bytes": 685914,
+    "linkedAt": "2026-06-21T17:46:05.308Z"
+  },
+  "g6-上-05": {
+    "file": "assets/audio/g6-上-05-春日.mp3",
+    "source": "官网下载",
+    "sourceFile": "091 春日.mp3",
+    "bytes": 486965,
+    "linkedAt": "2026-06-21T17:46:05.309Z"
+  },
+  "g6-上-06": {
+    "file": "assets/audio/g6-上-06-回乡偶书（其一）.mp3",
+    "source": "官网下载",
+    "sourceFile": "092 回乡偶书.mp3",
+    "bytes": 516640,
+    "linkedAt": "2026-06-21T17:46:05.311Z"
+  },
+  "g6-上-07": {
+    "file": "assets/audio/g6-上-07-浪淘沙（其一）.mp3",
+    "source": "官网下载",
+    "sourceFile": "093 浪淘沙（其一）.mp3",
+    "bytes": 584350,
+    "linkedAt": "2026-06-21T17:46:05.313Z"
+  },
+  "g6-上-08": {
+    "file": "assets/audio/g6-上-08-江南春.mp3",
+    "source": "官网下载",
+    "sourceFile": "094 江南春.mp3",
+    "bytes": 521238,
+    "linkedAt": "2026-06-21T17:46:05.315Z"
+  },
+  "g6-上-09": {
+    "file": "assets/audio/g6-上-09-书湖阴先生壁.mp3",
+    "source": "官网下载",
+    "sourceFile": "095 书湖阴先生壁.mp3",
+    "bytes": 608173,
+    "linkedAt": "2026-06-21T17:46:05.317Z"
+  },
+  "g6-下-01": {
+    "file": "assets/audio/g6-下-01-寒食.mp3",
+    "source": "官网下载",
+    "sourceFile": "096 寒食.mp3",
+    "bytes": 563034,
+    "linkedAt": "2026-06-21T17:46:05.319Z"
+  },
+  "g6-下-02": {
+    "file": "assets/audio/g6-下-02-迢迢牵牛星.mp3",
+    "source": "官网下载",
+    "sourceFile": "097 迢迢牵牛星.mp3",
+    "bytes": 817989,
+    "linkedAt": "2026-06-21T17:46:05.320Z"
+  },
+  "g6-下-03": {
+    "file": "assets/audio/g6-下-03-十五夜望月.mp3",
+    "source": "官网下载",
+    "sourceFile": "098 十五夜望月.mp3",
+    "bytes": 628235,
+    "linkedAt": "2026-06-21T17:46:05.322Z"
+  },
+  "g6-下-04": {
+    "file": "assets/audio/g6-下-04-长歌行.mp3",
+    "source": "官网下载",
+    "sourceFile": "099 长歌行.mp3",
+    "bytes": 804614,
+    "linkedAt": "2026-06-21T17:46:05.324Z"
+  },
+  "g6-下-05": {
+    "file": "assets/audio/g6-下-05-马诗.mp3",
+    "source": "官网下载",
+    "sourceFile": "100 马诗.mp3",
+    "bytes": 498668,
+    "linkedAt": "2026-06-21T17:46:05.326Z"
+  },
+  "g6-下-06": {
+    "file": "assets/audio/g6-下-06-石灰吟.mp3",
+    "source": "官网下载",
+    "sourceFile": "101 石灰吟.mp3",
+    "bytes": 578498,
+    "linkedAt": "2026-06-21T17:46:05.328Z"
+  },
+  "g6-下-07": {
+    "file": "assets/audio/g6-下-07-竹石.mp3",
+    "source": "官网下载",
+    "sourceFile": "102 竹石.mp3",
+    "bytes": 568467,
+    "linkedAt": "2026-06-21T17:46:05.330Z"
+  },
+  "g6-下-08": {
+    "file": "assets/audio/g6-下-08-采薇（节选）.mp3",
+    "source": "官网下载",
+    "sourceFile": "103 采薇（节选）.mp3",
+    "bytes": 582678,
+    "linkedAt": "2026-06-21T17:46:05.332Z"
+  },
+  "g6-下-09": {
+    "file": "assets/audio/g6-下-09-送元二使安西.mp3",
+    "source": "官网下载",
+    "sourceFile": "104 送元二使安西.mp3",
+    "bytes": 688839,
+    "linkedAt": "2026-06-21T17:46:05.334Z"
+  },
+  "g6-下-10": {
+    "file": "assets/audio/g6-下-10-春夜喜雨.mp3",
+    "source": "官网下载",
+    "sourceFile": "105 春夜喜雨.mp3",
+    "bytes": 917463,
+    "linkedAt": "2026-06-21T17:46:05.335Z"
+  },
+  "g6-下-11": {
+    "file": "assets/audio/g6-下-11-早春呈水部张十八员外.mp3",
+    "source": "官网下载",
+    "sourceFile": "106 早春呈水部张十八员外.mp3",
+    "bytes": 658746,
+    "linkedAt": "2026-06-21T17:46:05.337Z"
+  },
+  "g6-下-12": {
+    "file": "assets/audio/g6-下-12-江上渔者.mp3",
+    "source": "官网下载",
+    "sourceFile": "107 江上渔者.mp3",
+    "bytes": 591455,
+    "linkedAt": "2026-06-21T17:46:05.339Z"
+  },
+  "g6-下-13": {
+    "file": "assets/audio/g6-下-13-泊船瓜洲.mp3",
+    "source": "官网下载",
+    "sourceFile": "108 泊船瓜洲.mp3",
+    "bytes": 573065,
+    "linkedAt": "2026-06-21T17:46:05.341Z"
+  },
+  "g6-下-14": {
+    "file": "assets/audio/g6-下-14-游园不值.mp3",
+    "source": "官网下载",
+    "sourceFile": "109 游园不值.mp3",
+    "bytes": 575154,
+    "linkedAt": "2026-06-21T17:46:05.342Z"
+  },
+  "g6-下-15": {
+    "file": "assets/audio/g6-下-15-卜算子·送鲍浩然之浙东.mp3",
+    "source": "官网下载",
+    "sourceFile": "110 卜算子·送鲍浩然之浙东.mp3",
+    "bytes": 769923,
+    "linkedAt": "2026-06-21T17:46:05.344Z"
+  },
+  "g6-下-16": {
+    "file": "assets/audio/g6-下-16-浣溪沙.mp3",
+    "source": "官网下载",
+    "sourceFile": "111 浣溪沙.mp3",
+    "bytes": 825094,
+    "linkedAt": "2026-06-21T17:46:05.346Z"
+  },
+  "g6-下-17": {
+    "file": "assets/audio/g6-下-17-清平乐.mp3",
+    "source": "官网下载",
+    "sourceFile": "112 清平乐.mp3",
+    "bytes": 698034,
+    "linkedAt": "2026-06-21T17:46:05.348Z"
   }
 }

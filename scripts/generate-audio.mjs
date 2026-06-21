@@ -10,9 +10,9 @@
  *   $env:MINIMAX_API_KEY = "你的key"          # 必填
  *   $env:MINIMAX_GROUP_ID = "你的GroupId"      # 可选（部分账号需要）
  *
- *   node scripts/generate-audio.mjs --first    # 只生成第一首（静夜思 g1-01）用于试听确认
- *   node scripts/generate-audio.mjs --all      # 生成全部（已存在的自动跳过）
- *   node scripts/generate-audio.mjs --id=g1-05 # 生成指定某首
+ *   node scripts/generate-audio.mjs --first          # 只生成第一首（咏鹅 g1-上-01）用于试听确认
+ *   node scripts/generate-audio.mjs --all            # 生成全部（已存在的自动跳过）
+ *   node scripts/generate-audio.mjs --id=g1-上-05    # 生成指定某首（古朗月行节选）
  *   node scripts/generate-audio.mjs --all --force  # 强制重生成（覆盖已有缓存）
  *
  * 可调环境变量：
@@ -160,7 +160,7 @@ async function main() {
   const args = parseArgs(process.argv);
 
   if (!args.mode) {
-    console.log(c.warn('请指定模式：--first | --all | --id=g1-05  （可加 --force 覆盖）'));
+    console.log(c.warn('请指定模式：--first | --all | --id=g1-上-05  （可加 --force 覆盖）'));
     process.exit(1);
   }
   if (!API_KEY) {
@@ -270,7 +270,7 @@ async function main() {
   console.log(c.dim(`  缓存目录：assets/audio/  ·  清单：assets/audio/manifest.json`));
   if (args.mode === 'first' && ok > 0) {
     console.log('');
-    console.log(c.ok('▶ 请试听确认：assets/audio/ 目录下 g1-01-*.mp3'));
+    console.log(c.ok('▶ 请试听确认：assets/audio/ 目录下 g1-上-01-咏鹅.mp3'));
     console.log(c.dim('  满意后运行：node scripts/generate-audio.mjs --all'));
   }
 }

@@ -17,3 +17,10 @@ assets/images/*.png
 assets/images/*.webp
 assets/audio/*.mp3
 assets/audio/*.wav
+
+# 旧版 ID 格式归档（已迁移，仅本地参考，不再同步）
+assets/_archive/
+
+# 调试截图（不入库，调试页面布局时本地用）
+cloud-*.png
+print-*.png

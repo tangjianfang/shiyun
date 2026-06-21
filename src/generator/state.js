@@ -99,3 +99,56 @@ export function loadSettings() {
   if (!raw) return null;
   try { return JSON.parse(raw); } catch { return null; }
 }
+
+// ─────────────────────────────────────────────────────────
+// ID 格式迁移：从旧格式 `g{grade}-{seq}` 升级到 `g{grade}-{上|下}-{seq:02d}`
+// 旧 AI 数据以 orphan 形式留在 localStorage 中，检测 + 一键清理
+// ─────────────────────────────────────────────────────────
+
+/** 旧 ID 正则：g1-01、g2-12 等（无学期段） */
+const OLD_ID_RE = /^g[1-6]-\d{1,2}$/;
+/** 新 ID 正则：g1-上-01、g2-下-12 等 */
+const NEW_ID_RE = /^g[1-6]-(上|下)-\d{2}$/;
+
+/**
+ * 扫描 localStorage 中的 shiyun_gen_* 记录，返回按 old/new 分类的诗 ID 集合。
+ * 用于「数据迁移」提示。
+ */
+export function scanLegacyPoemIds() {
+  const oldIds = new Set();
+  const newIds = new Set();
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (!k || !k.startsWith(PREFIX)) continue;
+    // 提取 type 之后的 poemId 部分
+    for (const t of TYPES) {
+      const prefix = PREFIX + t + '_';
+      if (k.startsWith(prefix)) {
+        const id = k.slice(prefix.length);
+        if (OLD_ID_RE.test(id)) oldIds.add(id);
+        else if (NEW_ID_RE.test(id)) newIds.add(id);
+        break;
+      }
+    }
+  }
+  return { oldIds: Array.from(oldIds), newIds: Array.from(newIds) };
+}
+
+/**
+ * 清除所有以旧 ID 格式存储的 shiyun_gen_text/image/audio_* 记录。
+ * @returns {{ clearedKeys: number, oldIds: string[] }}
+ */
+export function clearLegacyPoemPieces() {
+  const { oldIds } = scanLegacyPoemIds();
+  let clearedKeys = 0;
+  for (const id of oldIds) {
+    for (const t of TYPES) {
+      const key = PREFIX + t + '_' + id;
+      if (localStorage.getItem(key) !== null) {
+        localStorage.removeItem(key);
+        clearedKeys++;
+      }
+    }
+  }
+  return { clearedKeys, oldIds };
+}

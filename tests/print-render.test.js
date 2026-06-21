@@ -18,6 +18,7 @@ describe('print · 渲染层', () => {
     const html = document.getElementById('app-main').innerHTML;
     expect(html).toContain('筛选条件');
     expect(html).toContain('年级');
+    expect(html).toContain('学期');
     expect(html).toContain('朝代');
     expect(html).toContain('作者');
     expect(html).toContain('复习需求');
@@ -57,14 +58,14 @@ describe('print · 批量操作（每个大类 全选 / 取消全选）', () => 
 
   it('每个 chip-group 应有 全选 与 取消全选 按钮', () => {
     const main = document.getElementById('app-main');
-    for (const id of ['grades-chips', 'dynasties-chips', 'authors-chips']) {
+    for (const id of ['grades-chips', 'semesters-chips', 'dynasties-chips', 'authors-chips']) {
       const group = main.querySelector('#' + id);
       expect(group.querySelector('[data-bulk-action="all"]'), `#${id} 缺全选`).toBeTruthy();
       expect(group.querySelector('[data-bulk-action="none"]'), `#${id} 缺取消全选`).toBeTruthy();
     }
     const buttons = main.querySelectorAll('[data-bulk-action]');
-    // 3 大类 × 2 动作 = 6
-    expect(buttons.length).toBe(6);
+    // 4 大类 × 2 动作 = 8
+    expect(buttons.length).toBe(8);
   });
 
   it('点击年级「取消全选」应取消所有年级勾选', () => {
@@ -87,11 +88,11 @@ describe('print · 批量操作（每个大类 全选 / 取消全选）', () => 
 
   it('「全选/取消全选」应同时更新摘要（实时刷新）', () => {
     const main = document.getElementById('app-main');
-    // 取消全部朝代：摘要应变成 0 首
+    // 取消全部朝代：摘要应变成「请勾选」提示
     main.querySelector('#dynasties-chips [data-bulk-action="none"]').click();
     const summary = main.querySelector('#print-summary').textContent;
-    expect(summary).toMatch(/共 0 首诗/);
-    // 重新全选朝代：摘要应恢复
+    expect(summary).toMatch(/请勾选/);
+    // 重新全选朝代：摘要应恢复为 112
     main.querySelector('#dynasties-chips [data-bulk-action="all"]').click();
     const summary2 = main.querySelector('#print-summary').textContent;
     expect(summary2).toMatch(/共 112 首诗/);
@@ -109,6 +110,104 @@ describe('print · 批量操作（每个大类 全选 / 取消全选）', () => 
     const cb = label.querySelector('input[type=checkbox]');
     expect(cb).toBeTruthy();
     expect(main.querySelector('#print-preview').innerHTML).not.toBe('');
+  });
+
+  // 用户报告：「我只选择了一年级为什么还要打印112首？」
+  // 数据：1 年级 共 13 首（1 上 6 + 1 下 7）。只勾 1 年级时摘要应=13。
+  it('只勾 1 年级时摘要应=13', () => {
+    const main = document.getElementById('app-main');
+    const cbs = main.querySelectorAll('#grades-chips input[type=checkbox]');
+    cbs.forEach(cb => {
+      cb.checked = (parseInt(cb.value, 10) === 1);
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 13 首诗/);
+  });
+
+  // 真实交互路径：默认全不选，用户点击 1 年级 label 应勾上 → 13 首诗。
+  it('点击 1 年级 label 勾选后摘要应=13', () => {
+    const main = document.getElementById('app-main');
+    // 默认全不选
+    expect(main.querySelector('#print-summary').textContent).toMatch(/请勾选/);
+    // 找到 1 年级 label 并 click（会冒泡到 input 触发 change）
+    const labels = main.querySelectorAll('#grades-chips label.chip');
+    for (const lab of labels) {
+      const cb = lab.querySelector('input[type=checkbox]');
+      if (parseInt(cb.value, 10) === 1) { lab.click(); break; }
+    }
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 13 首诗/);
+  });
+
+  // 真实交互路径：先点 取消全选，再点 1 年级 label。
+  it('取消全选后再勾 1 年级应=13', () => {
+    const main = document.getElementById('app-main');
+    main.querySelector('#grades-chips [data-bulk-action="none"]').click();
+    expect(main.querySelector('#print-summary').textContent).toMatch(/请勾选/);
+    // 找到 1 年级 label 并 click
+    const labels = main.querySelectorAll('#grades-chips label.chip');
+    for (const lab of labels) {
+      const cb = lab.querySelector('input[type=checkbox]');
+      if (parseInt(cb.value, 10) === 1) { lab.click(); break; }
+    }
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 13 首诗/);
+  });
+
+  // 用户报告：「我只选择了一年级为什么还要打印112首？」
+  // 根因：默认全选导致摘要=112，与用户「我只要 1 年级」的心智模型冲突。
+  // 修复：默认全不选，提示「请勾选」，0 首诗起步；用户主动勾选才计入。
+  it('默认状态应为「全不选」，摘要提示勾选', () => {
+    const main = document.getElementById('app-main');
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/请勾选/);
+  });
+
+  // ── 学期筛选 ──
+  it('勾 1 年级 + 上册 应=6 首（1 年级上册共 6 首）', () => {
+    const main = document.getElementById('app-main');
+    main.querySelectorAll('#grades-chips input[type=checkbox]').forEach(cb => {
+      cb.checked = (parseInt(cb.value, 10) === 1);
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    main.querySelectorAll('#semesters-chips input[type=checkbox]').forEach(cb => {
+      cb.checked = (cb.value === '上');
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 6 首诗/);
+  });
+
+  it('勾 6 年级 + 下册 应=17 首（六年级下册共 17 首）', () => {
+    const main = document.getElementById('app-main');
+    main.querySelectorAll('#grades-chips input[type=checkbox]').forEach(cb => {
+      cb.checked = (parseInt(cb.value, 10) === 6);
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    main.querySelectorAll('#semesters-chips input[type=checkbox]').forEach(cb => {
+      cb.checked = (cb.value === '下');
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    const summary = main.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 17 首诗/);
+  });
+
+  it('点击学期 chip-group「全选」应勾上/下两册', () => {
+    const main = document.getElementById('app-main');
+    // 先取消
+    main.querySelector('#semesters-chips [data-bulk-action="none"]').click();
+    // 再全选
+    main.querySelector('#semesters-chips [data-bulk-action="all"]').click();
+    const cbs = main.querySelectorAll('#semesters-chips input[type=checkbox]');
+    cbs.forEach(cb => expect(cb.checked).toBe(true));
+  });
+
+  it('学期 chip-group「取消全选」应全部取消', () => {
+    const main = document.getElementById('app-main');
+    main.querySelector('#semesters-chips [data-bulk-action="none"]').click();
+    const cbs = main.querySelectorAll('#semesters-chips input[type=checkbox]');
+    cbs.forEach(cb => expect(cb.checked).toBe(false));
   });
 });
 

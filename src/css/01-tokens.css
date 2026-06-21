@@ -1,51 +1,55 @@
 /* =====================================================================
-   诗云 · 设计 Token — 明亮国风
+   诗云 · 设计 Token — 科技感 (Tech Style)
+   程序员/架构师 风格：冷蓝 #2563eb + Inter sans + JetBrains Mono + 白底
    所有颜色 / 字体 / 间距 / 圆角 / 阴影 / 动效变量集中于此
    注意：本应用为离线 HTML，禁止依赖网络字体，全部使用系统字体栈
    ===================================================================== */
 
 :root {
-  /* ── 宣纸底色 ── */
-  --paper-0:    #faf6ee;   /* 页面底层 */
-  --paper-1:    #f3ece0;   /* 卡片底   */
-  --paper-2:    #ebe2d2;   /* 输入框/分隔 */
-  --paper-edge: #e0d5c2;   /* 描边     */
+  /* ── 背景（白底冷灰） ── */
+  --paper-0:    #ffffff;    /* 页面底层 */
+  --paper-1:    #f8fafc;    /* 卡片底   */
+  --paper-2:    #f1f5f9;    /* 输入框/分隔 */
+  --paper-edge: #e2e8f0;    /* 描边     */
 
-  /* ── 墨色（文字/线条） ── */
-  --ink-900: #2b2620;   /* 主标题/正文  */
-  --ink-700: #4a4339;   /* 次级文字     */
-  --ink-500: #7a7062;   /* 辅助说明     */
-  --ink-300: #a89e8d;   /* 占位/禁用   */
+  /* ── 文字（深冷灰，按 Tailwind slate 配色） ── */
+  --ink-900: #0f172a;   /* 主标题/正文  */
+  --ink-700: #334155;   /* 次级文字     */
+  --ink-500: #64748b;   /* 辅助说明     */
+  --ink-300: #94a3b8;   /* 占位/禁用   */
 
-  /* ── 朱砂（主强调，行动召唤） ── */
-  --cinnabar-600: #c0392b;
-  --cinnabar-500: #d94f3d;
-  --cinnabar-100: #f7e3df;
-  --cinnabar-50:  #fef4f2;  /* M3 activeContainer：选中 tab 胶囊背景 */
+  /* ── 主强调：冷蓝（替代朱砂红） ── */
+  --cinnabar-600: #1d4ed8;
+  --cinnabar-500: #2563eb;
+  --cinnabar-100: #dbeafe;
+  --cinnabar-50:  #eff6ff;  /* 选中 tab 胶囊背景 */
 
-  /* ── 青黛（次强调，链接/信息） ── */
-  --indigo-600: #3a5a78;
-  --indigo-100: #e3ebf2;
+  /* ── 次强调：深蓝（链接/信息） ── */
+  --indigo-600: #1e40af;
+  --indigo-100: #dbeafe;
 
-  /* ── 黛绿（成功/已掌握） ── */
-  --jade-600: #3a8f6f;
-  --jade-100: #def0e7;
-  --jade-50:  #f0faf5;
+  /* ── 成功：薄荷绿（替代黛绿） ── */
+  --jade-600: #059669;
+  --jade-100: #d1fae5;
+  --jade-50:  #ecfdf5;
 
-  /* ── 藤黄（提醒/待复习） ── */
-  --amber-600: #c8881f;
-  --amber-100: #f6ecd4;
+  /* ── 提醒：琥珀黄（保留暖色以区分） ── */
+  --amber-600: #d97706;
+  --amber-100: #fef3c7;
 
   /* ── 功能别名 ── */
   --success: var(--jade-600);
   --warning: var(--amber-600);
-  --danger:  var(--cinnabar-600);
+  --danger:  #dc2626;        /* 错误：保留红色以区分 */
   --info:    var(--indigo-600);
 
-  /* ── 字体（离线系统字体栈，无网络依赖） ── */
-  --font-zh-display: 'Kaiti SC', 'STKaiti', 'KaiTi', 'Songti SC', 'SimSun', serif;
-  --font-zh-ui:      'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Source Han Sans CN', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-pinyin:     'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  /* ── 字体（系统栈，无网络依赖） ── */
+  /* 中文 UI：现代无衬线（PingFang/雅黑/思源黑体） */
+  --font-zh-display: 'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-zh-ui:      'Inter', 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Source Han Sans CN', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-pinyin:     'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, 'PingFang SC', monospace;
+  /* ── 等宽（k=v badge / code / 表格数字） ── */
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', Consolas, 'Courier New', monospace;
 
   /* ── 字号阶梯（根 16px） ── */
   --fs-poem:   2.0rem;    /* 诗词正文单字 32px */
@@ -65,20 +69,22 @@
   --s-1: 4px;  --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
   --s-5: 24px; --s-6: 32px;  --s-7: 48px;  --s-8: 64px;
 
-  /* ── 圆角 ── */
-  --r-sm:   8px;
-  --r-md:   14px;
-  --r-lg:   20px;
+  /* ── 圆角（科技感偏好小圆角或直角） ── */
+  --r-sm:   4px;
+  --r-md:   6px;
+  --r-lg:   8px;
   --r-pill: 999px;
 
-  /* ── 阴影（暖色调） ── */
-  --shadow-sm: 0 1px 4px rgba(80,60,30,.09), 0 0 0 1px rgba(80,60,30,.04);
-  --shadow-md: 0 4px 16px rgba(80,60,30,.12), 0 1px 4px rgba(80,60,30,.06);
-  --shadow-lg: 0 12px 36px rgba(80,60,30,.16), 0 4px 12px rgba(80,60,30,.08);
-  --shadow-float: 0 8px 32px rgba(80,60,30,.18), 0 2px 8px rgba(80,60,30,.10);
+  /* ── 阴影（冷色调，1px 描边为主） ── */
+  --shadow-sm:     0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md:     0 2px 8px rgba(15, 23, 42, 0.08);
+  --shadow-lg:     0 8px 24px rgba(15, 23, 42, 0.10);
+  --shadow-float:  0 12px 32px rgba(15, 23, 42, 0.14);
+  /* 1px 描边（科技感标志） */
+  --border-tech:   1px solid var(--paper-edge);
 
-  /* ── 焦点环 ── */
-  --focus-ring: 0 0 0 3px rgba(192,57,43,.35);
+  /* ── 焦点环（冷蓝） ── */
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.30);
 
   /* ── 动效 ── */
   --ease-out:    cubic-bezier(0.16,1,0.3,1);
@@ -90,7 +96,7 @@
   /* ── 布局 ── */
   --sidebar-w:   88px;
   --content-max: 1100px;
-  --tabbar-h:    64px;  /* 手指点击适适应应，符合 Apple HIG 44pt 最小触屏目标 */
+  --tabbar-h:    64px;
 }
 
 @media (prefers-reduced-motion: reduce) {

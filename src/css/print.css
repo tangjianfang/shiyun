@@ -1,8 +1,614 @@
-/* === 诗云 · 打印样式 === */
+/* =====================================================================
+   诗云 · 打印样式 (print.css) — 程序员/架构师/汇报脑图风格
+   ---------------------------------------------------------------------
+   设计原则（用户反馈）：「不要国风宣纸老土，要科技感、能一眼看到关键字、条理清楚」
+   1. 字体：sans-serif 为主，monospace 给 ID/拼音/代码式元数据
+   2. 配色：白/灰底 + 冷蓝强调；零阴影、零圆角、零渐变
+   3. 结构：ASCII 边框 (─ │ ┌ ┐)、编号层级 (1. 1.1)、badge 标签
+   4. 关键词前置：标题/作者/朝代 一眼可见；元数据 tab-separated
+   5. 4 种版式视觉差异化：保留「用途」识别，不靠装饰
+   ===================================================================== */
+
+/* ── 设计 Token ── */
+:root {
+  /* 灰阶（中性、冷静） */
+  --p-bg:        #ffffff;
+  --p-surface:   #fafafa;
+  --p-surface-2: #f5f5f5;
+  --p-border:    #e5e7eb;
+  --p-border-2:  #d4d4d8;
+
+  /* 墨色 */
+  --p-ink:       #18181b;
+  --p-ink-2:     #3f3f46;
+  --p-muted:     #71717a;
+  --p-faint:     #a1a1aa;
+
+  /* 冷蓝强调（主色） */
+  --p-blue:      #2563eb;
+  --p-blue-bg:   #eff6ff;
+  --p-blue-2:    #1d4ed8;
+
+  /* 功能色 */
+  --p-green:     #059669;
+  --p-amber:     #d97706;
+  --p-red:       #dc2626;
+
+  /* 字体：sans 主 + mono 给代码式数据 */
+  --p-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
+  --p-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  --p-margin: 16mm;
+}
+
+/* ── 屏幕预览：每页渲染为「白纸」 ── */
+.print-doc {
+  background: var(--p-surface);
+  color: var(--p-ink);
+  font-family: var(--p-sans);
+  font-size: 10pt;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.print-doc .page {
+  background: var(--p-bg);
+  width: 210mm;
+  min-height: 297mm;
+  margin: 8mm auto;
+  padding: var(--p-margin);
+  border: 1px solid var(--p-border);
+  box-sizing: border-box;
+  page-break-after: always;
+  break-after: page;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.print-doc .page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* =====================================================================
+   目录页 (TOC) — 程序员的 documentation index 风格
+   ===================================================================== */
+.print-doc .page-toc {
+  font-family: var(--p-sans);
+}
+
+.print-doc .toc-header {
+  border-bottom: 2px solid var(--p-ink);
+  padding-bottom: 4mm;
+  margin-bottom: 5mm;
+}
+
+.print-doc .toc-title-main {
+  font-family: var(--p-mono);
+  font-size: 18pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 2mm;
+  color: var(--p-ink);
+}
+
+/* ASCII 边框装饰标题：# 诗云打印目录 */
+.print-doc .toc-title-main::before {
+  content: "# ";
+  color: var(--p-blue);
+  font-weight: 700;
+}
+
+.print-doc .toc-subtitle {
+  font-family: var(--p-mono);
+  font-size: 9pt;
+  color: var(--p-muted);
+  margin: 0;
+  letter-spacing: 0;
+}
+
+/* key=value 形式：date=2026-06-22 count=112 format=classic */
+.print-doc .toc-subtitle .kv {
+  margin-right: 4mm;
+}
+.print-doc .toc-subtitle .k { color: var(--p-muted); }
+.print-doc .toc-subtitle .v { color: var(--p-ink); font-weight: 500; }
+
+.print-doc .toc-body {
+  flex: 1;
+  column-count: 2;
+  column-gap: 8mm;
+  column-rule: 1px solid var(--p-border);
+}
+
+.print-doc .toc-group {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 5mm;
+}
+
+/* ## 1 年级 上册 (6) */
+.print-doc .toc-group-label {
+  font-family: var(--p-mono);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--p-ink);
+  margin: 0 0 2mm;
+  padding: 1mm 0;
+  border-bottom: 1px solid var(--p-border);
+  letter-spacing: 0;
+}
+.print-doc .toc-group-label::before {
+  content: "## ";
+  color: var(--p-blue);
+}
+.print-doc .toc-group-count {
+  color: var(--p-muted);
+  font-weight: 400;
+  margin-left: 2mm;
+}
+
+.print-doc .toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.print-doc .toc-item {
+  display: grid;
+  grid-template-columns: 6mm 26mm 1fr 18mm;
+  align-items: baseline;
+  gap: 1mm;
+  padding: 0.6mm 0;
+  font-family: var(--p-mono);
+  font-size: 8.5pt;
+  line-height: 1.5;
+  border-bottom: 1px dotted var(--p-border);
+}
+
+.print-doc .toc-idx {
+  color: var(--p-faint);
+  text-align: right;
+}
+
+.print-doc .toc-id {
+  color: var(--p-muted);
+  font-size: 7.5pt;
+}
+
+.print-doc .toc-title {
+  color: var(--p-ink);
+  font-weight: 600;
+}
+
+.print-doc .toc-author {
+  color: var(--p-ink-2);
+  text-align: right;
+}
+
+.print-doc .toc-dynasty {
+  display: inline-block;
+  font-family: var(--p-mono);
+  font-size: 7pt;
+  color: var(--p-blue-2);
+  background: var(--p-blue-bg);
+  padding: 0.3mm 1.5mm;
+  border: 1px solid #bfdbfe;
+  margin-left: 1mm;
+}
+
+.print-doc .toc-footer {
+  margin-top: 4mm;
+  padding-top: 3mm;
+  border-top: 1px solid var(--p-border);
+  text-align: center;
+}
+
+.print-doc .toc-hint {
+  font-family: var(--p-mono);
+  font-size: 8pt;
+  color: var(--p-muted);
+  margin: 0;
+  letter-spacing: 0;
+}
+.print-doc .toc-hint::before { content: "// "; color: var(--p-faint); }
+.print-doc .toc-hint::after  { content: ""; }
+
+/* =====================================================================
+   通用诗页元素
+   ===================================================================== */
+.print-doc .poem-header {
+  border-bottom: 2px solid var(--p-ink);
+  padding-bottom: 3mm;
+  margin-bottom: 5mm;
+}
+
+.print-doc .poem-title {
+  font-family: var(--p-sans);
+  font-size: 22pt;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--p-ink);
+  margin: 0 0 2mm;
+}
+.print-doc .poem-title::before {
+  content: "《";
+  color: var(--p-muted);
+  font-weight: 400;
+}
+.print-doc .poem-title::after {
+  content: "》";
+  color: var(--p-muted);
+  font-weight: 400;
+}
+
+.print-doc .poem-meta {
+  font-family: var(--p-mono);
+  font-size: 9pt;
+  color: var(--p-ink-2);
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3mm;
+}
+
+.print-doc .poem-meta .meta-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1mm;
+}
+.print-doc .poem-meta .k { color: var(--p-muted); font-weight: 400; }
+.print-doc .poem-meta .v { color: var(--p-ink); font-weight: 600; }
+.print-doc .poem-meta .v.id   { color: var(--p-blue); font-family: var(--p-mono); }
+.print-doc .poem-meta .v.author { color: var(--p-ink); }
+.print-doc .poem-meta .v.dynasty {
+  background: var(--p-blue-bg);
+  color: var(--p-blue-2);
+  padding: 0.2mm 1.5mm;
+  border: 1px solid #bfdbfe;
+}
+
+.print-doc .poem-image {
+  text-align: center;
+  margin: 0 auto 5mm;
+  max-height: 55mm;
+}
+.print-doc .poem-image img {
+  max-width: 100%;
+  max-height: 55mm;
+  border: 1px solid var(--p-border);
+}
+
+.print-doc .poem-body {
+  flex: 1;
+}
+
+.print-doc .poem-line {
+  margin: 0 0 4mm;
+  text-align: center;
+}
+
+.print-doc .poem-char-row {
+  display: block;
+  font-family: var(--p-sans);
+  font-size: 18pt;
+  font-weight: 500;
+  letter-spacing: 6px;
+  line-height: 1.6;
+  margin-bottom: 0.5mm;
+  color: var(--p-ink);
+}
+
+.print-doc .poem-pinyin-row {
+  display: block;
+  font-family: var(--p-mono);
+  font-size: 8.5pt;
+  color: var(--p-muted);
+  letter-spacing: 2px;
+  line-height: 1.4;
+}
+
+.print-doc .poem-footer {
+  margin-top: auto;
+  padding-top: 3mm;
+  border-top: 1px solid var(--p-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--p-mono);
+  font-size: 8pt;
+  color: var(--p-muted);
+}
+
+/* 页码 badge：[ 2 / 17 ] */
+.print-doc .page-num {
+  font-family: var(--p-mono);
+  font-size: 8pt;
+  color: var(--p-muted);
+  margin: 0;
+  letter-spacing: 0;
+}
+.print-doc .page-num::before { content: "[ "; color: var(--p-faint); }
+.print-doc .page-num::after  { content: " ]"; color: var(--p-faint); }
+
+.print-doc .page-format-tag {
+  font-family: var(--p-mono);
+  font-size: 7.5pt;
+  color: var(--p-blue);
+  background: var(--p-blue-bg);
+  padding: 0.3mm 1.5mm;
+  border: 1px solid #bfdbfe;
+}
+
+/* =====================================================================
+   经典欣赏版 — 单页一首 + 大字 + 拼音
+   ===================================================================== */
+.print-doc .page-classic .poem-char-row {
+  font-size: 20pt;
+}
+
+/* =====================================================================
+   默写练习版 — 拼音 + 填空红线
+   ===================================================================== */
+.print-doc .page-dictation .poem-char-row {
+  font-size: 18pt;
+}
+.print-doc .page-dictation .poem-char-row .char.blank {
+  display: inline-block;
+  min-width: 1em;
+  border-bottom: 2px solid var(--p-red);
+  margin: 0 1px;
+  color: transparent;
+}
+
+.print-doc .comprehension {
+  margin-top: 5mm;
+  padding: 4mm;
+  border: 1px solid var(--p-border-2);
+  background: var(--p-surface);
+}
+
+.print-doc .comprehension h3 {
+  font-family: var(--p-mono);
+  font-size: 10pt;
+  font-weight: 700;
+  color: var(--p-ink);
+  margin: 0 0 2mm;
+  padding-bottom: 1mm;
+  border-bottom: 1px solid var(--p-border);
+}
+.print-doc .comprehension h3::before { content: "## "; color: var(--p-blue); }
+
+.print-doc .comprehension ol {
+  margin: 0;
+  padding-left: 6mm;
+  font-family: var(--p-sans);
+  font-size: 9.5pt;
+  line-height: 1.8;
+  color: var(--p-ink-2);
+}
+.print-doc .comprehension li::marker {
+  font-family: var(--p-mono);
+  color: var(--p-muted);
+}
+
+/* =====================================================================
+   密集复习卡 — 4 首/页
+   ===================================================================== */
+.print-doc .page-dense > header {
+  border-bottom: 2px solid var(--p-ink);
+  padding-bottom: 3mm;
+  margin-bottom: 4mm;
+}
+
+.print-doc .page-dense > header h2 {
+  font-family: var(--p-mono);
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--p-ink);
+  margin: 0;
+  letter-spacing: 0;
+}
+.print-doc .page-dense > header h2::before { content: "## "; color: var(--p-blue); }
+
+.print-doc .page-dense > header .meta {
+  font-family: var(--p-mono);
+  font-size: 8pt;
+  color: var(--p-muted);
+  margin-top: 1mm;
+}
+
+.print-doc .poem-card {
+  padding: 3mm 0 3mm 4mm;
+  margin-bottom: 3mm;
+  border-left: 3px solid var(--p-blue);
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.print-doc .poem-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 3mm;
+  margin-bottom: 2mm;
+}
+
+.print-doc .poem-card h3 {
+  font-family: var(--p-sans);
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--p-ink);
+  margin: 0;
+  letter-spacing: -0.2px;
+}
+.print-doc .poem-card h3 .n {
+  font-family: var(--p-mono);
+  color: var(--p-muted);
+  font-weight: 400;
+  margin-right: 2mm;
+  font-size: 9pt;
+}
+
+.print-doc .poem-card .id-tag {
+  font-family: var(--p-mono);
+  font-size: 7.5pt;
+  color: var(--p-blue-2);
+  background: var(--p-blue-bg);
+  padding: 0.3mm 1.5mm;
+  border: 1px solid #bfdbfe;
+}
+
+.print-doc .poem-content {
+  font-family: var(--p-sans);
+  font-size: 11pt;
+  line-height: 1.7;
+  color: var(--p-ink);
+  margin: 1mm 0 2mm;
+  letter-spacing: 0.5px;
+}
+
+.print-doc .poem-translation,
+.print-doc .poem-bg,
+.print-doc .poem-ann,
+.print-doc .poem-theme {
+  font-family: var(--p-sans);
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--p-ink-2);
+  margin: 1mm 0;
+}
+.print-doc .poem-translation::before,
+.print-doc .poem-bg::before,
+.print-doc .poem-ann::before,
+.print-doc .poem-theme::before {
+  font-family: var(--p-mono);
+  color: var(--p-muted);
+  margin-right: 1mm;
+}
+.print-doc .poem-translation::before { content: "> 译文："; }
+.print-doc .poem-bg::before           { content: "> 背景："; }
+.print-doc .poem-ann::before          { content: "> 注释："; }
+.print-doc .poem-theme::before        { content: "> 主题："; }
+
+.print-doc .card-sep {
+  border: 0;
+  border-top: 1px dashed var(--p-border);
+  margin: 0;
+}
+
+/* =====================================================================
+   学习讲义版
+   ===================================================================== */
+.print-doc .page-handout .handout-section {
+  margin-top: 4mm;
+  padding-top: 3mm;
+  border-top: 1px solid var(--p-border);
+}
+
+.print-doc .page-handout .handout-section h3 {
+  font-family: var(--p-mono);
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--p-ink);
+  margin: 0 0 2mm;
+}
+.print-doc .page-handout .handout-section h3::before { content: "## "; color: var(--p-blue); }
+
+.print-doc .page-handout .handout-section p,
+.print-doc .page-handout .handout-section li {
+  font-family: var(--p-sans);
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--p-ink);
+}
+
+.print-doc .page-handout .handout-section ul {
+  margin: 0;
+  padding-left: 5mm;
+}
+.print-doc .page-handout .handout-section li::marker {
+  font-family: var(--p-mono);
+  color: var(--p-muted);
+}
+
+/* =====================================================================
+   @media print — 浏览器原生打印
+   ===================================================================== */
 @media print {
-  body { background: white; padding: 0; }
-  .app-header, .tab-bar, .no-print { display: none !important; }
-  .app-main { max-width: 100%; padding: 0; }
-  .card { box-shadow: none; border: 1px solid #ddd; page-break-inside: avoid; }
-  a { color: #000; text-decoration: none; }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* 屏幕 UI 全部隐藏 */
+  .app-header,
+  .tab-bar,
+  .no-print,
+  .filter-bar,
+  .format-selector,
+  .print-actions,
+  .sidebar,
+  nav {
+    display: none !important;
+  }
+
+  .app-main,
+  .print-page {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* 打印时去掉屏幕预览的「纸张」边框/外边距 */
+  .print-doc .page {
+    margin: 0 !important;
+    border: none !important;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: var(--p-margin) !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .print-doc .page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  /* 防止内部元素跨页 */
+  .poem-card,
+  .toc-group,
+  .poem-line,
+  .handout-section,
+  .comprehension {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  /* 强制打印彩色（badge 背景、蓝色文字） */
+  .poem-meta .v.dynasty,
+  .toc-dynasty,
+  .id-tag,
+  .page-format-tag,
+  .toc-title-main::before,
+  .toc-group-label::before,
+  .comprehension h3::before,
+  .page-dense > header h2::before,
+  .page-handout .handout-section h3::before {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

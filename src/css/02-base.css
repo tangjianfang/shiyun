@@ -1,5 +1,5 @@
 /* =====================================================================
-   诗云 · 基础样式 — Reset / Body / 宣纸底纹 / 字体
+   诗云 · 基础样式 — Reset / Body / 字体 / 冷色描边
    ===================================================================== */
 
 *, *::before, *::after {
@@ -19,22 +19,7 @@ body {
   font-size: var(--fs-body);
   color: var(--ink-900);
   background-color: var(--paper-0);
-  /* 极淡宣纸纹理：用两层渐变叠加模拟纸纤维 */
-  background-image:
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 8px,
-      rgba(160,140,110,.018) 8px,
-      rgba(160,140,110,.018) 9px
-    ),
-    repeating-linear-gradient(
-      180deg,
-      transparent,
-      transparent 12px,
-      rgba(160,140,110,.012) 12px,
-      rgba(160,140,110,.012) 13px
-    );
+  /* 科技感：纯白底，无纹理 */
   min-height: 100vh;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

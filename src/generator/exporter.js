@@ -7,7 +7,7 @@
  */
 
 import { POEMS_META } from '../data/poems-meta.js';
-import { loadPoemPiece } from './state.js';
+import { loadPoemPiece, scanLegacyPoemIds, clearLegacyPoemPieces } from './state.js';
 
 /**
  * 把元数据 + 三类持久化内容合并
@@ -132,6 +132,20 @@ export function downloadLearningHtml(html, filename = '诗云-学习版.html') {
  * - 依赖：src/learning.template.html + src/css/* + src/lib/* + src/js/* 必须存在
  */
 export async function exportLearningHtml() {
+  // ── 数据迁移：检测旧 ID 格式的 orphan AI 记录 ──
+  const { oldIds } = scanLegacyPoemIds();
+  if (oldIds.length > 0) {
+    const ok = window.confirm(
+      `检测到 ${oldIds.length} 首诗使用了旧 ID 格式（g{年级}-{序号}），新 ID 格式为 g{年级}-{上|下}-{序号}。\n\n` +
+      `旧记录已无法与新数据对应，建议清理以释放空间。\n\n` +
+      `点「确定」清除旧记录，点「取消」保留（不影响导出，但占空间）。`
+    );
+    if (ok) {
+      const { clearedKeys } = clearLegacyPoemPieces();
+      console.log(`[迁移] 已清除 ${clearedKeys} 条旧 ID 的 AI 数据`);
+    }
+  }
+
   const baseUrl = 'src/';
   const [
     learningTemplate,

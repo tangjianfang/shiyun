@@ -5,7 +5,7 @@
  * - 用户进度: 存 localStorage，由 storage.js 封装
  */
 
-import { POEMS_META } from '../data/poems-meta.js';
+import { POEMS_META, getPoemsBySemester as _getPoemsBySemesterMeta, getPoemsByGrade as _getPoemsByGradeMeta, SEMESTERS } from '../data/poems-meta.js';
 
 /**
  * @typedef {Object} Poem
@@ -56,6 +56,20 @@ export function getPoem(id) {
 export function getPoemsByGrade(grade) {
   return Array.from(poems.values()).filter(p => p.grade === grade);
 }
+
+/** 按学期取诗（grade + semester） */
+export function getPoemsBySemester(grade, semester) {
+  return Array.from(poems.values()).filter(p => p.grade === grade && p.semester === semester);
+}
+
+/** 12 个学期（按时间顺序：1上→6下） */
+export const ALL_SEMESTERS = (() => {
+  const out = [];
+  for (const g of [1, 2, 3, 4, 5, 6]) {
+    for (const s of SEMESTERS) out.push({ grade: g, semester: s, label: `${g} 年级 ${s}册` });
+  }
+  return out;
+})();
 
 /** 按朝代取诗 */
 export function getPoemsByDynasty(dynasty) {

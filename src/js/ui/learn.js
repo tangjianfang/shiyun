@@ -4,7 +4,7 @@
  */
 
 import { pinyin } from 'pinyin-pro';
-import { getPoem, poems as poemsMap } from '../data.js';
+import { getPoem, poems as poemsMap, getPoemsBySemester } from '../data.js';
 import { getCurrentUserId, getPoemProgress, updatePoemProgress } from '../storage.js';
 import {
   createAudio, play, pause, stop, setSpeed, setOnEnd,
@@ -44,7 +44,14 @@ export function renderPoemList() {
     if (p) userProgress[poem.id] = p;
   }
 
-  const state = { grade: 0, dynasty: '', author: '', keyword: '' };
+  const state = { grade: 0, semester: '', dynasty: '', author: '', keyword: '' };
+
+  // 从 URL hash 读取预设筛选（如 #/learn?grade=1&sem=上）
+  const hashParams = parseHashParams();
+  if (hashParams.grade) state.grade = parseInt(hashParams.grade, 10) || 0;
+  if (hashParams.sem)  state.semester = hashParams.sem;
+  if (hashParams.dynasty) state.dynasty = decodeURIComponent(hashParams.dynasty);
+  if (hashParams.author)  state.author  = decodeURIComponent(hashParams.author);
 
   // 从详情页关键词跳转过来：预填搜索
   if (pendingKeyword) {
@@ -71,10 +78,17 @@ export function renderPoemList() {
 
         <!-- 年级 Chip -->
         <div class="poem-list__chips" id="grade-chips">
-          <button class="chip chip--active" data-grade="0">全部年级</button>
+          <button class="chip ${state.grade === 0 ? 'chip--active' : ''}" data-grade="0">全部年级</button>
           ${[1,2,3,4,5,6].map(g =>
-            `<button class="chip" data-grade="${g}">${g} 年级</button>`
+            `<button class="chip ${state.grade === g ? 'chip--active' : ''}" data-grade="${g}">${g} 年级</button>`
           ).join('')}
+        </div>
+
+        <!-- 学期 Chip（年级选定后才出现，可选） -->
+        <div class="poem-list__chips" id="semester-chips" ${state.grade === 0 ? 'hidden' : ''}>
+          <button class="chip ${state.semester === '' ? 'chip--active' : ''}" data-sem="">全部学期</button>
+          <button class="chip ${state.semester === '上' ? 'chip--active' : ''}" data-sem="上">上册</button>
+          <button class="chip ${state.semester === '下' ? 'chip--active' : ''}" data-sem="下">下册</button>
         </div>
 
         <!-- 朝代 Chip -->
@@ -100,7 +114,7 @@ export function renderPoemList() {
   setTimeout(() => renderItems(), 100);
 
   function renderItems() {
-    const filtered = filterPoems(allPoems, state);
+    const filtered = filterLearnPoems(allPoems, state);
     const itemsEl  = document.getElementById('poem-list-items');
     const countEl  = document.getElementById('poem-list-count');
     if (countEl) countEl.textContent = `共 ${filtered.length} 首`;
@@ -141,6 +155,23 @@ export function renderPoemList() {
     if (!btn) return;
     state.grade = Number(btn.dataset.grade);
     document.querySelectorAll('#grade-chips .chip').forEach(c => c.classList.toggle('chip--active', c === btn));
+    // 切换年级时，若学期 chip 与新年级无关，重置学期
+    const semGroup = document.getElementById('semester-chips');
+    if (state.grade === 0) {
+      if (semGroup) semGroup.hidden = true;
+      state.semester = '';
+    } else {
+      if (semGroup) semGroup.hidden = false;
+    }
+    renderItems();
+  });
+
+  // 学期 chip 组（仅在选定年级后出现）
+  document.getElementById('semester-chips')?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-sem]');
+    if (!btn) return;
+    state.semester = btn.dataset.sem;
+    document.querySelectorAll('#semester-chips .chip').forEach(c => c.classList.toggle('chip--active', c === btn));
     renderItems();
   });
 
@@ -440,10 +471,11 @@ export function getAllAuthorsForFilter(poems) {
   return [...new Set(poems.map(p => p.author))].filter(Boolean).sort();
 }
 
-export function filterPoems(poems, filters) {
+export function filterLearnPoems(poems, filters) {
   const f = filters || {};
   return poems.filter(p => {
     if (f.grade    && p.grade   !== f.grade)    return false;
+    if (f.semester && p.semester !== f.semester) return false;
     if (f.dynasty  && p.dynasty !== f.dynasty)  return false;
     if (f.author   && p.author  !== f.author)   return false;
     if (f.keyword) {
@@ -453,6 +485,21 @@ export function filterPoems(poems, filters) {
     }
     return true;
   });
+}
+
+/** 解析 #/learn?grade=1&sem=上 这种 hash 后 query 串。空 / 不存在则 {} */
+export function parseHashParams() {
+  const hash = window.location.hash || '';
+  const queryStart = hash.indexOf('?');
+  if (queryStart < 0) return {};
+  const params = {};
+  const pairs = hash.slice(queryStart + 1).split('&');
+  for (const pair of pairs) {
+    if (!pair) continue;
+    const [k, v] = pair.split('=');
+    if (k) params[decodeURIComponent(k)] = v === undefined ? '' : decodeURIComponent(v || '');
+  }
+  return params;
 }
 
 export function getStatusBadge(progress) {

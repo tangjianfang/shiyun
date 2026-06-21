@@ -9,21 +9,21 @@ describe('collectPoemsData', () => {
   });
 
   it('应合并元数据与 text/image/audio 持久化记录', async () => {
-    localStorage.setItem('shiyun_gen_text_g1-01', JSON.stringify({
+    localStorage.setItem('shiyun_gen_text_g1-下-03', JSON.stringify({
       translation: '月光洒在床上', background: '李白思乡', annotations: {}, theme: '思乡',
       keywords: ['月'], keySentences: [{ line: 0, chars: ['床'], blanks: [0] }], pinyin: ['chuáng'],
     }));
-    localStorage.setItem('shiyun_gen_image_g1-01', 'data:image/png;base64,IMG');
-    localStorage.setItem('shiyun_gen_audio_g1-01', 'data:audio/mp3;base64,AUD');
+    localStorage.setItem('shiyun_gen_image_g1-下-03', 'data:image/png;base64,IMG');
+    localStorage.setItem('shiyun_gen_audio_g1-下-03', 'data:audio/mp3;base64,AUD');
 
     const { POEMS_META } = await import('../src/data/poems-meta.js');
     const poems = collectPoemsData(POEMS_META);
-    const g1 = poems.find(p => p.id === 'g1-01');
+    const g1 = poems.find(p => p.id === 'g1-下-03');
     expect(g1).toBeDefined();
     expect(g1.translation).toBe('月光洒在床上');
     expect(g1.image).toBe('data:image/png;base64,IMG');
     expect(g1.audio).toBe('data:audio/mp3;base64,AUD');
-    const g2 = poems.find(p => p.id === 'g1-02');
+    const g2 = poems.find(p => p.id === 'g1-下-04');
     expect(g2.translation).toBe('');
     expect(g2.image).toBe('');
   });

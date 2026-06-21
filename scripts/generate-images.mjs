@@ -9,9 +9,9 @@
  * 用法（PowerShell）：
  *   $env:MINIMAX_API_KEY = "你的key"
  *
- *   node scripts/generate-images.mjs --first     # 只生成第一首（静夜思 g1-01）用于试看
- *   node scripts/generate-images.mjs --all       # 生成全部（已存在的自动跳过）
- *   node scripts/generate-images.mjs --id=g1-05  # 生成指定某首
+ *   node scripts/generate-images.mjs --first         # 只生成第一首（咏鹅 g1-上-01）用于试看
+ *   node scripts/generate-images.mjs --all           # 生成全部（已存在的自动跳过）
+ *   node scripts/generate-images.mjs --id=g1-上-05   # 生成指定某首（古朗月行节选）
  *   node scripts/generate-images.mjs --grade=3   # 只生成某个年级
  *   node scripts/generate-images.mjs --all --force  # 强制重生成（覆盖已有）
  *   node scripts/generate-images.mjs --all --jobs=6 # 并发生成（6 路同时，默认全量/年级即 6）
@@ -236,7 +236,7 @@ function selectPoems(args) {
 async function main() {
   const args = parseArgs(process.argv);
   if (!args.mode) {
-    console.log(c.warn('请指定模式：--first | --all | --id=g1-05 | --grade=3  （可加 --force 覆盖、--jobs=6 并发）'));
+    console.log(c.warn('请指定模式：--first | --all | --id=g1-上-05 | --grade=3  （可加 --force 覆盖、--jobs=6 并发）'));
     process.exit(1);
   }
   if (!API_KEY) {

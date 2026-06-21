@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { filterPoems, getStatusBadge, searchPoemsCase, getAllPoemsList, getAllDynastiesForFilter, getAllAuthorsForFilter } from '../src/js/ui/learn.js';
+import { filterLearnPoems, getStatusBadge, searchPoemsCase, getAllPoemsList, getAllDynastiesForFilter, getAllAuthorsForFilter } from '../src/js/ui/learn.js';
 
-describe('filterPoems', () => {
+describe('filterLearnPoems', () => {
   const sample = [
     { id: 'g1-01', title: '静夜思', author: '李白', dynasty: '唐', grade: 1 },
     { id: 'g1-02', title: '咏鹅', author: '骆宾王', dynasty: '唐', grade: 1 },
@@ -10,35 +10,35 @@ describe('filterPoems', () => {
   ];
 
   it('年级筛选应只返回该年级', () => {
-    const r = filterPoems(sample, { grade: 1, dynasty: '', author: '', keyword: '' });
+    const r = filterLearnPoems(sample, { grade: 1, dynasty: '', author: '', keyword: '' });
     expect(r.length).toBe(2);
     r.forEach(p => expect(p.grade).toBe(1));
   });
 
   it('朝代筛选应只返回该朝代', () => {
-    const r = filterPoems(sample, { grade: 0, dynasty: '清', author: '', keyword: '' });
+    const r = filterLearnPoems(sample, { grade: 0, dynasty: '清', author: '', keyword: '' });
     expect(r.length).toBe(1);
     expect(r[0].id).toBe('g2-01');
   });
 
   it('作者筛选应只返回该作者', () => {
-    const r = filterPoems(sample, { grade: 0, dynasty: '', author: '骆宾王', keyword: '' });
+    const r = filterLearnPoems(sample, { grade: 0, dynasty: '', author: '骆宾王', keyword: '' });
     expect(r.length).toBe(1);
     expect(r[0].author).toBe('骆宾王');
   });
 
   it('关键词搜索应匹配标题或作者', () => {
-    const r = filterPoems(sample, { grade: 0, dynasty: '', author: '', keyword: '静夜' });
+    const r = filterLearnPoems(sample, { grade: 0, dynasty: '', author: '', keyword: '静夜' });
     expect(r.length).toBe(2);
   });
 
   it('空筛选应返回全部', () => {
-    const r = filterPoems(sample, { grade: 0, dynasty: '', author: '', keyword: '' });
+    const r = filterLearnPoems(sample, { grade: 0, dynasty: '', author: '', keyword: '' });
     expect(r.length).toBe(sample.length);
   });
 
   it('多条件应取交集', () => {
-    const r = filterPoems(sample, { grade: 1, dynasty: '唐', author: '李白', keyword: '' });
+    const r = filterLearnPoems(sample, { grade: 1, dynasty: '唐', author: '李白', keyword: '' });
     expect(r.length).toBe(1);
     expect(r[0].id).toBe('g1-01');
   });

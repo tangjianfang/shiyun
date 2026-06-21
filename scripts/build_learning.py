@@ -169,9 +169,14 @@ def strip_and_iife(content):
 
 def collect_js():
     # 顶部注入：从全局获取 POEMS_META 和 pinyin（pinyin-pro 已先行加载）
+    # 注意：poems-meta.js 不作为模块内联（只取 POEMS_META 当 JSON），
+    # 因此其同名 export 必须在这里作为 var 全局声明一次，供 import 别名解析。
     preamble = (
         "// === 构建注入：全局依赖 ===\n"
         "var POEMS_META = window.__SHIYUN_POEMS_META__ || [];\n"
+        "var SEMESTERS = [\"上\", \"下\"];\n"
+        "var GRADES = [1, 2, 3, 4, 5, 6];\n"
+        "var GRADE_COUNTS = {1:13, 2:14, 3:18, 4:19, 5:22, 6:26};\n"
         "var pinyin = (typeof pinyinPro !== 'undefined') ? pinyinPro.pinyin : undefined;\n"
     )
 
@@ -274,9 +279,36 @@ def _read_json(path):
         return {}
 
 
+def _load_real_content_map():
+    """从 src/data/poems-content.js 读取 POEMS_CONTENT（ES module）。
+    返回 { 'g1-上-01': ['鹅，鹅，鹅，', ...], ... }。
+    """
+    content_js = (SRC_DIR / "data" / "poems-content.js").resolve()
+    if not content_js.exists():
+        return {}
+    try:
+        # Windows 上 Node ESM 路径必须是 file:// URL（带 percent-encoded UTF-8）
+        import urllib.parse
+        url = "file:///" + urllib.parse.quote(content_js.as_posix().lstrip("/"))
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e",
+             f"import {{ POEMS_CONTENT }} from '{url}';\n"
+             "process.stdout.write(JSON.stringify(POEMS_CONTENT));"],
+            capture_output=True, text=True, timeout=10, encoding="utf-8",
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            return json.loads(result.stdout)
+        else:
+            log(f"  ! poems-content.js 加载失败: {result.stderr.strip()[:200]}", "warn")
+    except Exception as e:
+        log(f"  ! 读取 poems-content.js 失败: {e}", "warn")
+    return {}
+
+
 def enrich_poems(poems):
     """
     将本地生成的媒体与 AI 文本内容合并进诗词数据：
+    - src/data/poems-content.js → 替换占位符「（待 AI 补全）」为真实诗文
     - assets/audio/manifest.json → 把每首 MP3 以 base64 data URL 写入 poem['audio']
     - assets/images/manifest.json → 把每首图片压缩后以 base64 data URL 写入 poem['image']
     - assets/content/manifest.json → 合并 background/translation/annotations/theme/keywords
@@ -290,6 +322,18 @@ def enrich_poems(poems):
     # 960px / quality=78 → 平均约 130KB/张（原始 483KB），视觉质量仍清晰
     IMAGE_MAX_W  = 960
     IMAGE_QUALITY = 78
+
+    # ── 真实诗文注入（替换占位符） ──
+    real_content_map = _load_real_content_map()
+    content_filled = 0
+    for poem in poems:
+        pid = poem.get("id")
+        real_lines = real_content_map.get(pid)
+        if real_lines:
+            poem["content"] = real_lines
+            content_filled += 1
+    if content_filled:
+        log(f"  + 真实诗文: {content_filled}/{len(poems)} 首（来自 poems-content.js）")
 
     def compress_image(raw_bytes):
         """读取图片，缩放到 IMAGE_MAX_W 宽（等比），重新编码为 JPEG 返回 bytes。"""

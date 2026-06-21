@@ -11,7 +11,7 @@
  *   $env:MINIMAX_API_KEY = "你的key"
  *   node scripts/generate-content.mjs --first       # 只生成第一首试看
  *   node scripts/generate-content.mjs --all         # 生成全部（已存在自动跳过）
- *   node scripts/generate-content.mjs --id=g1-05    # 生成指定某首
+ *   node scripts/generate-content.mjs --id=g1-上-05    # 生成指定某首（古朗月行节选）
  *   node scripts/generate-content.mjs --all --force # 强制重生成
  *
  * 可调环境变量：
@@ -217,7 +217,7 @@ async function main() {
   const args = parseArgs(process.argv);
 
   if (!args.mode) {
-    console.log(c.warn('请指定模式：--first | --all | --id=g1-05  （可加 --force 覆盖）'));
+    console.log(c.warn('请指定模式：--first | --all | --id=g1-上-05  （可加 --force 覆盖）'));
     process.exit(1);
   }
   if (!API_KEY) {

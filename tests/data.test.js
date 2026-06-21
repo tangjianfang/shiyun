@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { loadPoemMeta, getPoem, getPoemsByGrade, getPoemsByDynasty, searchPoems, getAllDynasties, getAllAuthors, isPoemComplete, poems } from '../src/js/data.js';
+import { loadPoemMeta, getPoem, getPoemsByGrade, getPoemsBySemester, getPoemsByDynasty, searchPoems, getAllDynasties, getAllAuthors, isPoemComplete, poems } from '../src/js/data.js';
 
 describe('data.js 加载与查询', () => {
   beforeEach(() => {
@@ -12,9 +12,27 @@ describe('data.js 加载与查询', () => {
   });
 
   it('getPoem 应返回正确诗', () => {
-    const poem = getPoem('g1-01');
+    const poem = getPoem('g1-下-03');  // 静夜思（1 年级下册第 3 首）
     expect(poem.title).toBe('静夜思');
     expect(poem.author).toBe('李白');
+    expect(poem.grade).toBe(1);
+    expect(poem.semester).toBe('下');
+  });
+
+  it('getPoem 返回新 id 格式 g{年级}-{学期}-{序号}', () => {
+    const poem = getPoem('g3-上-01');
+    expect(poem.id).toBe('g3-上-01');
+    expect(poem.title).toBe('所见');
+    expect(poem.semester).toBe('上');
+  });
+
+  it('getPoemsBySemester 应只返回指定学期', () => {
+    const sem = getPoemsBySemester(1, '上');
+    expect(sem.length).toBe(6);
+    sem.forEach(p => {
+      expect(p.grade).toBe(1);
+      expect(p.semester).toBe('上');
+    });
   });
 
   it('getPoemsByGrade 应只返回指定年级', () => {
@@ -68,11 +86,11 @@ describe('isPoemComplete', () => {
   beforeEach(() => { poems.clear(); loadPoemMeta(); });
 
   it('新加载的诗 incomplete', () => {
-    expect(isPoemComplete(getPoem('g1-01'))).toBe(false);
+    expect(isPoemComplete(getPoem('g1-下-03'))).toBe(false);
   });
 
   it('有 image + audio + pinyin 的诗 complete', () => {
-    const p = getPoem('g1-01');
+    const p = getPoem('g1-下-03');
     p.image = 'data:image/jpeg;base64,...';
     p.audio = 'data:audio/mp3;base64,...';
     p.pinyin = ['chuáng', 'qián'];
