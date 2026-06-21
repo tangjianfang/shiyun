@@ -5,7 +5,7 @@
  * - 用户进度: 存 localStorage，由 storage.js 封装
  */
 
-import { POEMS_META, getPoemsBySemester as _getPoemsBySemesterMeta, getPoemsByGrade as _getPoemsByGradeMeta, SEMESTERS } from '../data/poems-meta.js';
+import { POEMS_META, SEMESTERS } from '../data/poems-meta.js';
 
 /**
  * @typedef {Object} Poem
