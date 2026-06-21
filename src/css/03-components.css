@@ -39,9 +39,9 @@
 .btn--primary {
   background: var(--cinnabar-500);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(192,57,43,.30);
+  box-shadow: var(--shadow-primary-sm);
 }
-.btn--primary:hover:not(:disabled)  { background: var(--cinnabar-600); box-shadow: 0 4px 14px rgba(192,57,43,.38); }
+.btn--primary:hover:not(:disabled)  { background: var(--cinnabar-600); box-shadow: var(--shadow-primary-md); }
 
 .btn--secondary {
   background: transparent;

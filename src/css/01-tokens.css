@@ -80,6 +80,9 @@
   --shadow-md:     0 2px 8px rgba(15, 23, 42, 0.08);
   --shadow-lg:     0 8px 24px rgba(15, 23, 42, 0.10);
   --shadow-float:  0 12px 32px rgba(15, 23, 42, 0.14);
+  /* 主色阴影（冷蓝，替代旧朱砂红 rgba(192,57,43)） */
+  --shadow-primary-sm: 0 2px 8px rgba(37, 99, 235, 0.25);
+  --shadow-primary-md: 0 4px 14px rgba(37, 99, 235, 0.32);
   /* 1px 描边（科技感标志） */
   --border-tech:   1px solid var(--paper-edge);
 
