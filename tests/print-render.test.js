@@ -236,3 +236,53 @@ describe('print · 路由', () => {
     expect(main.innerHTML).toContain('筛选条件');
   });
 });
+
+describe('print · 默认空筛选开关（default-behavior）', () => {
+  beforeEach(() => {
+    document.body.innerHTML = '<main id="app-main"></main>';
+    loadPoemMeta();
+    vi.spyOn(window, 'print').mockImplementation(() => {});
+    renderPrintPage(document.getElementById('app-main'));
+  });
+
+  it('应包含 default-behavior radio（none/all 二选一）', () => {
+    const radios = document.querySelectorAll('input[name="default-behavior"]');
+    expect(radios.length).toBe(2);
+    expect(Array.from(radios).map(r => r.value).sort()).toEqual(['all', 'none']);
+  });
+
+  it('默认应选中 none（保护性默认）', () => {
+    const checked = document.querySelector('input[name="default-behavior"]:checked');
+    expect(checked.value).toBe('none');
+  });
+
+  it('空筛选 + none → 摘要应提示"请勾选"', () => {
+    const summary = document.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/请勾选/);
+  });
+
+  it('切到 all 后 → 即使没勾选任何筛选，也应显示 112 首诗', () => {
+    const allRadio = document.querySelector('input[name="default-behavior"][value="all"]');
+    allRadio.checked = true;
+    allRadio.dispatchEvent(new Event('change', { bubbles: true }));
+    const summary = document.querySelector('#print-summary').textContent;
+    expect(summary).toMatch(/共 112 首诗/);
+  });
+
+  it('显式勾选筛选时 default-behavior 不影响结果数', () => {
+    // 勾 1 年级
+    document.querySelectorAll('#grades-chips input[type=checkbox]').forEach(cb => {
+      cb.checked = (parseInt(cb.value, 10) === 1);
+      cb.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    const beforeSummary = document.querySelector('#print-summary').textContent;
+    // 切到 all
+    const allRadio = document.querySelector('input[name="default-behavior"][value="all"]');
+    allRadio.checked = true;
+    allRadio.dispatchEvent(new Event('change', { bubbles: true }));
+    const afterSummary = document.querySelector('#print-summary').textContent;
+    // 已选筛选结果数稳定
+    expect(beforeSummary).toMatch(/共 13 首诗/);
+    expect(afterSummary).toMatch(/共 13 首诗/);
+  });
+});

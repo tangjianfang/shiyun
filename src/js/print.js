@@ -22,12 +22,14 @@ export const REVIEW_FILTERS = [
   { id: 'favorites', name: '已收藏' },
 ];
 
-export function filterPoems(poems, criteria = {}) {
+export function filterPoems(poems, criteria = {}, options = {}) {
   const { grades, semesters, dynasties, authors, reviewFilter = 'all', keyword } = criteria;
+  const { defaultBehavior = 'none' } = options;  // 'all' = 空筛选返 112；'none' = 空筛选返 0（保护性默认）
   const today = new Date().toISOString().slice(0, 10);
 
-  // 全部筛选项都为空时返回 0 首诗：让「默认未选」明确等于 0，
-  // 避免用户打开页面就看到 112 首诗而误以为「我只选一年级」被忽略。
+  // 全部筛选项都为空时的行为
+  // - defaultBehavior='all'：与 learn 行为一致，空=全部
+  // - defaultBehavior='none'：返回 0（保护性默认，避免用户看到 112 首以为筛选被忽略）
   const hasAnySelection =
     (grades && grades.length > 0) ||
     (semesters && semesters.length > 0) ||
@@ -35,7 +37,9 @@ export function filterPoems(poems, criteria = {}) {
     (authors && authors.length > 0) ||
     (reviewFilter && reviewFilter !== 'all') ||
     (keyword && keyword.trim());
-  if (!hasAnySelection) return [];
+  if (!hasAnySelection) {
+    return defaultBehavior === 'all' ? [...poems] : [];
+  }
 
   return poems.filter(p => {
     // 每个维度独立：空数组 = 包含全部；非空 = 白名单。

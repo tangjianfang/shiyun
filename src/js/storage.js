@@ -240,17 +240,25 @@ export function switchUser(userId) {
 }
 
 /**
- * 新建用户并返回其 ID
+ * 新建用户并返回其 ID（ID 唯一，避开 Date.now 毫秒冲突）
  * @param {{ name: string, avatar: string, grade: number }} data
  */
+let __userIdCounter = 0;
 export function addUser(data) {
-  const id = 'user_' + Date.now();
+  const s = ensureState();
+  // 找一个未使用的 ID
+  let id;
+  do {
+    id = 'user_' + Date.now().toString(36) + '_' + (__userIdCounter++).toString(36);
+  } while (s.users[id]);
   setUser(id, { name: data.name || id, avatar: data.avatar || '🐯', grade: data.grade || 1 });
   return id;
 }
 
-/** 更新用户信息（setUser 的别名） */
+/** 更新用户信息（用户不存在时抛错，与 addUser 区分） */
 export function updateUser(userId, data) {
+  const s = ensureState();
+  if (!s.users[userId]) throw new Error('用户不存在: ' + userId);
   setUser(userId, data);
 }
 

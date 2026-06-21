@@ -479,9 +479,11 @@ export function filterLearnPoems(poems, filters) {
     if (f.dynasty  && p.dynasty !== f.dynasty)  return false;
     if (f.author   && p.author  !== f.author)   return false;
     if (f.keyword) {
+      // 统一：只匹配 title + author（与 data.searchPoems / print.filterPoems 一致）
       const kw = f.keyword.toLowerCase();
-      const match = [(p.title||''), (p.author||''), ...(p.content||[]), ...(p.keywords||[])];
-      if (!match.some(t => t.toLowerCase().includes(kw))) return false;
+      const inTitle  = (p.title  || '').toLowerCase().includes(kw);
+      const inAuthor = (p.author || '').toLowerCase().includes(kw);
+      if (!inTitle && !inAuthor) return false;
     }
     return true;
   });

@@ -27,6 +27,19 @@ export function renderPrintPage(container) {
 
       <section class="card filter-bar no-print">
         <h3>筛选条件</h3>
+        <div class="filter-group" style="margin-bottom:var(--s-4);">
+          <label>空筛选时（默认行为）</label>
+          <div class="chip-group" id="default-behavior-group">
+            <label class="chip">
+              <input type="radio" name="default-behavior" value="none" checked>
+              提示勾选（推荐）
+            </label>
+            <label class="chip">
+              <input type="radio" name="default-behavior" value="all">
+              显示全部 112 首
+            </label>
+          </div>
+        </div>
         <div class="filter-grid">
           <div class="filter-group">
             <label>年级</label>
@@ -108,8 +121,9 @@ export function renderPrintPage(container) {
 
   const updatePreview = () => {
     const criteria = readCriteria(root);
+    const defaultBehavior = root.querySelector('input[name="default-behavior"]:checked')?.value || 'none';
     const formatId = root.querySelector('input[name="format"]:checked')?.value || 'dense';
-    const filtered = filterPoems(poemsWithState, criteria);
+    const filtered = filterPoems(poemsWithState, criteria, { defaultBehavior });
     const groups = groupForPrint(filtered, formatId);
     const summary = root.querySelector('#print-summary');
     const totalSelected =
@@ -119,7 +133,8 @@ export function renderPrintPage(container) {
       (criteria.authors?.length || 0) +
       (criteria.keyword?.trim() ? 1 : 0) +
       (criteria.reviewFilter && criteria.reviewFilter !== 'all' ? 1 : 0);
-    summary.textContent = totalSelected === 0
+    // 摘要反映实际预览结果：未勾选且 defaultBehavior='all' 时也算"有结果"
+    summary.textContent = (totalSelected === 0 && defaultBehavior !== 'all')
       ? '请勾选要打印的诗（共 112 首可选）'
       : `共 ${filtered.length} 首诗 / ${groups.length} 页`;
     const preview = root.querySelector('#print-preview');
