@@ -6,11 +6,13 @@
  * - localStorage 持久化
  */
 
-import { savePoemPiece, loadPoemPiece } from './state.js';
+import { savePoemPiece } from './state.js';
+import { createPipelineBase } from './pipeline-base.js';
 
 const TYPE = 'audio';
 const DEFAULT_VOICE = 'alloy';
 const DEFAULT_SPEED = 0.85;
+const storageKey = (poemId) => 'shiyun_gen_audio_' + poemId;
 
 function buildReadingText(poem) {
   const lines = (poem.content || []).filter(l => typeof l === 'string' && l.trim().length > 0);
@@ -25,21 +27,9 @@ export function createAudioGenerator({
   voice = DEFAULT_VOICE,
   speed = DEFAULT_SPEED,
 }) {
-  const poemList = Array.isArray(poems) ? poems : Array.from(poems.values());
-  let cancelled = false;
-  const stats = { done: 0, total: poemList.length, failed: 0, skipped: 0 };
-
-  function emit(event) {
-    try { onProgress(event); } catch {}
-  }
-
-  function pendingPoemIds() {
-    return poemList.filter(p => loadPoemPiece(p.id, TYPE) === null).map(p => p.id);
-  }
-
-  async function processOne(poem) {
-    if (cancelled) return;
-    emit({ poemId: poem.id, status: 'start', current: stats.done + stats.failed + stats.skipped + 1, total: stats.total });
+  async function processOne(poem, ctx) {
+    if (ctx.cancelled()) return;
+    ctx.emit({ poemId: poem.id, status: 'start', current: ctx.stats.done + ctx.stats.failed + ctx.stats.skipped + 1, total: ctx.stats.total });
     try {
       const text = buildReadingText(poem);
       const dataUrl = await client.generateAudio({ text, voice, speed });
@@ -47,49 +37,13 @@ export function createAudioGenerator({
         throw new Error('generateAudio 返回非 audio dataURL');
       }
       savePoemPiece(poem.id, TYPE, dataUrl);
-      stats.done++;
-      emit({ poemId: poem.id, status: 'success', current: stats.done + stats.failed + stats.skipped, total: stats.total });
+      ctx.stats.done++;
+      ctx.emit({ poemId: poem.id, status: 'success', current: ctx.stats.done + ctx.stats.failed + ctx.stats.skipped, total: ctx.stats.total });
     } catch (e) {
-      stats.failed++;
-      emit({ poemId: poem.id, status: 'fail', error: e.message, current: stats.done + stats.failed + stats.skipped, total: stats.total });
+      ctx.stats.failed++;
+      ctx.emit({ poemId: poem.id, status: 'fail', error: e.message, current: ctx.stats.done + ctx.stats.failed + ctx.stats.skipped, total: ctx.stats.total });
     }
   }
 
-  async function worker(queue) {
-    while (queue.length > 0) {
-      if (cancelled) return;
-      const poem = queue.shift();
-      await processOne(poem);
-    }
-  }
-
-  async function start() {
-    cancelled = false;
-    const queue = poemList.filter(p => loadPoemPiece(p.id, TYPE) === null);
-    stats.skipped = stats.total - queue.length;
-    if (queue.length === 0) {
-      emit({ poemId: null, status: 'done' });
-      return;
-    }
-    const workers = [];
-    const n = Math.min(concurrency, queue.length);
-    for (let i = 0; i < n; i++) {
-      workers.push(worker(queue));
-    }
-    await Promise.all(workers);
-    emit({ poemId: null, status: 'done' });
-  }
-
-  function cancel() {
-    cancelled = true;
-  }
-
-  async function regenerateOne(poemId) {
-    const poem = poemList.find(p => p.id === poemId);
-    if (!poem) throw new Error('未找到诗：' + poemId);
-    localStorage.removeItem('shiyun_gen_audio_' + poemId);
-    await processOne(poem);
-  }
-
-  return { start, cancel, regenerateOne, pendingPoemIds, stats: () => ({ ...stats }) };
+  return createPipelineBase({ poems, onProgress, concurrency, type: TYPE, storageKey, processOne });
 }

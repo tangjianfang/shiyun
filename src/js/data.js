@@ -6,6 +6,7 @@
  */
 
 import { POEMS_META, SEMESTERS } from '../data/poems-meta.js';
+import { searchPoemsByKeyword, getUniqueValues } from './poem-query.js';
 
 /**
  * @typedef {Object} Poem
@@ -81,24 +82,19 @@ export function getPoemsByAuthor(author) {
   return Array.from(poems.values()).filter(p => p.author === author);
 }
 
-/** 搜索（标题 + 作者） */
+/** 搜索（标题 + 作者）— @deprecated 用 poem-query.searchPoemsByKeyword 代替 */
 export function searchPoems(keyword) {
-  const kw = keyword.trim().toLowerCase();
-  if (!kw) return Array.from(poems.values());
-  return Array.from(poems.values()).filter(p =>
-    p.title.toLowerCase().includes(kw) ||
-    p.author.toLowerCase().includes(kw)
-  );
+  return searchPoemsByKeyword(Array.from(poems.values()), keyword);
 }
 
-/** 获取所有不重复的朝代 */
+/** 获取所有不重复的朝代（含空字符串，用于打印 UI 全选覆盖所有诗） */
 export function getAllDynasties() {
   return [...new Set(Array.from(poems.values()).map(p => p.dynasty))].sort();
 }
 
 /** 获取所有不重复的作者 */
 export function getAllAuthors() {
-  return [...new Set(Array.from(poems.values()).map(p => p.author))].sort();
+  return [...new Set(Array.from(poems.values()).map(p => p.author))].filter(Boolean).sort();
 }
 
 /** 是否有 AI 生成的完整内容（图片 + 音频） */
