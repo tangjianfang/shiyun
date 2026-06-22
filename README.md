@@ -3,6 +3,8 @@
 > 家庭古诗词学习管理工具 · 部编版 1-6 年级 112 首必背古诗词
 > AI 配图配音 · SM-2 科学复习 · 离线运行 · 1-2 个孩子独立进度
 
+**🔗 [在线访问 GitHub Pages](https://tangjianfang.github.io/shiyun/)**
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-1.0.0-green.svg)](#)
 
