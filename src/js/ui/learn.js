@@ -6,6 +6,7 @@
 import { pinyin } from 'pinyin-pro';
 import { getPoem, poems as poemsMap, getPoemsBySemester } from '../data.js';
 import { getCurrentUserId, getPoemProgress, updatePoemProgress } from '../storage.js';
+import { filterPoems as _filterPoems, searchPoemsByKeyword, getUniqueValues } from '../poem-query.js';
 import {
   createAudio, play, pause, stop, setSpeed, setOnEnd,
   createSpeech, speak, stopSpeak, resumeSpeak, speechSupported
@@ -59,8 +60,8 @@ export function renderPoemList() {
     pendingKeyword = '';
   }
 
-  const dynasties = getAllDynastiesForFilter(allPoems);
-  const authors   = getAllAuthorsForFilter(allPoems);
+  const dynasties = getUniqueValues(allPoems, 'dynasty');
+  const authors   = getUniqueValues(allPoems, 'author');
 
   // 骨架屏先显示
   main.innerHTML = `
@@ -114,7 +115,7 @@ export function renderPoemList() {
   setTimeout(() => renderItems(), 100);
 
   function renderItems() {
-    const filtered = filterLearnPoems(allPoems, state);
+    const filtered = filterLearnPoems(allPoems, state); // backward-compat wrapper → _filterPoems
     const itemsEl  = document.getElementById('poem-list-items');
     const countEl  = document.getElementById('poem-list-count');
     if (countEl) countEl.textContent = `共 ${filtered.length} 首`;
@@ -463,30 +464,19 @@ export function getAllPoemsList() {
   });
 }
 
+/** @deprecated 用 poem-query.getUniqueValues(poems, 'dynasty') 代替 */
 export function getAllDynastiesForFilter(poems) {
-  return [...new Set(poems.map(p => p.dynasty))].filter(Boolean).sort();
+  return getUniqueValues(poems, 'dynasty');
 }
 
+/** @deprecated 用 poem-query.getUniqueValues(poems, 'author') 代替 */
 export function getAllAuthorsForFilter(poems) {
-  return [...new Set(poems.map(p => p.author))].filter(Boolean).sort();
+  return getUniqueValues(poems, 'author');
 }
 
+/** @deprecated 用 poem-query.filterPoems 代替 */
 export function filterLearnPoems(poems, filters) {
-  const f = filters || {};
-  return poems.filter(p => {
-    if (f.grade    && p.grade   !== f.grade)    return false;
-    if (f.semester && p.semester !== f.semester) return false;
-    if (f.dynasty  && p.dynasty !== f.dynasty)  return false;
-    if (f.author   && p.author  !== f.author)   return false;
-    if (f.keyword) {
-      // 统一：只匹配 title + author（与 data.searchPoems / print.filterPoems 一致）
-      const kw = f.keyword.toLowerCase();
-      const inTitle  = (p.title  || '').toLowerCase().includes(kw);
-      const inAuthor = (p.author || '').toLowerCase().includes(kw);
-      if (!inTitle && !inAuthor) return false;
-    }
-    return true;
-  });
+  return _filterPoems(poems, filters || {});
 }
 
 /** 解析 #/learn?grade=1&sem=上 这种 hash 后 query 串。空 / 不存在则 {} */
@@ -518,13 +508,9 @@ function progressToStatus(progress) {
   return 'learning';
 }
 
+/** @deprecated 用 poem-query.searchPoemsByKeyword 代替 */
 export function searchPoemsCase(poems, keyword) {
-  if (!keyword) return poems;
-  const kw = keyword.toLowerCase();
-  return poems.filter(p =>
-    (p.title  || '').toLowerCase().includes(kw) ||
-    (p.author || '').toLowerCase().includes(kw)
-  );
+  return searchPoemsByKeyword(poems, keyword);
 }
 
 export function pinyinForText(text) {
