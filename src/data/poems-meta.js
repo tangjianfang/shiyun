@@ -153,14 +153,5 @@ export const GRADE_COUNTS = {"1":13,"2":14,"3":18,"4":19,"5":22,"6":26};
 export const GRADES = [1, 2, 3, 4, 5, 6];
 export const SEMESTERS = ["上", "下"];
 
-export function getPoemsByGrade(grade) { return POEMS_META.filter(p => p.grade === grade); }
-export function getPoemsBySemester(grade, semester) { return POEMS_META.filter(p => p.grade === grade && p.semester === semester); }
-export function getPoemsByDynasty(dynasty) { return POEMS_META.filter(p => p.dynasty === dynasty); }
-export function getPoemsByAuthor(author) { return POEMS_META.filter(p => p.author === author); }
-export function searchPoems(keyword) {
-  const kw = keyword.trim().toLowerCase();
-  if (!kw) return [...POEMS_META];
-  return POEMS_META.filter(p => p.title.toLowerCase().includes(kw) || p.author.toLowerCase().includes(kw));
-}
-export function getAllDynasties() { return [...new Set(POEMS_META.map(p => p.dynasty).filter(Boolean))].sort(); }
-export function getAllAuthors() { return [...new Set(POEMS_META.map(p => p.author).filter(Boolean))].sort(); }
+// 注意：运行时查询函数（getPoemsByGrade / getPoemsBySemester / searchPoems 等）
+// 统一在 src/js/data.js 中实现，避免构建时重复声明导致 SyntaxError。

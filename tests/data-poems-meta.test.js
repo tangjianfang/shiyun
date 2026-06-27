@@ -1,9 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   POEMS_META,
   GRADES,
   SEMESTERS,
   GRADE_COUNTS,
+} from '../src/data/poems-meta.js';
+import {
+  loadPoemMeta,
   getPoemsByGrade,
   getPoemsBySemester,
   getPoemsByDynasty,
@@ -11,10 +14,13 @@ import {
   searchPoems,
   getAllDynasties,
   getAllAuthors,
-} from '../src/data/poems-meta.js';
+} from '../src/js/data.js';
 import { POEMS_CONTENT, mergeContent } from '../src/data/poems-content.js';
 
 describe('poems-meta 数据完整性（基于真实教材 .txt）', () => {
+  beforeEach(() => {
+    loadPoemMeta();
+  });
   it('应包含完整的 112 首', () => {
     expect(POEMS_META.length).toBe(112);
   });
@@ -251,11 +257,11 @@ describe('poems-meta 查询函数', () => {
     expect(searchPoems('   ').length).toBe(POEMS_META.length);
   });
 
-  it('getAllDynasties 应排除空字符串', () => {
+  it('getAllDynasties 应返回所有朝代（含空字符串，供打印 UI「全选」用）', () => {
     const dynasties = getAllDynasties();
     expect(dynasties.length).toBeGreaterThan(0);
-    expect(dynasties).not.toContain('');
     expect(new Set(dynasties).size).toBe(dynasties.length);
+    // 注：data.js 故意保留空字符串以让打印 UI 能「全选」覆盖所有 112 首诗
   });
 
   it('getAllAuthors 应排除空字符串', () => {
