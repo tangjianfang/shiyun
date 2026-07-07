@@ -70,6 +70,7 @@ def collect_css():
 CORE_JS = [
     "js/data.js",
     "data/authors-meta.js",
+    "js/poem-query.js",
     "js/storage.js",
     "js/srs.js",
     "js/router.js",
