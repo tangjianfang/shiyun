@@ -159,3 +159,21 @@ export function audioBar({ hasSrc = false, favored = false } = {}) {
   </button>
 </div>`;
 }
+
+// ── Card 原子 (R-1.1) ──
+const CARD_VARIANTS = new Set(['poem', 'stat', 'cloud-chip', 'cloud-node', 'skeleton']);
+
+/**
+ * 通用 Card 原子组件；5 variant 共享 .card 根 + .card__title + .card__body + .card__footer 骨架。
+ * 派生函数（poemCard/statCard/skeletonCard 等）通过 variant + className 复用此结构。
+ * @param {{ title?:string, body:string, footer?:string, variant?:string, onClick?:string, className?:string }} opts
+ */
+export function Card({ title, body, footer, variant = 'poem', onClick = '', className = '' } = {}) {
+  if (body == null) throw new Error('Card: body is required');
+  const v = CARD_VARIANTS.has(variant) ? variant : 'poem';
+  const safeTitle = title != null ? `<h3 class="card__title">${esc(title)}</h3>` : '';
+  const safeFooter = footer != null ? `<div class="card__footer">${footer}</div>` : '';
+  const cls = `card card--${v}${className ? ' ' + className : ''}`;
+  const clickAttr = onClick ? ` onclick="${onClick}"` : '';
+  return `<div class="${cls}" data-variant="${v}"${clickAttr}>${safeTitle}<div class="card__body">${body}</div>${safeFooter}</div>`;
+}

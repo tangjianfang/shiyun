@@ -6,7 +6,7 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import {
   esc, icon, badge, statCard, poemCard, emptyState, showToast,
-  skeletonCard, audioBar,
+  skeletonCard, audioBar, Card,
 } from '../src/js/ui/components.js';
 
 describe('esc（HTML 转义）', () => {
@@ -213,5 +213,41 @@ describe('showToast（DOM 副作用）', () => {
   it('无 toast-container 时应静默 noop（不抛）', () => {
     container.remove();
     expect(() => showToast('no-op')).not.toThrow();
+  });
+});
+
+describe('Card 原子', () => {
+  it('5 个 variant 都输出 data-variant 属性', () => {
+    ['poem', 'stat', 'cloud-chip', 'cloud-node', 'skeleton'].forEach(v => {
+      const html = Card({ variant: v, body: 'x' });
+      expect(html).toContain(`data-variant="${v}"`);
+    });
+  });
+  it('无 title 不渲染 .card__title', () => {
+    const html = Card({ variant: 'poem', body: 'B' });
+    expect(html).not.toContain('card__title');
+  });
+  it('有 title 渲染 h3.card__title', () => {
+    const html = Card({ variant: 'poem', title: 'T', body: 'B' });
+    expect(html).toContain('<h3 class="card__title">T</h3>');
+  });
+  it('body 接受字符串', () => {
+    expect(Card({ variant: 'poem', body: 'hello' })).toContain('hello');
+  });
+  it('footer 渲染 .card__footer', () => {
+    const html = Card({ variant: 'poem', body: 'B', footer: 'F' });
+    expect(html).toContain('<div class="card__footer">F</div>');
+  });
+  it('非法 variant 降级到 poem', () => {
+    const html = Card({ variant: 'unknown', body: 'B' });
+    expect(html).toContain('data-variant="poem"');
+  });
+  it('title 含 <script> 自动转义', () => {
+    const html = Card({ variant: 'poem', title: '<script>x</script>', body: 'B' });
+    expect(html).not.toContain('<script>');
+    expect(html).toContain('&lt;script&gt;');
+  });
+  it('缺 body 抛错', () => {
+    expect(() => Card({ variant: 'poem' })).toThrow();
   });
 });
